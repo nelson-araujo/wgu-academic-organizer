@@ -8,11 +8,40 @@
         <entry key="app/src/main/res/drawable/ic_academic_organizer_icon.xml" value="0.359" />
         <entry key="app/src/main/res/drawable/ic_academic_organizer_icon_background.xml" value="0.3555" />
         <entry key="app/src/main/res/drawable/ic_academic_organizer_icon_foreground.xml" value="0.3555" />
+        <entry key="app/src/main/res/drawable/ic_academic_organizer_icon_foreground_new.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/ic_assessment.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/ic_assessment_new.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/ic_course.xml" value="0.361" />
+        <entry key="app/src/main/res/drawable/ic_course_new.xml" value="0.348" />
         <entry key="app/src/main/res/drawable/ic_icon_background.xml" value="0.3555" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.359" />
         <entry key="app/src/main/res/drawable/ic_launcher_background3.xml" value="0.286" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.286" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground_new.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/ic_logo.xml" value="0.317" />
+        <entry key="app/src/main/res/drawable/ic_logo_new.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/ic_menu_hamburger.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/ic_menu_hamburger_new.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/ic_term.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/ic_term_new.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/rounded_corner_view.xml" value="0.361" />
+        <entry key="app/src/main/res/drawable/search_view_box.xml" value="0.348" />
+        <entry key="app/src/main/res/layout-land/academic_organizer.xml" value="0.38820008550662677" />
+        <entry key="app/src/main/res/layout-land/assessmennt.xml" value="0.3877725523728089" />
+        <entry key="app/src/main/res/layout-land/assessments.xml" value="0.38820008550662677" />
+        <entry key="app/src/main/res/layout-land/course.xml" value="0.3877725523728089" />
+        <entry key="app/src/main/res/layout-land/courses.xml" value="0.38820008550662677" />
+        <entry key="app/src/main/res/layout-land/term.xml" value="0.38820008550662677" />
+        <entry key="app/src/main/res/layout-land/terms.xml" value="0.38820008550662677" />
+        <entry key="app/src/main/res/layout/academic_organizer.xml" value="0.41160471441523117" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5046875" />
+        <entry key="app/src/main/res/layout/assessment.xml" value="0.4111514052583862" />
+        <entry key="app/src/main/res/layout/assessments.xml" value="0.41160471441523117" />
+        <entry key="app/src/main/res/layout/course.xml" value="0.4111514052583862" />
+        <entry key="app/src/main/res/layout/courses.xml" value="0.41160471441523117" />
+        <entry key="app/src/main/res/layout/term.xml" value="0.41160471441523117" />
+        <entry key="app/src/main/res/layout/terms.xml" value="0.41160471441523117" />
+        <entry key="app/src/main/res/layout/terms_portrait.xml" value="0.4302536231884058" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3555" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.286" />
       </map>
