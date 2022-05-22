@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">Academic Organizer</string>
+    <string name="title_activity_terms">terms</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+
+    <!-- Screen Text -->
+    <string name="academic_organizer_title">Academic Organizer</string>
+    <string name="academic_organizer_view_courses_btn">View Courses</string>
+    <string name="academic_organizer_view_terms_btn">View Terms</string>
+    <string name="academic_organizer_view_assessments_btn">View Assessments</string>
+    <string name="assessment_course_title">Course</string>
+    <string name="assessment_content_title">Content</string>
+    <string name="course_term_title">Term</string>
+    <string name="course_status_title">Status</string>
+    <string name="course_share_img">Share</string>
+
+
+    <!-- General -->
+    <string name="gen_logo_img">Logo</string>
+    <string name="gen_menu_btn">Menu</string>
+    <string name="gen_add_btn">Add</string>
+    <string name="gen_edit_btn">Edit</string>
+    <string name="gen_delete_btn">Delete</string>
+    <string name="gen_terms_title">Terms</string>
+    <string name="gen_courses_title">Courses</string>
+    <string name="gen_assessments_title">Assessments</string>
+    <string name="gen_search_title">Search</string>
+    <string name="gen_start_title">Start</string>
+    <string name="gen_end_title">End</string>
+    <string name="gen_remove_btn">Remove</string>
+    <string name="gen_insert_btn">Insert</string>
+
+    <!-- Instructor -->
+    <string name="instructor_title">Instructor</string>
+    <string name="instructor_name">Name</string>
+    <string name="instructor_email">Email</string>
+    <string name="instructor_phone">Phone</string>
+
+
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".AcademicOrganizer">
 
     <ImageView
         android:id="@+id/searchViewBox"
@@ -36,7 +36,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/gen_logo_img"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Academic Organizer"
+        android:text="@string/academic_organizer_title"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,33 +74,36 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="View Courses"
+            android:text="@string/academic_organizer_view_courses_btn"
             app:layout_constraintBottom_toTopOf="@+id/assessmentsBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/termsBtn" />
+            app:layout_constraintTop_toBottomOf="@+id/termsBtn"
+            tools:ignore="TextContrastCheck" />
 
         <Button
             android:id="@+id/termsBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="View Terms"
+            android:text="@string/academic_organizer_view_terms_btn"
             app:layout_constraintBottom_toTopOf="@+id/coursesBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck" />
 
         <Button
             android:id="@+id/assessmentsBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="View Assessments"
+            android:text="@string/academic_organizer_view_assessments_btn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coursesBtn" />
+            app:layout_constraintTop_toBottomOf="@+id/coursesBtn"
+            tools:ignore="TextContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

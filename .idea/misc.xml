@@ -28,19 +28,22 @@
         <entry key="app/src/main/res/drawable/search_view_box.xml" value="0.348" />
         <entry key="app/src/main/res/layout-land/academic_organizer.xml" value="0.38820008550662677" />
         <entry key="app/src/main/res/layout-land/assessmennt.xml" value="0.3877725523728089" />
+        <entry key="app/src/main/res/layout-land/assessment.xml" value="0.2658574784651527" />
         <entry key="app/src/main/res/layout-land/assessments.xml" value="0.38820008550662677" />
-        <entry key="app/src/main/res/layout-land/course.xml" value="0.3877725523728089" />
+        <entry key="app/src/main/res/layout-land/course.xml" value="0.235216240070609" />
         <entry key="app/src/main/res/layout-land/courses.xml" value="0.38820008550662677" />
         <entry key="app/src/main/res/layout-land/term.xml" value="0.38820008550662677" />
         <entry key="app/src/main/res/layout-land/terms.xml" value="0.38820008550662677" />
+        <entry key="app/src/main/res/layout-land/terms_manual.xml" value="0.41470713980333473" />
         <entry key="app/src/main/res/layout/academic_organizer.xml" value="0.41160471441523117" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5046875" />
         <entry key="app/src/main/res/layout/assessment.xml" value="0.4111514052583862" />
         <entry key="app/src/main/res/layout/assessments.xml" value="0.41160471441523117" />
-        <entry key="app/src/main/res/layout/course.xml" value="0.4111514052583862" />
+        <entry key="app/src/main/res/layout/course.xml" value="0.23514322359982898" />
         <entry key="app/src/main/res/layout/courses.xml" value="0.41160471441523117" />
-        <entry key="app/src/main/res/layout/term.xml" value="0.41160471441523117" />
+        <entry key="app/src/main/res/layout/term.xml" value="0.2667806755023514" />
         <entry key="app/src/main/res/layout/terms.xml" value="0.41160471441523117" />
+        <entry key="app/src/main/res/layout/terms_manual.xml" value="0.27276613937580163" />
         <entry key="app/src/main/res/layout/terms_portrait.xml" value="0.4302536231884058" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3555" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.286" />

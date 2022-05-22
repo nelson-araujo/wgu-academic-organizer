@@ -14,7 +14,18 @@
         android:theme="@style/Theme.AcademicOrganizer"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".Controllers.Assessments"
+            android:exported="false" />
+        <activity
+            android:name=".Controllers.Courses"
+            android:exported="false" />
+        <activity
+            android:name=".Controllers.Terms"
+            android:exported="false"
+            android:label="@string/title_activity_terms"
+            android:theme="@style/Theme.AcademicOrganizer.NoActionBar" />
+        <activity
+            android:name=".AcademicOrganizer"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

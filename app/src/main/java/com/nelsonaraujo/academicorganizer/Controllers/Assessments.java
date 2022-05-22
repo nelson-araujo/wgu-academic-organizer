@@ -1,14 +1,16 @@
-package com.nelsonaraujo.academicorganizer;
+package com.nelsonaraujo.academicorganizer.Controllers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.nelsonaraujo.academicorganizer.R;
+
+public class Assessments extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.academic_organizer);
+        setContentView(R.layout.assessments);
     }
 }
