@@ -33,6 +33,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name = "com.nelsonaraujo.academicorganizer.Models.AppProvider"
+            android:authorities = "com.nelsonaraujo.academicorganizer.provider"
+            android:exported = "false" />
+
     </application>
+
+
 
 </manifest>
