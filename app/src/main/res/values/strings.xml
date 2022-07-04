@@ -1,42 +1,47 @@
 <resources>
     <string name="app_name">Academic Organizer</string>
+    <string name="app_logo">Application Logo</string>
     <string name="title_activity_terms">terms</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
+    <string name="view_courses">View Courses</string>
+    <string name="view_terms">View Terms</string>
+    <string name="view_assessments">View Assessments</string>
+    <string name="content">Content</string>
+    <string name="placeholder">$placeholder$</string>
 
-    <!-- Screen Text -->
-    <string name="academic_organizer_title">Academic Organizer</string>
-    <string name="academic_organizer_view_courses_btn">View Courses</string>
-    <string name="academic_organizer_view_terms_btn">View Terms</string>
-    <string name="academic_organizer_view_assessments_btn">View Assessments</string>
-    <string name="assessment_course_title">Course</string>
-    <string name="assessment_content_title">Content</string>
-    <string name="course_term_title">Term</string>
-    <string name="course_status_title">Status</string>
-    <string name="course_share_img">Share</string>
+    <string name="term_logo">Term Logo</string>
+    <string name="terms">Terms</string>
+    <string name="term">Term</string>
+    <string name="term_add">Add Term</string>
 
+    <string name="course_logo">Course Logo</string>
+    <string name="courses">Courses</string>
+    <string name="course">Course</string>
+    <string name="course_add">Add Course</string>
 
-    <!-- General -->
-    <string name="gen_logo_img">Logo</string>
-    <string name="gen_menu_btn">Menu</string>
-    <string name="gen_add_btn">Add</string>
-    <string name="gen_edit_btn">Edit</string>
-    <string name="gen_delete_btn">Delete</string>
-    <string name="gen_terms_title">Terms</string>
-    <string name="gen_courses_title">Courses</string>
-    <string name="gen_assessments_title">Assessments</string>
-    <string name="gen_search_title">Search</string>
-    <string name="gen_start_title">Start</string>
-    <string name="gen_end_title">End</string>
-    <string name="gen_remove_btn">Remove</string>
-    <string name="gen_insert_btn">Insert</string>
+    <string name="assessment_logo">Assessment Logo</string>
+    <string name="assessments">Assessments</string>
+    <string name="assessment">Assessment</string>
+    <string name="assessment_add">Add Assessment</string>
 
-    <!-- Instructor -->
-    <string name="instructor_title">Instructor</string>
+    <string name="instructor">Instructor</string>
     <string name="instructor_name">Name</string>
     <string name="instructor_email">Email</string>
     <string name="instructor_phone">Phone</string>
 
-
+    <string name="status">Status</string>
+    <string name="share">Share</string>
+    <string name="menu">Menu</string>
+    <string name="add">Add</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="search">Search</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="remove">Remove</string>
+    <string name="insert">Insert</string>
+    <string name="due_date">Due Date</string>
+    <string name="note">Note</string>
+    <string name="save">Save</string>
 </resources>

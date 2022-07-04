@@ -6,65 +6,63 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/termTitle"
+        android:id="@+id/coursesTitleTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/gen_courses_title"
+        android:text="@string/courses"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerImage" />
-
-    <LinearLayout
-        android:id="@+id/listView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/termTitle"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/coursesLogoIv" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addBtn"
+        android:id="@+id/coursesAddFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        android:contentDescription="@string/gen_add_btn"
+        android:contentDescription="@string/add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/menuBtn"
+        app:layout_constraintEnd_toStartOf="@+id/coursesMenuFab"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/menuBtn"
+        android:id="@+id/coursesMenuFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        android:contentDescription="@string/gen_menu_btn"
+        android:contentDescription="@string/menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_menu_hamburger" />
 
     <ImageView
-        android:id="@+id/headerImage"
+        android:id="@+id/coursesLogoIv"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:contentDescription="@string/gen_logo_img"
-        app:layout_constraintBottom_toTopOf="@+id/termTitle"
+        android:contentDescription="@string/app_logo"
+        app:layout_constraintBottom_toTopOf="@+id/coursesTitleTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_course" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/coursesCoursesRv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coursesTitleTv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

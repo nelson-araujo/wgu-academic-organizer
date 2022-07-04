@@ -16,21 +16,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/termTitle"
+            android:id="@+id/assessmentsTitleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/gen_assessments_title"
+            android:text="@string/assessments"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:layout_constraintStart_toEndOf="@+id/assessmentsLogoIv"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/assessmentsLogoIv"
             android:layout_width="100dp"
             android:layout_height="65dp"
-            android:contentDescription="@string/gen_logo_img"
+            android:contentDescription="@string/app_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_assessment" />
@@ -48,56 +48,68 @@
         app:layout_constraintVertical_bias="0.945">
 
         <TextView
-            android:id="@+id/termsBtn"
+            android:id="@+id/assessmentsMenuTermsTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:text="@string/gen_terms_title"
+            android:text="@string/terms"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/coursesBtn"
+            android:id="@+id/assessmentsMenuCoursesTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/gen_courses_title"
+            android:text="@string/courses"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/termsBtn" />
+            app:layout_constraintTop_toBottomOf="@+id/assessmentsMenuTermsTv" />
 
         <TextView
-            android:id="@+id/assessmentsBtn"
+            android:id="@+id/assessmentsMenuAssessmentsTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/gen_assessments_title"
+            android:text="@string/assessments"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coursesBtn" />
+            app:layout_constraintTop_toBottomOf="@+id/assessmentsMenuCoursesTv" />
 
         <TextView
-            android:id="@+id/searchBtn"
+            android:id="@+id/assessmentsMenuSearchTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/gen_search_title"
+            android:text="@string/search"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/assessmentsBtn" />
+            app:layout_constraintTop_toBottomOf="@+id/assessmentsMenuAssessmentsTv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ListView
-        android:id="@+id/listView"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/assessmentsAddFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/assessmentsAssessmentsRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -108,17 +120,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout4"
         app:layout_constraintTop_toBottomOf="@+id/headerBar" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/gen_add_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

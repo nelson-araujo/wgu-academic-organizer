@@ -2,18 +2,14 @@ package com.nelsonaraujo.academicorganizer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.nelsonaraujo.academicorganizer.Controllers.Assessments;
 import com.nelsonaraujo.academicorganizer.Controllers.Courses;
 import com.nelsonaraujo.academicorganizer.Controllers.Terms;
-import com.nelsonaraujo.academicorganizer.Models.TermContract;
 
 public class AcademicOrganizer extends AppCompatActivity {
     private static final String TAG = "AcademicOrganizer"; // For terminal logging
@@ -53,7 +49,7 @@ public class AcademicOrganizer extends AppCompatActivity {
 
 
         // Terms
-        termsBtn = findViewById(R.id.termsBtn);
+        termsBtn = findViewById(R.id.aoTermsBtn);
         termsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,7 +59,7 @@ public class AcademicOrganizer extends AppCompatActivity {
         });
 
         // Courses
-        coursesBtn = findViewById(R.id.coursesBtn);
+        coursesBtn = findViewById(R.id.aoCoursesBtn);
         coursesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +69,7 @@ public class AcademicOrganizer extends AppCompatActivity {
         });
 
         // Assessments
-        assessmentsBtn = findViewById(R.id.assessmentsBtn);
+        assessmentsBtn = findViewById(R.id.termMenuAssessmentsTv);
         assessmentsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,4 +78,5 @@ public class AcademicOrganizer extends AppCompatActivity {
             }
         });
     }
+
 }

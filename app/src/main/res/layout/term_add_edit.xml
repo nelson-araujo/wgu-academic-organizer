@@ -6,26 +6,16 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/termLogoIv"
+        android:id="@+id/taeLogoIv"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:contentDescription="@string/term_logo"
+        android:contentDescription="@string/app_logo"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_term" />
-
-    <TextView
-        android:id="@+id/termTitleTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/term"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-        app:layout_constraintStart_toEndOf="@+id/termLogoIv"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -37,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/termLogoIv">
+        app:layout_constraintTop_toBottomOf="@+id/taeLogoIv">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -46,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/termStartTv"
+                android:id="@+id/taeStartTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/start"
@@ -56,17 +46,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/termStartEt"
+                android:id="@+id/taeStartEt"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:hint="@string/start"
+                android:inputType="date"
                 android:minHeight="48dp"
-                android:text="start"
                 android:textAlignment="center"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/termStartTv"
-                android:autofillHints="" />
+                app:layout_constraintTop_toBottomOf="@+id/taeStartTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,7 +66,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/termEndTv"
+                android:id="@+id/taeEndTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/end"
@@ -86,84 +76,45 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/termEndEt"
+                android:id="@+id/taeEndEt"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:hint="@string/end"
+                android:inputType="date"
                 android:minHeight="48dp"
-                android:text="end"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/termEndTv"
-                android:autofillHints="" />
+                app:layout_constraintTop_toBottomOf="@+id/taeEndTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/termMenuFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_menu_hamburger" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/termCoursesRv"
+        android:id="@+id/taeCoursesRv"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/termAddCourseIv" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/termEditFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/termMenuFab"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/termDeleteFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/delete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/termEditFab"
-        app:srcCompat="@android:drawable/ic_menu_delete"
-        tools:ignore="ImageContrastCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/tae_addCourseIv" />
 
     <ImageView
-        android:id="@+id/termAddCourseIv"
+        android:id="@+id/tae_addCourseIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/insert"
-        app:layout_constraintBottom_toBottomOf="@+id/termCoursesTv"
-        app:layout_constraintStart_toEndOf="@+id/termCoursesTv"
-        app:layout_constraintTop_toTopOf="@+id/termCoursesTv"
+        app:layout_constraintBottom_toBottomOf="@+id/taeCoursesTv"
+        app:layout_constraintStart_toEndOf="@+id/taeCoursesTv"
+        app:layout_constraintTop_toTopOf="@+id/taeCoursesTv"
         app:srcCompat="@android:drawable/ic_input_add"
         tools:ignore="ImageContrastCheck" />
 
     <TextView
-        android:id="@+id/termCoursesTv"
+        android:id="@+id/taeCoursesTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -174,15 +125,40 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
     <TextView
-        android:id="@+id/termCoursesStatusTv"
+        android:id="@+id/taeCoursesStatusTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/status"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/termAddCourseIv"
+        app:layout_constraintBottom_toBottomOf="@+id/tae_addCourseIv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/taeSaveFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_save" />
+
+    <EditText
+        android:id="@+id/taeTitleEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/term"
+        android:inputType="textPersonName"
+        android:minHeight="48sp"
+        app:layout_constraintBottom_toBottomOf="@+id/taeLogoIv"
+        app:layout_constraintStart_toEndOf="@+id/taeLogoIv"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

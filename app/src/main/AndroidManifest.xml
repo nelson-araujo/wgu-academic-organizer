@@ -20,6 +20,12 @@
             android:name=".Controllers.Courses"
             android:exported="false" />
         <activity
+            android:name=".Controllers.TermAddEdit"
+            android:exported="false" />
+        <activity
+            android:name=".Controllers.TermListCourses"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.Terms"
             android:exported="false"
             android:label="@string/title_activity_terms"

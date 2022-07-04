@@ -7,19 +7,20 @@
     tools:context=".AcademicOrganizer">
 
     <ImageView
-        android:id="@+id/searchViewBox"
+        android:id="@+id/aoSearchIv"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:contentDescription="@string/search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/search_view_box" />
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/aoSearchSv"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -30,13 +31,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/aoAppLogoIv"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:contentDescription="@string/gen_logo_img"
+        android:contentDescription="@string/app_logo"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,17 +45,17 @@
         app:srcCompat="@drawable/ic_logo" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/aoAppNameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/academic_organizer_title"
+        android:text="@string/app_name"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/aoAppLogoIv" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -64,45 +65,45 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/searchView"
+        app:layout_constraintBottom_toTopOf="@+id/aoSearchSv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/aoAppNameTv">
 
         <Button
-            android:id="@+id/coursesBtn"
+            android:id="@+id/aoCoursesBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/academic_organizer_view_courses_btn"
-            app:layout_constraintBottom_toTopOf="@+id/assessmentsBtn"
+            android:text="@string/view_courses"
+            app:layout_constraintBottom_toTopOf="@+id/termMenuAssessmentsTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/termsBtn"
+            app:layout_constraintTop_toBottomOf="@+id/aoTermsBtn"
             tools:ignore="TextContrastCheck" />
 
         <Button
-            android:id="@+id/termsBtn"
+            android:id="@+id/aoTermsBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/academic_organizer_view_terms_btn"
-            app:layout_constraintBottom_toTopOf="@+id/coursesBtn"
+            android:text="@string/view_terms"
+            app:layout_constraintBottom_toTopOf="@+id/aoCoursesBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TextContrastCheck" />
 
         <Button
-            android:id="@+id/assessmentsBtn"
+            android:id="@+id/termMenuAssessmentsTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/academic_organizer_view_assessments_btn"
+            android:text="@string/view_assessments"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coursesBtn"
+            app:layout_constraintTop_toBottomOf="@+id/aoCoursesBtn"
             tools:ignore="TextContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
