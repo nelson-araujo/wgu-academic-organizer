@@ -16,7 +16,7 @@ import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 public class TermAddEdit extends AppCompatActivity {
-    private static final String TAG = "AcademicOrganizer"; // For terminal logging
+    private static final String TAG = "TermAddEdit"; // For terminal logging
 
     public enum EditMode { EDIT, ADD }
     private EditMode mMode;

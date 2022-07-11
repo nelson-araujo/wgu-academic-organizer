@@ -44,7 +44,7 @@
         <entry key="app/src/main/res/layout/fragment_item.xml" value="0.2804617357845233" />
         <entry key="app/src/main/res/layout/fragment_item_list.xml" value="0.26849080803762293" />
         <entry key="app/src/main/res/layout/fragment_term_list_items.xml" value="0.2804617357845233" />
-        <entry key="app/src/main/res/layout/term.xml" value="0.4142796066695169" />
+        <entry key="app/src/main/res/layout/term.xml" value="0.25" />
         <entry key="app/src/main/res/layout/term_add_edit.xml" value="0.26036767849508335" />
         <entry key="app/src/main/res/layout/term_addedit.xml" value="0.26036767849508335" />
         <entry key="app/src/main/res/layout/term_list_courses.xml" value="0.33" />
@@ -53,6 +53,7 @@
         <entry key="app/src/main/res/layout/terms_list_terms.xml" value="0.67" />
         <entry key="app/src/main/res/layout/terms_manual.xml" value="0.27276613937580163" />
         <entry key="app/src/main/res/layout/terms_portrait.xml" value="0.4302536231884058" />
+        <entry key="app/src/main/res/layout/terms_term_rv.xml" value="0.4142796066695169" />
         <entry key="app/src/main/res/menu/menu_layout.xml" value="0.5" />
         <entry key="app/src/main/res/menu/terms_main_menu.xml" value="0.4142796066695169" />
         <entry key="app/src/main/res/menu/terms_menu.xml" value="0.2804617357845233" />

@@ -118,7 +118,11 @@ public class AppProvider extends ContentProvider {
         }
 
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-        return queryBuilder.query(db, projection, selection, selectionArgs, null,null, sortOrder);
+        Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null,null, sortOrder);
+
+        cursor.setNotificationUri(getContext().getContentResolver(),uri);
+
+        return cursor;
     }
 
     /**
@@ -219,6 +223,11 @@ public class AppProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown uri: " + uri);
         }
 
+        // Check if a record was inserted, if so notify of change.
+        if(recordId >= 0){
+            getContext().getContentResolver().notifyChange(uri,null);
+        }
+
         return returnUri;
     }
 
@@ -306,6 +315,11 @@ public class AppProvider extends ContentProvider {
 
             default:
                 throw new IllegalArgumentException("Unknown uri: " + uri);
+        }
+
+        // Check if a record was deleted, if so notify of change.
+        if(totalRecordsDeleted > 0){
+            getContext().getContentResolver().notifyChange(uri,null);
         }
 
         return totalRecordsDeleted;
@@ -397,6 +411,11 @@ public class AppProvider extends ContentProvider {
 
             default:
                 throw new IllegalArgumentException("Unknown uri: " + uri);
+        }
+
+        // Check if a record was updated, if so notify of change.
+        if(totalRecordsUpdated > 0){
+            getContext().getContentResolver().notifyChange(uri,null);
         }
 
         return totalRecordsUpdated;

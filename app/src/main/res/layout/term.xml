@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/ic_term" />
 
     <TextView
-        android:id="@+id/termTitleTv"
+        android:id="@+id/termTermTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/term"
@@ -46,7 +46,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/termStartTv"
+                android:id="@+id/termStartTitleTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/start"
@@ -55,18 +55,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/termStartEt"
+            <TextView
+                android:id="@+id/termStartTv"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:text="start"
+                android:text="@string/start"
                 android:textAlignment="center"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/termStartTv"
-                android:autofillHints="" />
+                app:layout_constraintTop_toBottomOf="@+id/termStartTitleTv" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,7 +73,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/termEndTv"
+                android:id="@+id/termEndTitleTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/end"
@@ -85,33 +82,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/termEndEt"
+            <TextView
+                android:id="@+id/termEndTv"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:text="end"
+                android:text="@string/end"
                 android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/termEndTv"
-                android:autofillHints="" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/termEndTitleTv" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/termMenuFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_menu_hamburger" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/termCoursesRv"
@@ -135,7 +117,7 @@
         android:clickable="true"
         android:contentDescription="@string/edit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/termMenuFab"
+        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -178,7 +160,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/status"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/termAddCourseIv"

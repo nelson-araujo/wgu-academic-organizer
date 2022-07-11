@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
@@ -28,7 +29,7 @@ class TermsRvAdapter extends RecyclerView.Adapter<TermsRvAdapter.TermViewHolder>
     @Override
     public TermViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: new view requested"); // todo: remove
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.terms_list_terms,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.terms_term_rv,parent,false);
         return new TermViewHolder(view);
     }
 
@@ -43,9 +44,15 @@ class TermsRvAdapter extends RecyclerView.Adapter<TermsRvAdapter.TermViewHolder>
                 throw new IllegalStateException("Unable to move cursor to position " + position);
             }
 
-            holder.title.setText(mCursor.getString(mCursor.getColumnIndex(TermContract.Columns.TERM_TITLE)));
-            holder.start.setText(mCursor.getString(mCursor.getColumnIndex(TermContract.Columns.TERM_START)));
-            holder.end.setText(mCursor.getString(mCursor.getColumnIndex(TermContract.Columns.TERM_END)));
+            Term term = new Term(mCursor.getLong(mCursor.getColumnIndexOrThrow(TermContract.Columns._ID)),
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_TITLE)),
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_START)),
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_END)));
+
+            // Populate RecycleView
+            holder.title.setText(mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_TITLE)));
+            holder.start.setText(mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_START)));
+            holder.end.setText(mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_END)));
         }
     }
 
@@ -76,7 +83,7 @@ class TermsRvAdapter extends RecyclerView.Adapter<TermsRvAdapter.TermViewHolder>
             notifyDataSetChanged();
         } else {
             // notify the observers about the lack of a data set
-            notifyItemRangeChanged(0, getItemCount());
+            notifyItemRangeRemoved(0, getItemCount());
         }
         return oldCursor;
     }

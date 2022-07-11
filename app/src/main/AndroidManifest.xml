@@ -20,6 +20,9 @@
             android:name=".Controllers.Courses"
             android:exported="false" />
         <activity
+            android:name=".Controllers.TermCtrl"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.TermAddEdit"
             android:exported="false" />
         <activity
