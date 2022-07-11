@@ -1,11 +1,17 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.Term;
 
+import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 public class TermCtrl extends AppCompatActivity {
@@ -36,5 +42,35 @@ public class TermCtrl extends AppCompatActivity {
         mTermTv.setText(term.getTitle());
         mStartTv.setText(term.getStart());
         mEndTv.setText(term.getEnd());
+
+        // Setup edit fab
+        FloatingActionButton editFab = findViewById(R.id.termEditFab);
+        editFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onEditFabClick(term); // call addTerm and pass term.
+            }
+        });
+
+        // Setup delete fab
+        FloatingActionButton deleteFab = findViewById(R.id.termDeleteFab);
+        deleteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDeleteFabClick(term); // call addTerm and pass null as we want to create a new term.
+            }
+        });
+    }
+
+    private void onEditFabClick(Term term){
+        // Display term
+        Intent termIntent = new Intent(this, TermAddEdit.class);
+        termIntent.putExtra(Term.class.getSimpleName(), term);
+        startActivity(termIntent);
+    }
+
+    private void onDeleteFabClick(Term term){
+        getContentResolver().delete(TermContract.buildTermUri(term.getId()), null, null);
+        finish();
     }
 }

@@ -44,11 +44,11 @@ public class AppProvider extends ContentProvider {
 //        // Instructor
 //        matcher.addURI(CONTENT_AUTHORITY, DbInstructorContract.TABLE_INSTRUCTOR, INSTRUCTOR);
 //        matcher.addURI(CONTENT_AUTHORITY,DbInstructorContract.TABLE_INSTRUCTOR + "/#",INSTRUCTOR_ID);
-//
-//        // Course
+
+        // Course
 //        matcher.addURI(CONTENT_AUTHORITY, DbCourseContract.TABLE_COURSE, COURSE);
 //        matcher.addURI(CONTENT_AUTHORITY,DbCourseContract.TABLE_COURSE + "/#",COURSE_ID);
-//
+
 //        // Assessment
 //        matcher.addURI(CONTENT_AUTHORITY, DbAssessmentContract.TABLE_ASSESSMENT, ASSESSMENT);
 //        matcher.addURI(CONTENT_AUTHORITY,DbAssessmentContract.TABLE_ASSESSMENT + "/#",ASSESSMENT_ID);

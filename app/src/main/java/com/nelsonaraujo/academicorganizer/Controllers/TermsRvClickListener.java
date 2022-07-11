@@ -36,7 +36,6 @@ class TermsRvClickListener extends RecyclerView.SimpleOnItemTouchListener {
                     mListener.onTermClick(childView,recyclerView.getChildAdapterPosition(childView));
                 }
 
-
                 return true;
             }
 //

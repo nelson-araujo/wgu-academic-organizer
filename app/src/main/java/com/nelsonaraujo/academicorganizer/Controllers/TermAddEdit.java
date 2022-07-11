@@ -78,6 +78,7 @@ public class TermAddEdit extends AppCompatActivity {
                         if(values.size() != 0) {
                             Log.d(TAG, "onClick: Updating Terms"); // todo: remove
                             contentResolver.update(TermContract.buildTermUri(term.getId()),values,null,null);
+                            finish();
                             break;
                         }
                     case ADD:
@@ -88,6 +89,7 @@ public class TermAddEdit extends AppCompatActivity {
                             values.put(TermContract.Columns.TERM_END, mEndEt.getText().toString());
                             contentResolver.insert(TermContract.CONTENT_URI,values);
                         }
+                        finish();
                         break;
                 }
             }
