@@ -143,8 +143,8 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         Log.d(TAG, "onCreateLoader: started with id: " + id);
 
-        String[] projection = { TermContract.Columns._ID, TermContract.Columns.TERM_TITLE,
-                                TermContract.Columns.TERM_START, TermContract.Columns.TERM_END};
+        String[] projection = { TermContract.Columns._ID, TermContract.Columns.TITLE,
+                                TermContract.Columns.START, TermContract.Columns.END};
 
         // Sort order by length to sort term 1, term 2, and term 10 properly and no case sensitive.
 //        String sortOrder = "LENGTH(" + TermContract.Columns.TERM_TITLE + ")" + ", " + TermContract.Columns.TERM_TITLE + " COLLATE NOCASE";
@@ -183,13 +183,13 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
         ContentResolver contentResolver = getContentResolver();
 
         // Setup projection
-        String[] projection = {TermContract.Columns._ID, TermContract.Columns.TERM_TITLE, TermContract.Columns.TERM_START, TermContract.Columns.TERM_END};
+        String[] projection = {TermContract.Columns._ID, TermContract.Columns.TITLE, TermContract.Columns.START, TermContract.Columns.END};
 
         // Get all data // todo: remove
 //        Cursor cursor = contentResolver.query(TermContract.CONTENT_URI, projection, null, null, TermContract.Columns.TERM_TITLE);
 
         // Get a specific record
-        Cursor cursor = contentResolver.query(TermContract.buildTermUri(position+1), projection, null, null, TermContract.Columns.TERM_TITLE);
+        Cursor cursor = contentResolver.query(TermContract.buildTermUri(position+1), projection, null, null, TermContract.Columns.TITLE);
 
         // Get term
         Term selectedTerm = new Term(0,null,null,null);
@@ -197,9 +197,9 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
             while(cursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
                 // Populate term
                 selectedTerm = new Term(cursor.getLong(cursor.getColumnIndexOrThrow(TermContract.Columns._ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.TERM_TITLE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.TERM_START)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.TERM_END)));
+                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.START)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.END)));
 
 //                for(int i=0 ; i<cursor.getColumnCount() ; i++){ // todo: remove
 //                    Log.d(TAG, "onTermClick: " + cursor.getColumnName(i) + ": " + cursor.getString(i));

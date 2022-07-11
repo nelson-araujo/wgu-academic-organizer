@@ -7,15 +7,16 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class TermContract {
-    static final String TABLE_NAME = "term";
+public class InstructorContract {
+    static final String TABLE_NAME = "instructor";
 
-    // term fields
+    // Instructor fields
     public static class Columns{
         public static final String _ID = BaseColumns._ID;
-        public static final String TITLE = "title";
-        public static final String START = "start";
-        public static final String END = "end";
+        public static final String NAME = "name";
+        public static final String PHONE = "phone";
+        public static final String EMAIL = "email";
+
 
         private Columns(){
             // private constructor to prevent instantiation.
@@ -27,11 +28,11 @@ public class TermContract {
     static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + CONTENT_AUTHORITY + "." + TABLE_NAME;
     static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + CONTENT_AUTHORITY + "." + TABLE_NAME;
 
-    public static Uri buildTermUri(long termId){
-        return ContentUris.withAppendedId(CONTENT_URI, termId);
+    public static Uri buildInstructorUri(long instructorId){
+        return ContentUris.withAppendedId(CONTENT_URI, instructorId);
     }
 
-    static long getTermId(Uri uri){
+    static long getInstructorId(Uri uri){
         return ContentUris.parseId(uri);
     }
 }

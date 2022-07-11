@@ -66,13 +66,13 @@ public class TermAddEdit extends AppCompatActivity {
                 switch(mMode){
                     case EDIT:
                         if(!mTermEt.getText().toString().equals(term.getTitle())){ // Check if there was a change
-                            values.put(TermContract.Columns.TERM_TITLE, mTermEt.getText().toString());
+                            values.put(TermContract.Columns.TITLE, mTermEt.getText().toString());
                         }
                         if(!mStartEt.getText().toString().equals(term.getStart())){
-                            values.put(TermContract.Columns.TERM_START, mStartEt.getText().toString());
+                            values.put(TermContract.Columns.START, mStartEt.getText().toString());
                         }
                         if(!mEndEt.getText().toString().equals(term.getEnd())){
-                            values.put(TermContract.Columns.TERM_END, mEndEt.getText().toString());
+                            values.put(TermContract.Columns.END, mEndEt.getText().toString());
                         }
 
                         if(values.size() != 0) {
@@ -84,9 +84,9 @@ public class TermAddEdit extends AppCompatActivity {
                     case ADD:
                         if(mTermEt.length() > 0){
                             Log.d(TAG, "onClick: Adding new term"); // todo: remove
-                            values.put(TermContract.Columns.TERM_TITLE, mTermEt.getText().toString());
-                            values.put(TermContract.Columns.TERM_START, mStartEt.getText().toString());
-                            values.put(TermContract.Columns.TERM_END, mEndEt.getText().toString());
+                            values.put(TermContract.Columns.TITLE, mTermEt.getText().toString());
+                            values.put(TermContract.Columns.START, mStartEt.getText().toString());
+                            values.put(TermContract.Columns.END, mEndEt.getText().toString());
                             contentResolver.insert(TermContract.CONTENT_URI,values);
                         }
                         finish();

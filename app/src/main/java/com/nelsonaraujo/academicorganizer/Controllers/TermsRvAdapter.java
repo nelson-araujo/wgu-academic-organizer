@@ -45,14 +45,14 @@ class TermsRvAdapter extends RecyclerView.Adapter<TermsRvAdapter.TermViewHolder>
             }
 
             Term term = new Term(mCursor.getLong(mCursor.getColumnIndexOrThrow(TermContract.Columns._ID)),
-                    mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_TITLE)),
-                    mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_START)),
-                    mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_END)));
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TITLE)),
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.START)),
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.END)));
 
             // Populate RecycleView
-            holder.title.setText(mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_TITLE)));
-            holder.start.setText(mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_START)));
-            holder.end.setText(mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TERM_END)));
+            holder.title.setText(mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TITLE)));
+            holder.start.setText(mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.START)));
+            holder.end.setText(mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.END)));
         }
     }
 
