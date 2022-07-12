@@ -3,7 +3,7 @@ package com.nelsonaraujo.academicorganizer.Models;
 import java.io.Serializable;
 
 public class Term implements Serializable {
-    public static final long serialVersionUID = 20220605L; // Used date
+    public static final long serialVersionUID = 20220605L; // Used date for base serialization
 
     private long m_Id;
     private final String mTitle; // Final to prevent it from being changed without the db being updated.

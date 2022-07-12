@@ -28,15 +28,12 @@ class TermsRvAdapter extends RecyclerView.Adapter<TermsRvAdapter.TermViewHolder>
     @NonNull
     @Override
     public TermViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: new view requested"); // todo: remove
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.terms_term_rv,parent,false);
         return new TermViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: providing instructions"); // todo: remove
-
         if( (mCursor == null) || (mCursor.getCount()==0) ){ // If no records are returned
             holder.title.setText("No terms found");
         } else { // If records are returned

@@ -26,7 +26,6 @@ import java.security.InvalidParameterException;
 
 public class Terms extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, TermsRvClickListener.OnTermsRvClickListener {
     private static final String TAG = "Terms"; // For terminal logging
-//    FloatingActionButton menuBtn;
 
     public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
 
@@ -34,7 +33,6 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
 
     // Constructor
     public Terms(){
-        Log.d(TAG, "Terms: starts"); // todo: remove
 
     }
 
@@ -58,78 +56,13 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
         addFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: ADD TERM SELECTED"); // todo: remove
                 addTerm(null); // call addTerm and pass null as we want to create a new term.
             }
         });
-
-
-        // ----------------------------------------------------------------------------------------
-        // Get the content resolver
-        ContentResolver contentResolver = getContentResolver();
-
-
-        // ADD RECORD // todo: remove
-//        int termIdToUpdate = 15;
-//        String termName = "Term " + termIdToUpdate;
-//        Log.d(TAG, "onCreate: Add " + termName);
-//        ContentValues values = new ContentValues();
-//            values.put(TermContract.Columns.TERM_TITLE, termName);
-//            values.put(TermContract.Columns.TERM_START, "20" + termIdToUpdate + "-01-01");
-//            values.put(TermContract.Columns.TERM_END,"20" + (termIdToUpdate+1) + "-01-01");
-//        Uri uri = contentResolver.insert(TermContract.CONTENT_URI, values);
-
-        // UPDATE RECORD // todo: remove
-//        int termIdToUpdate = 1;
-//        // String newTermName = "Term 00";
-//        String newTermName = "Term " + termIdToUpdate;
-//        Log.d(TAG, "onCreate: Update " + newTermName);
-//        ContentValues values = new ContentValues();
-//            values.put(TermContract.Columns.TERM_TITLE, newTermName);
-//            values.put(TermContract.Columns.TERM_START, "20" + termIdToUpdate + "-01-01");
-//            values.put(TermContract.Columns.TERM_END,"20" + (termIdToUpdate+1) + "-01-01");
-//        int recordsUpdated = contentResolver.update(TermContract.buildTermUri(termIdToUpdate), values,null,null);
-//        Log.d(TAG, "onCreate: Total records updated: " + recordsUpdated);
-
-        // UPDATE MULTIPLE RECORDS // todo: remove
-//         ContentValues values = new ContentValues();
-//            values.put(TermContract.Columns.TERM_TITLE, "Term 99");
-//        String selection = TermContract.Columns.TERM_TITLE + "=" + "'Term 00'";
-//        int recordsUpdated = contentResolver.update(TermContract.CONTENT_URI, values,selection,null);
-//        Log.d(TAG, "onCreate: Total records updated: " + recordsUpdated);
-
-        // DELETE RECORD // todo, remove
-//        int recordsDeleted = contentResolver.delete(TermContract.buildTermUri(9),null,null);
-//        Log.d(TAG, "onCreate: Records deleted: " + recordsDeleted);
     }
 
-//    @Override
-//    public boolean onContextItemSelected(@NonNull MenuItem item) {
-//        switch(item.getItemId()){
-//            case R.id.menuTerms:
-//                Log.d(TAG, "onContextItemSelected: TERMS SELECTED"); // todo: remove
-//                return true;
-//
-//            case R.id.menuCourses:
-//                Log.d(TAG, "onContextItemSelected: COURSES SELECTED"); // todo: remove
-//                return true;
-//
-//            case R.id.menuAssessments:
-//                Log.d(TAG, "onContextItemSelected: ASSESSMENTS SELECTED"); // todo: remove
-//                return true;
-//
-//            case R.id.termsAddFab:
-//                Log.d(TAG, "onContextItemSelected: ADD TERM SELECTED"); // todo: remove
-//                return true;
-//
-//            default:
-//                return super.onContextItemSelected(item);
-//        }
-//    }
-
     public void addTerm(Term term){
-        Log.d(TAG, "addTerm: Start"); // todo: remove
-        Intent addTermIntent = new Intent(Terms.this, TermAddEdit.class);
+        Intent addTermIntent = new Intent(Terms.this, TermAddEditCtrl.class);
         if(term != null) { // editing a term
             addTermIntent.putExtra(Term.class.getSimpleName(), term);
             startActivity(addTermIntent);
@@ -141,14 +74,10 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        Log.d(TAG, "onCreateLoader: started with id: " + id);
-
         String[] projection = { TermContract.Columns._ID, TermContract.Columns.TITLE,
                                 TermContract.Columns.START, TermContract.Columns.END};
 
-        // Sort order by length to sort term 1, term 2, and term 10 properly and no case sensitive.
-//        String sortOrder = "LENGTH(" + TermContract.Columns.TERM_TITLE + ")" + ", " + TermContract.Columns.TERM_TITLE + " COLLATE NOCASE";
-        String sortOrder = null; // todo sort order
+        String sortOrder = null; // Set sort order
 
         switch (id) {
             case LOADER_ID:
@@ -162,31 +91,22 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        Log.d(TAG, "Entering onLoadFinished: "); // todo: remove
         mAdapter.swapCursor(data);
         int count = mAdapter.getItemCount();
-
-        Log.d(TAG, "onLoadFinished: Count is: " + count); // todo: remove
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        Log.d(TAG, "onLoaderReset: "); // todo: remove
         mAdapter.swapCursor(null);
     }
 
     @Override
     public void onTermClick(View view, int position) {
-        Log.d(TAG, "onTermClick: at position " + position);
-
         // Get the content resolver
         ContentResolver contentResolver = getContentResolver();
 
         // Setup projection
         String[] projection = {TermContract.Columns._ID, TermContract.Columns.TITLE, TermContract.Columns.START, TermContract.Columns.END};
-
-        // Get all data // todo: remove
-//        Cursor cursor = contentResolver.query(TermContract.CONTENT_URI, projection, null, null, TermContract.Columns.TERM_TITLE);
 
         // Get a specific record
         Cursor cursor = contentResolver.query(TermContract.buildTermUri(position+1), projection, null, null, TermContract.Columns.TITLE);
@@ -200,10 +120,6 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
                         cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.TITLE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.START)),
                         cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.END)));
-
-//                for(int i=0 ; i<cursor.getColumnCount() ; i++){ // todo: remove
-//                    Log.d(TAG, "onTermClick: " + cursor.getColumnName(i) + ": " + cursor.getString(i));
-//                }
             }
             cursor.close();
         }
@@ -212,10 +128,5 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
         Intent termIntent = new Intent(Terms.this, TermCtrl.class);
         termIntent.putExtra(Term.class.getSimpleName(), selectedTerm);
         startActivity(termIntent);
-
-//        Cursor cursor = contentResolver.query(TermContract.buildTermUri(0));
-
-//        String selectedTerm = contentResolver.getType(TermContract.buildTermUri(0));
-//        Log.d(TAG, "onTermClick: selectedTerm:" + selectedTerm);
     }
 }

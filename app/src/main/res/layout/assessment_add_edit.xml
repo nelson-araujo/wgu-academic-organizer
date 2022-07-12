@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/assessmentLogoIv"
+        android:id="@+id/assessmentAddEditLogoIv"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/ic_assessment" />
 
     <TextView
-        android:id="@+id/assessmentTitleTv"
+        android:id="@+id/assessmentAddEditTitleTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -25,7 +25,7 @@
         android:text="@string/assessment"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-        app:layout_constraintStart_toEndOf="@+id/assessmentLogoIv"
+        app:layout_constraintStart_toEndOf="@+id/assessmentAddEditLogoIv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assessmentLogoIv">
+        app:layout_constraintTop_toBottomOf="@+id/assessmentAddEditLogoIv">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="150dp"
@@ -47,7 +47,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/assessmentStartTitleTv"
+                android:id="@+id/assessmentAddEditStartTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/start"
@@ -56,15 +56,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/assessmentStartTv"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/assessmentAddEditStartEt"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
                 android:text="@string/start"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assessmentStartTitleTv" />
+                app:layout_constraintTop_toBottomOf="@+id/assessmentAddEditStartTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,7 +77,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/assessmentEndTitleTv"
+                android:id="@+id/assessmentAddEditEndTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/end"
@@ -83,42 +86,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/assessmentEndTv"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/assessmentAddEditEndEt"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
                 android:text="@string/end"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assessmentEndTitleTv" />
+                app:layout_constraintTop_toBottomOf="@+id/assessmentAddEditEndTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/assessmentEditFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/assessmentDeleteFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/delete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/assessmentEditFab"
-        app:srcCompat="@android:drawable/ic_menu_delete"
-        tools:ignore="ImageContrastCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout7"
@@ -140,7 +123,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/assessmentCourseTitleTv"
+                android:id="@+id/assessmentAddEditCourseTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/course"
@@ -149,14 +132,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/assessmentCourseTv"
+            <EditText
+                android:id="@+id/assessmentAddEditCourseEt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
                 android:text="@string/course"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assessmentCourseTitleTv" />
+                app:layout_constraintTop_toBottomOf="@+id/assessmentAddEditCourseTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -173,7 +161,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
         <TextView
-            android:id="@+id/assessmentContentTitleTv"
+            android:id="@+id/assessmentAddEditContentTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/content"
@@ -181,15 +169,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/assessmentContentTv"
+        <EditText
+            android:id="@+id/assessmentAddEditContentEt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
             android:text="@string/content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/assessmentContentTitleTv" />
+            app:layout_constraintTop_toBottomOf="@+id/assessmentAddEditContentTv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ssessmentAddEditSaveFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

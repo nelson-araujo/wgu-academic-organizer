@@ -65,10 +65,7 @@ public class AppProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        Log.d(TAG, "query: called with URI " + uri); // todo: remove
         final int match = sUriMatcher.match(uri);
-
-        Log.d(TAG, "query: match is " + match); // todo: remove
 
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
@@ -169,9 +166,7 @@ public class AppProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        Log.d(TAG, "insert: URI" + uri); // todo: remove
         final int match = sUriMatcher.match(uri);
-        Log.d(TAG, "insert: match=" + match); // todo: remove
 
         final SQLiteDatabase db;
 
@@ -327,9 +322,7 @@ public class AppProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
-        Log.d(TAG, "update: uri: " + uri); // todo: remove
         final int match = sUriMatcher.match(uri);
-        Log.d(TAG, "update: uri match: " + match); // todo: remove
 
         final SQLiteDatabase db;
         int totalRecordsUpdated;

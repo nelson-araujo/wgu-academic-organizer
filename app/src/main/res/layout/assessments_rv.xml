@@ -6,24 +6,25 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tlcNameTv"
+        android:id="@+id/assessmentsRvAssessmentTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Name"
+        android:text="@string/assessment"
+        android:textAlignment="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tlcStatusTv"
+        android:id="@+id/assessmentsRvDueDateTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Status"
-        android:textSize="14sp"
+        android:text="@string/due_date"
+        android:textAlignment="textEnd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -15,8 +15,8 @@ import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
-public class TermAddEdit extends AppCompatActivity {
-    private static final String TAG = "TermAddEdit"; // For terminal logging
+public class TermAddEditCtrl extends AppCompatActivity {
+    private static final String TAG = "TermAddEditCtrl"; // For terminal logging
 
     public enum EditMode { EDIT, ADD }
     private EditMode mMode;
@@ -42,7 +42,6 @@ public class TermAddEdit extends AppCompatActivity {
         if(arguments != null){
             term = (Term) arguments.getSerializable(Term.class.getSimpleName()); // Get the actual task to confirm it exists
             if(term != null){
-                Log.d(TAG, "onCreate: Term details found, editing..."); // todo: remove
                 mTermEt.setText(term.getTitle());
                 mStartEt.setText(term.getStart());
                 mEndEt.setText(term.getEnd());
@@ -52,7 +51,6 @@ public class TermAddEdit extends AppCompatActivity {
             }
         } else {
             term = null;
-            Log.d(TAG, "onCreate: No arguments when adding a new term"); // todo: remove
             mMode = EditMode.ADD;
         }
 
@@ -76,14 +74,12 @@ public class TermAddEdit extends AppCompatActivity {
                         }
 
                         if(values.size() != 0) {
-                            Log.d(TAG, "onClick: Updating Terms"); // todo: remove
                             contentResolver.update(TermContract.buildTermUri(term.getId()),values,null,null);
                             finish();
                             break;
                         }
                     case ADD:
                         if(mTermEt.length() > 0){
-                            Log.d(TAG, "onClick: Adding new term"); // todo: remove
                             values.put(TermContract.Columns.TITLE, mTermEt.getText().toString());
                             values.put(TermContract.Columns.START, mStartEt.getText().toString());
                             values.put(TermContract.Columns.END, mEndEt.getText().toString());

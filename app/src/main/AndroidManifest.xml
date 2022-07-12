@@ -23,7 +23,7 @@
             android:name=".Controllers.TermCtrl"
             android:exported="false" />
         <activity
-            android:name=".Controllers.TermAddEdit"
+            android:name=".Controllers.TermAddEditCtrl"
             android:exported="false" />
         <activity
             android:name=".Controllers.TermListCourses"

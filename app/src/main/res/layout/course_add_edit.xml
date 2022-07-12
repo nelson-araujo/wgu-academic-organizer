@@ -6,14 +6,14 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/courseTitleTv"
+        android:id="@+id/courseAddEditTitleTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/course"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-        app:layout_constraintStart_toEndOf="@+id/courseLogoIv"
+        app:layout_constraintStart_toEndOf="@+id/courseAddEditLogoIv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseLogoIv">
+        app:layout_constraintTop_toBottomOf="@+id/courseAddEditLogoIv">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="150dp"
@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/courseStartTitleTv"
+                android:id="@+id/courseAddEditStartTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/start"
@@ -44,14 +44,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/courseStartTv"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/courseAddEditStartEt"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
                 android:text="@string/start"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseStartTitleTv" />
+                app:layout_constraintTop_toBottomOf="@+id/courseAddEditStartTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,7 +65,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/courseEndTitleTv"
+                android:id="@+id/courseAddEditEndTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/end"
@@ -70,41 +74,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/courseEndTv"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/courseAddEditEndEt"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
                 android:text="@string/end"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseEndTitleTv" />
+                app:layout_constraintTop_toBottomOf="@+id/courseAddEditEndTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/courseEditFab"
+    <ImageView
+        android:id="@+id/courseAddEditAddAssessmentIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/courseDeleteFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/delete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/courseEditFab"
-        app:srcCompat="@android:drawable/ic_menu_delete"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/assessment_add"
+        app:layout_constraintStart_toEndOf="@+id/courseAddEditAssessmentsTv"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11"
+        app:srcCompat="@android:drawable/ic_input_add"
         tools:ignore="ImageContrastCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -121,11 +116,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/courseStatusTitleTv"
+                android:id="@+id/courseAddEditStatusTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/status"
@@ -134,14 +130,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/courseStatusTv"
+            <EditText
+                android:id="@+id/courseAddEditStatusEt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
                 android:text="@string/status"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseStatusTitleTv" />
+                app:layout_constraintTop_toBottomOf="@+id/courseAddEditStatusTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -152,7 +153,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/courseTermTitleTv"
+                android:id="@+id/courseAddEditTermTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/term"
@@ -161,14 +162,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/courseTermTv"
+            <EditText
+                android:id="@+id/courseAddEditTermEt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
                 android:text="@string/term"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseTermTitleTv" />
+                app:layout_constraintTop_toBottomOf="@+id/courseAddEditTermTv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -186,7 +192,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
         <TextView
-            android:id="@+id/courseInstructorTv"
+            android:id="@+id/courseAddEditInstructorTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/instructor_name"
@@ -198,12 +204,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout9"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/courseInstructorTv">
+            app:layout_constraintTop_toBottomOf="@+id/courseAddEditInstructorTv">
 
             <TextView
-                android:id="@+id/courseInstructorNameTitleTv"
+                android:id="@+id/courseAddEditInstructorNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/instructor_name"
@@ -211,27 +217,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/courseInstructorNameTv"
+            <EditText
+                android:id="@+id/courseAddEditInstructorNameEt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/instructor_name"
+                android:ems="10"
+                android:hint="name"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/courseInstructorNameTitleTv"
+                app:layout_constraintStart_toEndOf="@+id/courseAddEditInstructorNameTv"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout10"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
 
             <TextView
-                android:id="@+id/courseInstructorEmailTitleTv"
+                android:id="@+id/courseAddEditInstructorEmailTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/instructor_email"
@@ -239,26 +249,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/courseInstructorEmailTv"
+            <EditText
+                android:id="@+id/courseAddEditInstructorEmailEt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/instructor_email"
+                android:ems="10"
+                android:hint="email"
+                android:inputType="textEmailAddress"
+                android:minHeight="48dp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/courseInstructorEmailTitleTv"
+                app:layout_constraintStart_toEndOf="@+id/courseAddEditInstructorEmailTv"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
 
             <TextView
-                android:id="@+id/courseInstructorPhoneTitleTv"
+                android:id="@+id/courseAddEditInstructorPhoneTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/instructor_phone"
@@ -266,14 +280,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/courseInstructorPhoneTv"
+            <EditText
+                android:id="@+id/courseAddEditInstructorPhoneEt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/instructor_phone"
+                android:ems="10"
+                android:hint="phone"
+                android:inputType="phone"
+                android:minHeight="48dp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/courseInstructorPhoneTitleTv"
+                app:layout_constraintStart_toEndOf="@+id/courseAddEditInstructorPhoneTv"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -291,7 +309,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
 
         <TextView
-            android:id="@+id/courseNoteTitleTv"
+            android:id="@+id/courseAddEditNoteTv"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:text="@string/note"
@@ -299,29 +317,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/courseShareIv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:contentDescription="@string/share"
-            app:layout_constraintStart_toEndOf="@+id/courseNoteTitleTv"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_share" />
-
-        <TextView
-            android:id="@+id/courseNoteTv"
+        <EditText
+            android:id="@+id/courseAddEditNoteEt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:minHeight="48dp"
             android:text="@string/note"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/courseNoteTitleTv" />
+            app:layout_constraintTop_toBottomOf="@+id/courseAddEditNoteTv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/courseLogoIv"
+        android:id="@+id/courseAddEditLogoIv"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -332,7 +343,7 @@
         app:srcCompat="@drawable/ic_course" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/courseAssessmentsRv"
+        android:id="@+id/courseAddEditAssessmentsRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -341,10 +352,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseAssessmentsTv" />
+        app:layout_constraintTop_toBottomOf="@+id/courseAddEditAddAssessmentIv" />
 
     <TextView
-        android:id="@+id/courseAssessmentsTv"
+        android:id="@+id/courseAddEditAssessmentsTv"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
@@ -355,14 +366,27 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
 
     <TextView
-        android:id="@+id/courseAssessmentsDueDateTv"
+        android:id="@+id/courseAddEditAssessmentsDueDateTv"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="@string/due_date"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/courseAddEditAddAssessmentIv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/courseAddEditSaveFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

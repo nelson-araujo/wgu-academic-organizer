@@ -2,7 +2,6 @@ package com.nelsonaraujo.academicorganizer.Controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -64,7 +63,7 @@ public class TermCtrl extends AppCompatActivity {
 
     private void onEditFabClick(Term term){
         // Display term
-        Intent termIntent = new Intent(this, TermAddEdit.class);
+        Intent termIntent = new Intent(this, TermAddEditCtrl.class);
         termIntent.putExtra(Term.class.getSimpleName(), term);
         startActivity(termIntent);
     }
