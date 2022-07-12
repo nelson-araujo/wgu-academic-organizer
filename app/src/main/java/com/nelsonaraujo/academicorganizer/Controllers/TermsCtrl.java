@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 //import android.view.MenuItem;
 import android.view.View;
 
@@ -24,7 +23,7 @@ import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
 
-public class Terms extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, TermsRvClickListener.OnTermsRvClickListener {
+public class TermsCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, TermsRvClickListener.OnTermsRvClickListener {
     private static final String TAG = "Terms"; // For terminal logging
 
     public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
@@ -32,7 +31,7 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
     private TermsRvAdapter mAdapter; // adapter reference
 
     // Constructor
-    public Terms(){
+    public TermsCtrl(){
 
     }
 
@@ -62,7 +61,7 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
     }
 
     public void addTerm(Term term){
-        Intent addTermIntent = new Intent(Terms.this, TermAddEditCtrl.class);
+        Intent addTermIntent = new Intent(TermsCtrl.this, TermAddEditCtrl.class);
         if(term != null) { // editing a term
             addTermIntent.putExtra(Term.class.getSimpleName(), term);
             startActivity(addTermIntent);
@@ -125,7 +124,7 @@ public class Terms extends AppCompatActivity implements LoaderManager.LoaderCall
         }
 
         // Display term
-        Intent termIntent = new Intent(Terms.this, TermCtrl.class);
+        Intent termIntent = new Intent(TermsCtrl.this, TermCtrl.class);
         termIntent.putExtra(Term.class.getSimpleName(), selectedTerm);
         startActivity(termIntent);
     }

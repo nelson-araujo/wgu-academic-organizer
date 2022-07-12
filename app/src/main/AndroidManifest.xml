@@ -29,7 +29,7 @@
             android:name=".Controllers.TermListCourses"
             android:exported="false" />
         <activity
-            android:name=".Controllers.Terms"
+            android:name=".Controllers.TermsCtrl"
             android:exported="false"
             android:label="@string/title_activity_terms"
             android:theme="@style/Theme.AcademicOrganizer.NoActionBar" />

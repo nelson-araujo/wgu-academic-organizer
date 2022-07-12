@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.nelsonaraujo.academicorganizer.Controllers.Assessments;
 import com.nelsonaraujo.academicorganizer.Controllers.Courses;
-import com.nelsonaraujo.academicorganizer.Controllers.Terms;
+import com.nelsonaraujo.academicorganizer.Controllers.TermsCtrl;
 
 public class AcademicOrganizer extends AppCompatActivity {
     private static final String TAG = "AcademicOrganizer"; // For terminal logging
@@ -53,7 +53,7 @@ public class AcademicOrganizer extends AppCompatActivity {
         termsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent termsIntent = new Intent(AcademicOrganizer.this, Terms.class);
+                Intent termsIntent = new Intent(AcademicOrganizer.this, TermsCtrl.class);
                 startActivity(termsIntent);
             }
         });
