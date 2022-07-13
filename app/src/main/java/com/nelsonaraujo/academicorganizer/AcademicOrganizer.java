@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.nelsonaraujo.academicorganizer.Controllers.Assessments;
-import com.nelsonaraujo.academicorganizer.Controllers.Courses;
+import com.nelsonaraujo.academicorganizer.Controllers.CoursesCtrl;
 import com.nelsonaraujo.academicorganizer.Controllers.TermsCtrl;
 
 public class AcademicOrganizer extends AppCompatActivity {
@@ -63,7 +63,7 @@ public class AcademicOrganizer extends AppCompatActivity {
         coursesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent coursesIntent = new Intent(AcademicOrganizer.this, Courses.class);
+                Intent coursesIntent = new Intent(AcademicOrganizer.this, CoursesCtrl.class);
                 startActivity(coursesIntent);
             }
         });

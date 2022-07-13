@@ -41,8 +41,8 @@
         <entry key="app/src/main/res/layout/assessment_add_edit.xml" value="0.32834544677212485" />
         <entry key="app/src/main/res/layout/assessments.xml" value="0.4142796066695169" />
         <entry key="app/src/main/res/layout/assessments_rv.xml" value="0.41342454040188115" />
-        <entry key="app/src/main/res/layout/course.xml" value="0.4142796066695169" />
-        <entry key="app/src/main/res/layout/course_add_edit.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/course.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/course_add_edit.xml" value="0.32834544677212485" />
         <entry key="app/src/main/res/layout/course_assessment_rv.xml" value="0.41342454040188115" />
         <entry key="app/src/main/res/layout/courses.xml" value="0.41160471441523117" />
         <entry key="app/src/main/res/layout/courses_rv.xml" value="0.4142796066695169" />

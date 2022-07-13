@@ -51,10 +51,10 @@ public class AppDatabase extends SQLiteOpenHelper {
 
         // Create instructor table query
         sqlTermQuery = "CREATE TABLE " + TermContract.TABLE_NAME + "("
-                + TermContract.Columns._ID + " INTEGER PRIMARY KEY NOT NULL, "
-                + TermContract.Columns.TITLE + " TEXT NOT NULL, "
-                + TermContract.Columns.START + " INTEGER, "
-                + TermContract.Columns.END + " INTEGER"
+                + TermContract.Columns._ID + " INTEGER PRIMARY KEY NOT NULL,"
+                + TermContract.Columns.TITLE + " TEXT NOT NULL,"
+                + TermContract.Columns.START + " INTEGER,"
+                + "'" + TermContract.Columns.END+ "'" + " INTEGER"
                 +");";
 
         // Create instructor table query
@@ -70,7 +70,7 @@ public class AppDatabase extends SQLiteOpenHelper {
                 + CourseContract.Columns._ID + " INTEGER PRIMARY KEY NOT NULL, "
                 + CourseContract.Columns.TITLE + " TEXT NOT NULL, "
                 + CourseContract.Columns.START + " INTEGER, "
-                + CourseContract.Columns.END + " INTEGER, "
+                + "'" + CourseContract.Columns.END + "'" + " INTEGER, "
                 + CourseContract.Columns.STATUS + " TEXT, "
                 + CourseContract.Columns.NOTE + " TEXT, "
                 + CourseContract.Columns.TERM_ID + " INTEGER NOT NULL, "
@@ -82,7 +82,7 @@ public class AppDatabase extends SQLiteOpenHelper {
                 + AssessmentContract.Columns._ID + " INTEGER PRIMARY KEY NOT NULL, "
                 + AssessmentContract.Columns.TITLE + " TEXT NOT NULL, "
                 + AssessmentContract.Columns.START + " INTEGER, "
-                + AssessmentContract.Columns.END + " INTEGER, "
+                + "'" + AssessmentContract.Columns.END + "'" + " INTEGER, "
                 + AssessmentContract.Columns.CONTENT + " TEXT, "
                 + AssessmentContract.Columns.COURSE_ID + " INTEGER NOT NULL"
                 +");";

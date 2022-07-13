@@ -43,7 +43,7 @@ public class AppProvider extends ContentProvider {
 
         // Instructor
         matcher.addURI(CONTENT_AUTHORITY, InstructorContract.TABLE_NAME, INSTRUCTOR); // No id, return table
-        matcher.addURI(CONTENT_AUTHORITY, CourseContract.TABLE_NAME + "/#",INSTRUCTOR_ID);
+        matcher.addURI(CONTENT_AUTHORITY, InstructorContract.TABLE_NAME + "/#",INSTRUCTOR_ID);
 
         // Courses
         matcher.addURI(CONTENT_AUTHORITY, CourseContract.TABLE_NAME, COURSE); // No id, return table
@@ -269,7 +269,7 @@ public class AppProvider extends ContentProvider {
                     selectionCriteria += " AND (" + selection + ")";
                 }
 
-                totalRecordsDeleted = db.delete(InstructorContract.TABLE_NAME,selection,selectionArgs);
+                totalRecordsDeleted = db.delete(InstructorContract.TABLE_NAME,selectionCriteria,selectionArgs);
                 break;
 
             case COURSE:
@@ -287,7 +287,7 @@ public class AppProvider extends ContentProvider {
                     selectionCriteria += " AND (" + selection + ")";
                 }
 
-                totalRecordsDeleted = db.delete(CourseContract.TABLE_NAME,selection,selectionArgs);
+                totalRecordsDeleted = db.delete(CourseContract.TABLE_NAME,selectionCriteria,selectionArgs);
                 break;
 
             case ASSESSMENT:
@@ -305,7 +305,7 @@ public class AppProvider extends ContentProvider {
                     selectionCriteria += " AND (" + selection + ")";
                 }
 
-                totalRecordsDeleted = db.delete(AssessmentContract.TABLE_NAME,selection,selectionArgs);
+                totalRecordsDeleted = db.delete(AssessmentContract.TABLE_NAME,selectionCriteria,selectionArgs);
                 break;
 
             default:
