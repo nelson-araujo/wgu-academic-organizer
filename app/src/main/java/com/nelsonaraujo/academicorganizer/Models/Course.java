@@ -11,8 +11,8 @@ public class Course implements Serializable {
 
     private long m_Id;
     private final String mTitle; // Final to prevent it from being changed without the db being updated.
-    private final Date mStart;
-    private final Date mEnd;
+    private final String mStart;
+    private final String mEnd;
     private final String mStatus;
     private final String mNote;
     private final Integer mTermId;
@@ -29,7 +29,7 @@ public class Course implements Serializable {
      * @param termId Term id the course falls in.
      * @param instructorId Course instructor id.
      */
-    public Course(long id, String title, Date start, Date end, String status, String note, Integer termId, Integer instructorId) {
+    public Course(long id, String title, String start, String end, String status, String note, Integer termId, Integer instructorId) {
         this.m_Id = id;
         this.mTitle = title;
         this.mStart = start;
@@ -49,11 +49,11 @@ public class Course implements Serializable {
         return mTitle;
     }
 
-    public Date getStart() {
+    public String getStart() {
         return mStart;
     }
 
-    public Date getEnd() {
+    public String getEnd() {
         return mEnd;
     }
 

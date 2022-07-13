@@ -47,8 +47,8 @@ public class CoursesRvAdapter extends RecyclerView.Adapter<CoursesRvAdapter.Cour
 
             Course course = new Course(mCursor.getLong(mCursor.getColumnIndexOrThrow(CourseContract.Columns._ID)),
                     mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.TITLE)),
-                    new Date(mCursor.getLong(mCursor.getColumnIndexOrThrow(CourseContract.Columns.START))),
-                    new Date(mCursor.getLong(mCursor.getColumnIndexOrThrow(CourseContract.Columns.END))),
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.START)),
+                    mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.END)),
                     mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.STATUS)),
                     mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.NOTE)),
                     mCursor.getInt(mCursor.getColumnIndexOrThrow(CourseContract.Columns.TERM_ID)),
