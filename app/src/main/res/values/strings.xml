@@ -44,4 +44,6 @@
     <string name="due_date">Due Date</string>
     <string name="note">Note</string>
     <string name="save">Save</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>
