@@ -14,7 +14,13 @@
         android:theme="@style/Theme.AcademicOrganizer"
         tools:targetApi="31">
         <activity
-            android:name=".Controllers.Assessments"
+            android:name=".Controllers.AssessmentsCtrl"
+            android:exported="false" />
+        <activity
+            android:name=".Controllers.AssessmentCtrl"
+            android:exported="false" />
+        <activity
+            android:name=".Controllers.AssessmentAddEditCtrl"
             android:exported="false" />
         <activity
             android:name=".Controllers.CoursesCtrl"

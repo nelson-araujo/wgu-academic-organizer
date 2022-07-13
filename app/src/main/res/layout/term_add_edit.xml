@@ -155,7 +155,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/term"
-        android:inputType="textPersonName"
+        android:inputType="textAutoCorrect"
         android:minHeight="48sp"
         app:layout_constraintBottom_toBottomOf="@+id/taeLogoIv"
         app:layout_constraintStart_toEndOf="@+id/taeLogoIv"

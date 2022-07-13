@@ -66,9 +66,6 @@ public class CoursesRvAdapter extends RecyclerView.Adapter<CoursesRvAdapter.Cour
         if( (mCursor == null) || (mCursor.getCount()==0) ){
             return 1; // return one row to display the "No courses found" message.
         }
-
-        Log.d(TAG, "getItemCount: cursor row: " + mCursor.getCount()); // todo: remove
-        Log.d(TAG, "getItemCount: cursor columns: " + mCursor.getColumnCount()); // todo: remove
         return mCursor.getCount();
     }
 

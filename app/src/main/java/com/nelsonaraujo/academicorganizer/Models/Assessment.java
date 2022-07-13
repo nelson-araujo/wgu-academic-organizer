@@ -1,15 +1,15 @@
 package com.nelsonaraujo.academicorganizer.Models;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class Assessment implements Serializable {
     public static final long serialVersionUID = 20220712L; // Use integer date for base serialization
 
     private long m_Id;
     private final String mTitle; // Final to prevent it from being changed without the db being updated.
-    private final Date mStart;
-    private final Date mEnd;
+    private final String mStart;
+    private final String mEnd;
     private final String mContent;
     private final Integer mCourseId;
 
@@ -22,7 +22,7 @@ public class Assessment implements Serializable {
      * @param content Assessment content.
      * @param courseId Course id the assessment belongs to.
      */
-    public Assessment(long id, String title, Date start, Date end, String content, Integer courseId) {
+    public Assessment(long id, String title, String start, String end, String content, Integer courseId) {
         this.m_Id = id;
         this.mTitle = title;
         this.mStart = start;
@@ -40,11 +40,11 @@ public class Assessment implements Serializable {
         return mTitle;
     }
 
-    public Date getStart() {
+    public String getStart() {
         return mStart;
     }
 
-    public Date getEnd() {
+    public String getEnd() {
         return mEnd;
     }
 

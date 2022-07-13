@@ -46,11 +46,6 @@ public class CourseAddEditCtrl extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_add_edit);
 
-        mTermEt = findViewById(R.id.taeTitleEt);
-        mStartEt = findViewById(R.id.taeStartEt);
-        mEndEt = findViewById(R.id.taeEndEt);
-        mSaveFab = findViewById(R.id.taeSaveFab);
-
         mTitleEt = findViewById(R.id.courseAddEditTitleEt);
         mStartEt = findViewById(R.id.courseAddEditStartEt);
         mEndEt = findViewById(R.id.courseAddEditEndEt);

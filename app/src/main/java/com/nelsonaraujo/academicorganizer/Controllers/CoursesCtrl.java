@@ -112,7 +112,6 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
         ContentResolver contentResolver = getContentResolver();
 
         // Setup projection
-//        String[] projection = {CourseContract.Columns._ID, CourseContract.Columns.TITLE, CourseContract.Columns.START, CourseContract.Columns.END}; // todo: remove
         String[] projection = {CourseContract.Columns._ID,
                 CourseContract.Columns.TITLE,
                 CourseContract.Columns.START,
@@ -139,7 +138,6 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
                         mCursor.getInt(mCursor.getColumnIndexOrThrow(CourseContract.Columns.TERM_ID)),
                         mCursor.getInt(mCursor.getColumnIndexOrThrow(CourseContract.Columns.INSTRUCTOR_ID)));
             }
-//            mCursor.close();
         }
 
         // Display selection

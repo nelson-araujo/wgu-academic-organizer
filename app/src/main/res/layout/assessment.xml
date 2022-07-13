@@ -87,6 +87,7 @@
                 android:id="@+id/assessmentEndTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="date"
                 android:text="@string/end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
