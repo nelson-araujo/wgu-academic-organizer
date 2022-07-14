@@ -18,6 +18,7 @@ import android.view.View;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
+import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
@@ -30,6 +31,8 @@ public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.
 
     private AssessmentsRvAdapter mAdapter; // adapter reference
     private Cursor mCursor;
+    private String sortOrder = AssessmentContract.Columns.TITLE; // DB sort order
+    private String whereSelection = null; // DB Where selection
 
     // Constructor
     public AssessmentsCtrl(){
@@ -81,12 +84,10 @@ public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.
                 AssessmentContract.Columns.CONTENT,
                 AssessmentContract.Columns.COURSE_ID};
 
-        String sortOrder = null; // Set sort order
-
         switch (id) {
             case LOADER_ID:
                 ContentResolver contentResolver = getContentResolver();
-                return new CursorLoader(this, AssessmentContract.CONTENT_URI,projection,null,null, sortOrder);
+                return new CursorLoader(this, AssessmentContract.CONTENT_URI,projection,whereSelection,null, sortOrder);
 
             default:
                 throw new InvalidParameterException(TAG + ".onCreateLoader called with invalid loader id " + id);
@@ -118,7 +119,8 @@ public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.
                 AssessmentContract.Columns.COURSE_ID};
 
         // Get a specific record
-        mCursor = contentResolver.query(AssessmentContract.buildAssessmentUri(position+1), projection, null, null, AssessmentContract.Columns.TITLE);
+        long recordId = getRecordId(position);
+        mCursor = contentResolver.query(AssessmentContract.buildAssessmentUri(recordId), projection, whereSelection, null, sortOrder);
 
         // Get Assessment
         Assessment selection = new Assessment(0,null,null,null,null,null);
@@ -140,5 +142,30 @@ public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.
         Intent intent = new Intent(AssessmentsCtrl.this, AssessmentCtrl.class);
         intent.putExtra(Assessment.class.getSimpleName(), selection);
         startActivity(intent);
+    }
+
+    /**
+     * Calculate the actual id of the row selected.
+     * @param position RV position tapped.
+     * @return id number of entry.
+     */
+    private long getRecordId(int position){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        String[] projection = {AssessmentContract.Columns._ID};
+        Cursor cursor = contentResolver.query(AssessmentContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
+
+        if( (cursor == null) || (cursor.getCount()==0) ){ // If no records are returned
+            return -1; // Unable to determine position
+        } else {
+            if (!cursor.moveToPosition(position)) {
+                throw new IllegalStateException("Unable to move cursor to position " + position);
+            }
+
+            // move to position
+            cursor.moveToPosition(position);
+            return cursor.getLong(cursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID));
+        }
     }
 }

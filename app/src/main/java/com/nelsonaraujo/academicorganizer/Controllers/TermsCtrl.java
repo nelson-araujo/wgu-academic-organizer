@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
@@ -25,10 +26,11 @@ import java.security.InvalidParameterException;
 
 public class TermsCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, TermsRvClickListener.OnTermsRvClickListener {
     private static final String TAG = "Terms"; // For terminal logging
-
     public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
 
     private TermsRvAdapter mAdapter; // adapter reference
+    private String sortOrder = TermContract.Columns.TITLE; // DB sort order
+    private String whereSelection = null; // DB Where selection
 
     // Constructor
     public TermsCtrl(){
@@ -76,12 +78,10 @@ public class TermsCtrl extends AppCompatActivity implements LoaderManager.Loader
         String[] projection = { TermContract.Columns._ID, TermContract.Columns.TITLE,
                                 TermContract.Columns.START, TermContract.Columns.END};
 
-        String sortOrder = null; // Set sort order
-
         switch (id) {
             case LOADER_ID:
-                ContentResolver contentResolver = getContentResolver();
-                return new CursorLoader(this, TermContract.CONTENT_URI,projection,null,null, sortOrder);
+//                ContentResolver contentResolver = getContentResolver(); // todo: remove
+                return new CursorLoader(this, TermContract.CONTENT_URI,projection,whereSelection,null, sortOrder);
 
             default:
                 throw new InvalidParameterException(TAG + ".onCreateLoader called with invalid loader id " + id);
@@ -108,7 +108,9 @@ public class TermsCtrl extends AppCompatActivity implements LoaderManager.Loader
         String[] projection = {TermContract.Columns._ID, TermContract.Columns.TITLE, TermContract.Columns.START, TermContract.Columns.END};
 
         // Get a specific record
-        Cursor cursor = contentResolver.query(TermContract.buildTermUri(position+1), projection, null, null, TermContract.Columns.TITLE);
+        long recordId = getRecordId(position);
+        Cursor cursor = contentResolver.query(TermContract.buildTermUri(recordId), projection, null, null, TermContract.Columns.TITLE);
+//        Cursor cursor = contentResolver.query(TermContract.buildTermUri(position+1), projection, null, null, TermContract.Columns.TITLE); // todo: remove
 
         // Get term
         Term selectedTerm = new Term(0,null,null,null);
@@ -127,5 +129,30 @@ public class TermsCtrl extends AppCompatActivity implements LoaderManager.Loader
         Intent termIntent = new Intent(TermsCtrl.this, TermCtrl.class);
         termIntent.putExtra(Term.class.getSimpleName(), selectedTerm);
         startActivity(termIntent);
+    }
+
+    /**
+     * Calculate the actual id of the row selected.
+     * @param position RV position tapped.
+     * @return id number of entry.
+     */
+    private long getRecordId(int position){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        String[] projection = {TermContract.Columns._ID};
+        Cursor cursor = contentResolver.query(TermContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
+
+        if( (cursor == null) || (cursor.getCount()==0) ){ // If no records are returned
+            return -1; // Unable to determine position
+        } else {
+            if (!cursor.moveToPosition(position)) {
+                throw new IllegalStateException("Unable to move cursor to position " + position);
+            }
+
+            // move to position
+            cursor.moveToPosition(position);
+            return cursor.getLong(cursor.getColumnIndexOrThrow(TermContract.Columns._ID));
+        }
     }
 }

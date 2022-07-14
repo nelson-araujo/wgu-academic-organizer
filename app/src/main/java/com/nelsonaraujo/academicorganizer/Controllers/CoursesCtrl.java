@@ -18,6 +18,7 @@ import android.view.View;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
+import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
@@ -30,6 +31,8 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
 
     private CoursesRvAdapter mAdapter; // adapter reference
     private Cursor mCursor;
+    private String sortOrder = TermContract.Columns.TITLE; // DB sort order
+    private String whereSelection = null; // DB Where selection
 
     // Constructor
     public CoursesCtrl(){
@@ -83,12 +86,10 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
                 CourseContract.Columns.TERM_ID,
                 CourseContract.Columns.INSTRUCTOR_ID};
 
-        String sortOrder = null; // Set sort order
-
         switch (id) {
             case LOADER_ID:
-                ContentResolver contentResolver = getContentResolver();
-                return new CursorLoader(this, CourseContract.CONTENT_URI,projection,null,null, sortOrder);
+//                ContentResolver contentResolver = getContentResolver(); // todo: remove
+                return new CursorLoader(this, CourseContract.CONTENT_URI,projection,whereSelection,null, sortOrder);
 
             default:
                 throw new InvalidParameterException(TAG + ".onCreateLoader called with invalid loader id " + id);
@@ -122,7 +123,8 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
                 CourseContract.Columns.INSTRUCTOR_ID};
 
         // Get a specific record
-        mCursor = contentResolver.query(CourseContract.buildCourseUri(position+1), projection, null, null, CourseContract.Columns.TITLE);
+        long recordId = getRecordId(position);
+        mCursor = contentResolver.query(CourseContract.buildCourseUri(recordId), projection, whereSelection, null, sortOrder);
 
         // Get course
         Course selection = new Course(0,null,null,null,null,null,null,null);
@@ -144,6 +146,31 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
         Intent intent = new Intent(CoursesCtrl.this, CourseCtrl.class);
         intent.putExtra(Course.class.getSimpleName(), selection);
         startActivity(intent);
+    }
+
+    /**
+     * Calculate the actual id of the row selected.
+     * @param position RV position tapped.
+     * @return id number of entry.
+     */
+    private long getRecordId(int position){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        String[] projection = {CourseContract.Columns._ID};
+        Cursor cursor = contentResolver.query(CourseContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
+
+        if( (cursor == null) || (cursor.getCount()==0) ){ // If no records are returned
+            return -1; // Unable to determine position
+        } else {
+            if (!cursor.moveToPosition(position)) {
+                throw new IllegalStateException("Unable to move cursor to position " + position);
+            }
+
+            // move to position
+            cursor.moveToPosition(position);
+            return cursor.getLong(cursor.getColumnIndexOrThrow(CourseContract.Columns._ID));
+        }
     }
 
 }
