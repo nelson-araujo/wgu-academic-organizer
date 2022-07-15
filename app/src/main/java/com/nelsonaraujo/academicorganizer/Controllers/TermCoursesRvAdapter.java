@@ -15,7 +15,7 @@ import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 public class TermCoursesRvAdapter extends RecyclerView.Adapter<TermCoursesRvAdapter.CourseViewHolder>{
-    private static final String TAG = "TermRvAdapter";
+    private static final String TAG = "TermCoursesRvAdapter";
     private Cursor mCursor;
 
     /**

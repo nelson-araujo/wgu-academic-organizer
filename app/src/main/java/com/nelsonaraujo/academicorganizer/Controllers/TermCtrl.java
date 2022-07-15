@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -82,6 +83,15 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
             }
         });
 
+        // Setup add course button
+        ImageView addCourseIv = findViewById(R.id.termAddCourseIv);
+        addCourseIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddCourseClick();
+            }
+        });
+
         // ********** Recycle View setup start *****************************************************
         LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
 
@@ -95,11 +105,23 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         // ********** Recycle View setup end   *****************************************************
     }
 
+    /**
+     * Action to be taken when the edit button is pressed.
+     * @param term term to be edited.
+     */
     private void onEditFabClick(Term term){
         // Display term
         Intent termIntent = new Intent(this, TermAddEditCtrl.class);
         termIntent.putExtra(Term.class.getSimpleName(), term);
         startActivity(termIntent);
+    }
+
+    /**
+     * Action to be taken when the add assessment button is pressed.
+     */
+    private void onAddCourseClick(){
+        Intent intent = new Intent(this, CourseAddEditCtrl.class);
+        startActivity(intent);
     }
 
     private void onDeleteFabClick(Term term){
