@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,9 +24,9 @@ public class AppDialog extends DialogFragment {
     public static final String DIALOG_POSITIVE_RID = "positive_rid";
     public static final String DIALOG_NEGATIVE_RID = "negative_rid";
 
-    interface DialogEvents{
-        void onPositiveResponse(int dialogId, Bundle args);
-        void onNegativeResponse(int dialogId, Bundle args);
+    public interface DialogEvents{
+        void onDialogPositiveResponse(int dialogId, Bundle args);
+        void onDialogNegativeResponse(int dialogId, Bundle args);
         void onDialogCancel(int dialogId);
     }
 
@@ -54,7 +55,6 @@ public class AppDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         final Bundle arguments = getArguments();
@@ -93,21 +93,28 @@ public class AppDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int item) {
                         // Call positive result method
-                        mDialogEvents.onPositiveResponse(dialogId, arguments);
+                        if(mDialogEvents != null){
+                            mDialogEvents.onDialogPositiveResponse(dialogId, arguments);
+                        }
                     }
                 })
                 .setNegativeButton(negativeStringId, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int item) {
                         // Call negative result method
-                        mDialogEvents.onNegativeResponse(dialogId, arguments);
+                        if(mDialogEvents != null){
+                            mDialogEvents.onDialogNegativeResponse(dialogId, arguments);
+                        }
                     }
                 });
 
-        return super.onCreateDialog(savedInstanceState);
+        return builder.create();
     }
 
-    // Dialog was canceled, back button.
+    /**
+     * Action to be taken when dialog is cancelled, back button.
+     * @param dialog Dialog cancelled.
+     */
     @Override
     public void onCancel(@NonNull DialogInterface dialog) {
         if(mDialogEvents != null){
@@ -116,9 +123,4 @@ public class AppDialog extends DialogFragment {
         }
     }
 
-    // Dialog was closed with no answer.
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-    }
 }

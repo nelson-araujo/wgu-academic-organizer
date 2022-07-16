@@ -39,7 +39,7 @@ public class CoursesRvAdapter extends RecyclerView.Adapter<CoursesRvAdapter.Cour
     @Override
     public void onBindViewHolder(@NonNull CoursesRvAdapter.CourseViewHolder holder, int position) {
         if( (mCursor == null) || (mCursor.getCount()==0) ){ // If no records are returned
-            holder.title.setText("No courses found");
+            // Empty no items to display.
         } else { // If records are returned
             if(!mCursor.moveToPosition(position)){
                 throw new IllegalStateException("Unable to move cursor to position " + position);
@@ -64,7 +64,7 @@ public class CoursesRvAdapter extends RecyclerView.Adapter<CoursesRvAdapter.Cour
     @Override
     public int getItemCount() {
         if( (mCursor == null) || (mCursor.getCount()==0) ){
-            return 1; // return one row to display the "No courses found" message.
+            return 0;
         }
         return mCursor.getCount();
     }

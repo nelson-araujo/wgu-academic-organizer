@@ -41,7 +41,7 @@ public class AssessmentsRvAdapter extends RecyclerView.Adapter<AssessmentsRvAdap
     @Override
     public void onBindViewHolder(@NonNull AssessmentsRvAdapter.AssessmentViewHolder holder, int position) {
         if( (mCursor == null) || (mCursor.getCount()==0) ){ // If no records are returned
-            holder.title.setText("No assessments found");
+            // Empty no items to list
         } else { // If records are returned
             if(!mCursor.moveToPosition(position)){
                 throw new IllegalStateException("Unable to move cursor to position " + position);
@@ -63,7 +63,7 @@ public class AssessmentsRvAdapter extends RecyclerView.Adapter<AssessmentsRvAdap
     @Override
     public int getItemCount() {
         if( (mCursor == null) || (mCursor.getCount()==0) ){
-            return 1; // return one row to display the "No assessments found" message.
+            return 0;
         }
         return mCursor.getCount();
     }

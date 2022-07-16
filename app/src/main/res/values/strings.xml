@@ -46,4 +46,6 @@
     <string name="save">Save</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="deleteDialog_positive_caption">Delete</string>
+    <string name="deleteDialog_message">Deleting this term will also delete all courses and assessments associated with %2$s (id:%1$d).</string>
 </resources>

@@ -1,17 +1,19 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -19,29 +21,36 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.nelsonaraujo.academicorganizer.Models.AppDialog;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
+import com.nelsonaraujo.academicorganizer.Models.DatePickerFragment;
 import com.nelsonaraujo.academicorganizer.Models.Term;
 
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
+import java.util.GregorianCalendar;
 
-public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,TermCoursesRvClickListener.OnTermCoursesRvClickListener{
+public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+                                                            TermCoursesRvClickListener.OnTermCoursesRvClickListener,
+                                                            AppDialog.DialogEvents{
+
     private static final String TAG = "TermCtrl"; // For terminal logging
 
     public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
+    public static final int DELETE_DIALOG_ID = 1;
 
     private TextView mTermTv;
     private TextView mStartTv;
     private TextView mEndTv;
 
-    // ********** Recycle View setup start *****************************************************
     private Cursor mCursor;
     private TermCoursesRvAdapter mAdapter;
     private Term term = null;
-    // ********** Recycle View setup end   *****************************************************
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,12 +133,28 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         startActivity(intent);
     }
 
+    /**
+     * Action when the delete button is pressed.
+     * @param term Term selected.
+     */
     private void onDeleteFabClick(Term term){
-        getContentResolver().delete(TermContract.buildTermUri(term.getId()), null, null);
-        finish();
+        AppDialog dialog = new AppDialog();
+        Bundle args = new Bundle();
+        args.putInt(AppDialog.DIALOG_ID, DELETE_DIALOG_ID);
+        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deleteDialog_message, term.getId(), term.getTitle()));
+        args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deleteDialog_positive_caption);
+
+        args.putLong("TermId", term.getId()); // Add id to bundle
+
+        dialog.setArguments(args);
+        dialog.show(getSupportFragmentManager(),null);
+
+
+
+//        getContentResolver().delete(TermContract.buildTermUri(term.getId()), null, null);
+//        finish();
     }
 
-    // ********** Recycle View setup start *****************************************************
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
@@ -209,7 +234,6 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         mAdapter.swapCursor(null);
     }
 
-
     /**
      * Calculate the actual id of the row selected.
      * @param position RV position tapped.
@@ -237,5 +261,38 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
             return cursor.getLong(cursor.getColumnIndexOrThrow(CourseContract.Columns._ID));
         }
     }
-    // ********** Recycle View setup end   *****************************************************
+
+    /**
+     * Dialog box action when user accepts change.
+     * @param dialogId Id of the dialog being displayed.
+     * @param args Arguments for the dialog box.
+     */
+    @Override
+    public void onDialogPositiveResponse(int dialogId, Bundle args) {
+        long termId = args.getLong("TermId"); // get id from bundle
+
+        getContentResolver().delete(TermContract.buildTermUri(termId), null, null);
+
+        finish(); // close term screen.
+
+    }
+
+    /**
+     * Dialog box action when user does not accept change.
+     * @param dialogId Id of the dialog being displayed.
+     * @param args Arguments for the dialog box.
+     */
+    @Override
+    public void onDialogNegativeResponse(int dialogId, Bundle args) {
+        // Empty do nothing.
+    }
+
+    /**
+     * Dialog box action when user cancels the dialog box.
+     * @param dialogId Id of the dialog being displayed.
+     */
+    @Override
+    public void onDialogCancel(int dialogId) {
+        // Empty do nothing.
+    }
 }
