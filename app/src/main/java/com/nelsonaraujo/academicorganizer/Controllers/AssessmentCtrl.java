@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
+import com.nelsonaraujo.academicorganizer.Models.Term;
+import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.util.Date;
@@ -21,7 +23,10 @@ import java.util.Date;
 public class AssessmentCtrl extends AppCompatActivity {
     private static final String TAG = "AssessmentCtrl"; // For terminal logging
 
+    public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
+
     Cursor mCursor;
+    private Assessment mAssessment = null;
 
     private TextView mTitleTv;
     private TextView mStartTv;
@@ -45,8 +50,7 @@ public class AssessmentCtrl extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
 
         // Create object
-        final Assessment assessment;
-        assessment = (Assessment) arguments.getSerializable(Assessment.class.getSimpleName());
+        mAssessment = (Assessment) arguments.getSerializable(Assessment.class.getSimpleName());
 
 
         // Get Term name
@@ -62,23 +66,17 @@ public class AssessmentCtrl extends AppCompatActivity {
 //        }
 
         // Set layout text views
-        mTitleTv.setText(assessment.getTitle());
-        mContentTv.setText(assessment.getContent().toString());
-//        mTermTv.setText(termName);
-
-        // Set dates
-//        Date start = new Date(assessment.getStart()));
-        //        new Date(mCursor.getLong(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.START)))
-        Log.d(TAG, "onCreate: start date:" + assessment.getStart()); // todo: remove
-        mStartTv.setText(assessment.getStart().toString());
-        mEndTv.setText(assessment.getEnd().toString());
+        mTitleTv.setText(mAssessment.getTitle());
+        mContentTv.setText(mAssessment.getContent().toString());
+        mStartTv.setText(mAssessment.getStart().toString());
+        mEndTv.setText(mAssessment.getEnd().toString());
 
         // Setup edit fab
         FloatingActionButton editFab = findViewById(R.id.assessmentEditFab);
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onEditFabClick(assessment);
+                onEditFabClick(mAssessment);
             }
         });
 
@@ -87,7 +85,7 @@ public class AssessmentCtrl extends AppCompatActivity {
         deleteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDeleteFabClick(assessment);
+                onDeleteFabClick(mAssessment);
             }
         });
     }
@@ -103,5 +101,47 @@ public class AssessmentCtrl extends AppCompatActivity {
         Log.d(TAG, "onDeleteFabClick: " + AssessmentContract.buildAssessmentUri(assessment.getId()));
         getContentResolver().delete(AssessmentContract.buildAssessmentUri(assessment.getId()), null, null);
         finish();
+    }
+
+    /**
+     * On activity restart, when returning from edit screen, update text fields.
+     */
+    @Override
+    public void onRestart() {
+        super.onRestart();
+
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        // Setup projection
+        String[] assessmentProjection = {AssessmentContract.Columns._ID,
+                AssessmentContract.Columns.TITLE,
+                AssessmentContract.Columns.START,
+                AssessmentContract.Columns.END,
+                AssessmentContract.Columns.CONTENT,
+                AssessmentContract.Columns.COURSE_ID};
+
+        // Get record
+        mCursor = contentResolver.query(AssessmentContract.buildAssessmentUri(mAssessment.getId()), assessmentProjection, null, null, TermContract.Columns.TITLE);
+
+        // Set assessment
+        if(mCursor != null){
+            while(mCursor.moveToNext()) { // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+                // Populate assessment
+                mAssessment = new Assessment(mCursor.getLong(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID)),
+                        mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.TITLE)),
+                        mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.START)),
+                        mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.END)),
+                        mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.CONTENT)),
+                        mCursor.getInt(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.COURSE_ID)));
+            }
+        }
+
+        // Set layout text views
+        mTitleTv.setText(mAssessment.getTitle());
+        mContentTv.setText(mAssessment.getContent());
+        mStartTv.setText(mAssessment.getStart());
+        mEndTv.setText(mAssessment.getEnd());
+
     }
 }

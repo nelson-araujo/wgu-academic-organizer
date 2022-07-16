@@ -131,8 +131,6 @@ public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.
                         mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.TITLE)),
                         mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.START)),
                         mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.END)),
-//                        mCursor.getLong(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.START)), // todo: remove
-//                        mCursor.getLong(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.END)), // todo: remove
                         mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.CONTENT)),
                         mCursor.getInt(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.COURSE_ID)));
             }

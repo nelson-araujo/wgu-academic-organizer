@@ -1,19 +1,17 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
-import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -24,14 +22,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.AppDialog;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
-import com.nelsonaraujo.academicorganizer.Models.DatePickerFragment;
 import com.nelsonaraujo.academicorganizer.Models.Term;
 
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
-import java.util.GregorianCalendar;
 
 public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
                                                             TermCoursesRvClickListener.OnTermCoursesRvClickListener,
@@ -48,7 +44,7 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
 
     private Cursor mCursor;
     private TermCoursesRvAdapter mAdapter;
-    private Term term = null;
+    private Term mTerm = null;
 
 
 
@@ -67,19 +63,24 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
 
         // Create a Term and populate with the actual task to confirm it exists
 //        final Term term; // todo update
-        term = (Term) arguments.getSerializable(Term.class.getSimpleName());
+        mTerm = (Term) arguments.getSerializable(Term.class.getSimpleName());
 
         // Set TextViews
-        mTermTv.setText(term.getTitle());
-        mStartTv.setText(term.getStart());
-        mEndTv.setText(term.getEnd());
+        mTermTv.setText(mTerm.getTitle());
+        mStartTv.setText(mTerm.getStart());
+        mEndTv.setText(mTerm.getEnd());
 
         // Setup edit fab
         FloatingActionButton editFab = findViewById(R.id.termEditFab);
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onEditFabClick(term); // call addTerm and pass term.
+
+
+
+
+                onEditFabClick(mTerm); // call addTerm and pass term.
+
             }
         });
 
@@ -88,7 +89,7 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         deleteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDeleteFabClick(term); // call addTerm and pass null as we want to create a new term.
+                onDeleteFabClick(mTerm); // call addTerm and pass null as we want to create a new term.
             }
         });
 
@@ -168,7 +169,7 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
                 CourseContract.Columns.INSTRUCTOR_ID};
 
         String sortOrder = null; // Sort order
-        String whereSelection = CourseContract.Columns.TERM_ID + "=" + term.getId(); // WHERE clause
+        String whereSelection = CourseContract.Columns.TERM_ID + "=" + mTerm.getId(); // WHERE clause
 
         switch (id) {
             case LOADER_ID:
@@ -245,7 +246,7 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
 
         String[] projection = {CourseContract.Columns._ID};
         String sortOrder =  null;
-        String whereSelection = CourseContract.Columns.TERM_ID + "=" + term.getId();
+        String whereSelection = CourseContract.Columns.TERM_ID + "=" + mTerm.getId();
 
         Cursor cursor = contentResolver.query(CourseContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
 
@@ -294,5 +295,39 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
     @Override
     public void onDialogCancel(int dialogId) {
         // Empty do nothing.
+    }
+
+    @Override
+    public void onRestart() {
+        Log.d(TAG, "onRestart: RESTART --------"); // todo: remove
+        super.onRestart();
+
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        // Setup projection
+        String[] projection = {TermContract.Columns._ID, TermContract.Columns.TITLE, TermContract.Columns.START, TermContract.Columns.END};
+
+        // Get record
+        Cursor cursor = contentResolver.query(TermContract.buildTermUri(mTerm.getId()), projection, null, null, TermContract.Columns.TITLE);
+
+        // Set term
+//        mTerm = new Term(0,null,null,null);
+        if(cursor != null){
+            while(cursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+                // Populate term
+                mTerm = new Term(cursor.getLong(cursor.getColumnIndexOrThrow(TermContract.Columns._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.START)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.END)));
+            }
+            cursor.close();
+        }
+
+        // Update TextViews
+        mTermTv.setText(mTerm.getTitle());
+        mStartTv.setText(mTerm.getStart());
+        mEndTv.setText(mTerm.getEnd());
+
     }
 }

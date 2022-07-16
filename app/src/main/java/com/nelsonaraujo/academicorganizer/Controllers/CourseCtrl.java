@@ -48,7 +48,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
     private Cursor mCursor;
     // ********** Recycle View setup start *****************************************************
     private CourseAssessmentsRvAdapter mAdapter;
-    private Course course = null;
+    private Course mCourse = null;
     // ********** Recycle View setup end   *****************************************************
 
     @Override
@@ -71,14 +71,14 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         Bundle arguments = getIntent().getExtras();
 
         // Create object
-        course = (Course) arguments.getSerializable(Course.class.getSimpleName());
+        mCourse = (Course) arguments.getSerializable(Course.class.getSimpleName());
 
 
         // Get Term name
         ContentResolver contentResolver = getContentResolver(); // get content resolver.
         String[] projection;
         projection = new String[]{TermContract.Columns.TITLE}; // setup projection
-        mCursor = contentResolver.query(TermContract.buildTermUri(course.getTermId()), projection, null,null,null);
+        mCursor = contentResolver.query(TermContract.buildTermUri(mCourse.getTermId()), projection, null,null,null);
         String termName = "Unknown";
         if(mCursor != null){
             while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
@@ -89,7 +89,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         // Get instructor details
         contentResolver = getContentResolver(); // get content resolver.
         projection = new String[]{InstructorContract.Columns.NAME, InstructorContract.Columns.EMAIL, InstructorContract.Columns.PHONE}; // setup projection
-        mCursor = contentResolver.query(InstructorContract.buildInstructorUri(course.getInstructorId()), projection, null,null,null);
+        mCursor = contentResolver.query(InstructorContract.buildInstructorUri(mCourse.getInstructorId()), projection, null,null,null);
         String instructorName="Unknown", instructorEmail="Unknown", instructorPhone="Unknown";
         if(mCursor != null){
             while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
@@ -100,22 +100,22 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         }
 
         // Set layout text views
-        mTitleTv.setText(course.getTitle());
-        mStartTv.setText(course.getStart().toString());
-        mEndTv.setText(course.getEnd().toString());
+        mTitleTv.setText(mCourse.getTitle());
+        mStartTv.setText(mCourse.getStart().toString());
+        mEndTv.setText(mCourse.getEnd().toString());
         mTermTv.setText(termName);
-        mStatusTv.setText(course.getStatus());
+        mStatusTv.setText(mCourse.getStatus());
         mInstructorNameTv.setText(instructorName);
         mInstructorEmailTv.setText(instructorEmail);
         mInstructorPhoneTv.setText(instructorPhone);
-        mNoteTv.setText(course.getNote());
+        mNoteTv.setText(mCourse.getNote());
 
         // Setup edit fab
         FloatingActionButton editFab = findViewById(R.id.courseEditFab);
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onEditFabClick(course);
+                onEditFabClick(mCourse);
             }
         });
 
@@ -124,7 +124,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         deleteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDeleteFabClick(course);
+                onDeleteFabClick(mCourse);
             }
         });
 
@@ -187,7 +187,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
                 AssessmentContract.Columns.COURSE_ID};
 
         String sortOrder = AssessmentContract.Columns.TITLE;
-        String whereSelection = AssessmentContract.Columns.COURSE_ID + "=" + course.getId();
+        String whereSelection = AssessmentContract.Columns.COURSE_ID + "=" + mCourse.getId();
 
         switch (id) {
             case LOADER_ID:
@@ -261,7 +261,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
 
         String[] projection = {AssessmentContract.Columns._ID};
         String sortOrder = AssessmentContract.Columns.TITLE;
-        String whereSelection = AssessmentContract.Columns.COURSE_ID + "=" + course.getId();
+        String whereSelection = AssessmentContract.Columns.COURSE_ID + "=" + mCourse.getId();
 
         Cursor cursor = contentResolver.query(AssessmentContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
 
@@ -278,4 +278,78 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         }
     }
     // ********** Recycle View setup end   *****************************************************
+
+    /**
+     * On activity restart, when returning from edit screen, update text fields.
+     */
+    @Override
+    public void onRestart() {
+        super.onRestart();
+
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        // Setup projection
+        String[] courseProjection = {CourseContract.Columns._ID,
+                CourseContract.Columns.TITLE,
+                CourseContract.Columns.START,
+                CourseContract.Columns.END,
+                CourseContract.Columns.STATUS,
+                CourseContract.Columns.NOTE,
+                CourseContract.Columns.TERM_ID,
+                CourseContract.Columns.INSTRUCTOR_ID};
+
+        // Get record
+        Cursor mCursor = contentResolver.query(CourseContract.buildCourseUri(mCourse.getId()), courseProjection, null, null, TermContract.Columns.TITLE);
+
+        // Set course
+        if (mCursor != null) {
+            while (mCursor.moveToNext()) { // todo: Why does assigning to selected return a -1 when outside loop? -1 mean column not found.
+                // Populate course
+                mCourse = new Course(mCursor.getLong(mCursor.getColumnIndexOrThrow(CourseContract.Columns._ID)),
+                        mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.TITLE)),
+                        mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.START)),
+                        mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.END)),
+                        mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.STATUS)),
+                        mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.NOTE)),
+                        mCursor.getInt(mCursor.getColumnIndexOrThrow(CourseContract.Columns.TERM_ID)),
+                        mCursor.getInt(mCursor.getColumnIndexOrThrow(CourseContract.Columns.INSTRUCTOR_ID)));
+            }
+        }
+
+        // Get Term name
+        ContentResolver termContentResolver = getContentResolver(); // get content resolver.
+        String[] termProjection = new String[]{TermContract.Columns.TITLE}; // setup projection
+        mCursor = termContentResolver.query(TermContract.buildTermUri(mCourse.getTermId()), termProjection, null,null,null);
+        String termName = "Unknown";
+        if(mCursor != null){
+            while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+                termName = mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TITLE));
+            }
+        }
+
+        // Get instructor details
+        ContentResolver instructorContentResolver = getContentResolver(); // get content resolver.
+        String[] instructorProjection = new String[]{InstructorContract.Columns.NAME, InstructorContract.Columns.EMAIL, InstructorContract.Columns.PHONE}; // setup projection
+        mCursor = instructorContentResolver.query(InstructorContract.buildInstructorUri(mCourse.getInstructorId()), instructorProjection, null,null,null);
+        String instructorName="Unknown", instructorEmail="Unknown", instructorPhone="Unknown";
+        if(mCursor != null){
+            while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+                instructorName = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.NAME));
+                instructorEmail = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.EMAIL));
+                instructorPhone = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.PHONE));
+            }
+        }
+
+        // Set layout text views
+        mTitleTv.setText(mCourse.getTitle());
+        mStartTv.setText(mCourse.getStart());
+        mEndTv.setText(mCourse.getEnd());
+        mTermTv.setText(termName);
+        mStatusTv.setText(mCourse.getStatus());
+        mInstructorNameTv.setText(instructorName);
+        mInstructorEmailTv.setText(instructorEmail);
+        mInstructorPhoneTv.setText(instructorPhone);
+        mNoteTv.setText(mCourse.getNote());
+    }
 }

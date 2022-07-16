@@ -35,7 +35,7 @@ class TermsRvAdapter extends RecyclerView.Adapter<TermsRvAdapter.TermViewHolder>
     @Override
     public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
         if( (mCursor == null) || (mCursor.getCount()==0) ){ // If no records are returned
-            holder.title.setText("No terms found");
+            // Empty, no items found.
         } else { // If records are returned
             if(!mCursor.moveToPosition(position)){
                 throw new IllegalStateException("Unable to move cursor to position " + position);
@@ -56,7 +56,7 @@ class TermsRvAdapter extends RecyclerView.Adapter<TermsRvAdapter.TermViewHolder>
     @Override
     public int getItemCount() {
         if( (mCursor == null) || (mCursor.getCount()==0) ){
-            return 1; // return one row to display the "No terms found" message.
+            return 0;
         }
 
         return mCursor.getCount();
