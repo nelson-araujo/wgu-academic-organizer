@@ -13,10 +13,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
+import com.nelsonaraujo.academicorganizer.Models.Course;
+import com.nelsonaraujo.academicorganizer.Models.CourseContract;
+import com.nelsonaraujo.academicorganizer.Models.Instructor;
+import com.nelsonaraujo.academicorganizer.Models.InstructorContract;
 import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -70,6 +75,7 @@ public class AssessmentCtrl extends AppCompatActivity {
         mContentTv.setText(mAssessment.getContent().toString());
         mStartTv.setText(mAssessment.getStart().toString());
         mEndTv.setText(mAssessment.getEnd().toString());
+        mCourseTv.setText(getCourseName(mAssessment.getCourseId()));
 
         // Setup edit fab
         FloatingActionButton editFab = findViewById(R.id.assessmentEditFab);
@@ -143,5 +149,32 @@ public class AssessmentCtrl extends AppCompatActivity {
         mStartTv.setText(mAssessment.getStart());
         mEndTv.setText(mAssessment.getEnd());
 
+    }
+
+    /**
+     * Get the name of a course.
+     * @param courseId course id.
+     * @return Name of course.
+     */
+    private String getCourseName(long courseId){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        // Setup projection
+        String[] projection = {CourseContract.Columns.TITLE};
+
+        // Query database
+        Cursor cursor = contentResolver.query(CourseContract.buildCourseUri(courseId), projection,null,null);
+
+        // Get title
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                return cursor.getString(cursor.getColumnIndexOrThrow(CourseContract.Columns.TITLE));
+            }
+        }
+
+        cursor.close();
+
+        return null;
     }
 }

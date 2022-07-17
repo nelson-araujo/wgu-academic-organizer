@@ -28,6 +28,7 @@ import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.DatePickerFragment;
+import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.text.ParseException;
@@ -47,11 +48,6 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
     public enum EditMode { EDIT, ADD }
     private AssessmentAddEditCtrl.EditMode mMode;
     private Cursor mCursor;
-
-
-
-    private String courseSelection;
-
 
     private TextView mTitleEt;
     private TextView mStartEt;
@@ -78,22 +74,11 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
         if(arguments != null){
             assessment = (Assessment) arguments.getSerializable(Assessment.class.getSimpleName()); // Get the actual task to confirm it exists
             if(assessment != null){
-//                // Get Term name
-//                ContentResolver contentResolver = getContentResolver(); // get content resolver.
-//                String[] projection;
-//                projection = new String[]{TermContract.Columns.TITLE}; // setup projection
-//                mCursor = contentResolver.query(TermContract.buildTermUri(course.getTermId()), projection, null,null,null);
-//                String termName = "Unknown";
-//                if(mCursor != null){
-//                    while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
-//                        termName = mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TITLE));
-//                    }
-//                }
-
                 // Set layout text views
                 mTitleEt.setText(assessment.getTitle());
                 mStartEt.setText(assessment.getStart().toString());
                 mEndEt.setText(assessment.getEnd().toString());
+                mCourseEt.setText(getCourseName(assessment.getCourseId()));
                 mContentEt.setText(assessment.getContent().toString());
                 mMode = AssessmentAddEditCtrl.EditMode.EDIT;
 
@@ -155,8 +140,6 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
                         // Update start if changed.
                         if(!mStartEt.getText().toString().equals(assessment.getStart())){
                             values.put(AssessmentContract.Columns.START, mStartEt.getText().toString());
-//                            Date start = dateFormat.parse(mStartEt.getText().toString()); // todo: update to date format
-//                            values.put(CourseContract.Columns.START, start); // todo: update to date format
                         }
 
                         // Update end if changed.
@@ -164,7 +147,12 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
                             values.put(AssessmentContract.Columns.END, mEndEt.getText().toString());
                         }
 
-                        Log.d(TAG, "onClick: VALUES: " + values.toString()); // todo: update
+                        // Update course if changed.
+                        long courseId = getCourseId(mCourseEt.getText().toString());
+                        if(courseId != assessment.getCourseId()){
+                            values.put(AssessmentContract.Columns.COURSE_ID, courseId);
+                        }
+
                         if(values.size() != 0) {
                             contentResolver.update(AssessmentContract.buildAssessmentUri(assessment.getId()),values,null,null);
                         }
@@ -188,7 +176,7 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
                             }
 
                             // Add course
-                            values.put(AssessmentContract.Columns.COURSE_ID, 1); // todo: remove
+                            values.put(AssessmentContract.Columns.COURSE_ID, getCourseId(mCourseEt.getText().toString()));
 
                             // Insert entry to database
                             contentResolver.insert(AssessmentContract.CONTENT_URI,values);
@@ -220,6 +208,7 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
         dialogFragment.setArguments(args);
         dialogFragment.show(getSupportFragmentManager(),"datePicker");
     }
+
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
         Bundle args = new Bundle();
@@ -258,7 +247,6 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         // Empty
     }
-
 
     /**
      * Populate and display all the available course on the system as a selection dialog.
@@ -329,5 +317,50 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
         cursor.close();
 
         return courses;
+    }
+
+    /**
+     * Get the course id from a course title.
+     * @param courseTitle Course title.
+     * @return Course id.
+     */
+    private long getCourseId(String courseTitle){
+        ArrayList<Course> courses = new ArrayList<Course>();
+        courses = getCourses();
+
+        for(Course course : courses){
+            if(course.getTitle().equals(courseTitle)){
+                return course.getId();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Get the name of a course.
+     * @param courseId course id.
+     * @return Name of course.
+     */
+    private String getCourseName(long courseId){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        // Setup projection
+        String[] projection = {CourseContract.Columns.TITLE};
+
+        // Query database
+        Cursor cursor = contentResolver.query(CourseContract.buildCourseUri(courseId), projection,null,null);
+
+        // Get title
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                return cursor.getString(cursor.getColumnIndexOrThrow(CourseContract.Columns.TITLE));
+            }
+        }
+
+        cursor.close();
+
+        return null;
     }
 }
