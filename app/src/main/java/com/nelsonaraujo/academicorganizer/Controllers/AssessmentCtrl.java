@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.nelsonaraujo.academicorganizer.Models.AppDialog;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.Course;
@@ -25,10 +26,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class AssessmentCtrl extends AppCompatActivity {
+public class AssessmentCtrl extends AppCompatActivity implements AppDialog.DialogEvents{
     private static final String TAG = "AssessmentCtrl"; // For terminal logging
 
     public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
+    public static final int DELETE_DIALOG_ID = 1;
 
     Cursor mCursor;
     private Assessment mAssessment = null;
@@ -91,9 +93,42 @@ public class AssessmentCtrl extends AppCompatActivity {
     }
 
     private void onDeleteFabClick(Assessment assessment){
-        Log.d(TAG, "onDeleteFabClick: " + AssessmentContract.buildAssessmentUri(assessment.getId()));
-        getContentResolver().delete(AssessmentContract.buildAssessmentUri(assessment.getId()), null, null);
-        finish();
+        Log.d(TAG, "onDeleteFabClick: " + AssessmentContract.buildAssessmentUri(assessment.getId())); // todo: remove
+
+        AppDialog dialog = new AppDialog();
+        Bundle args = new Bundle();
+        args.putInt(AppDialog.DIALOG_ID, DELETE_DIALOG_ID);
+        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deleteAssessmentDialog_message, assessment.getId(), assessment.getTitle()));
+        args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deleteDialog_positive_caption);
+
+        args.putLong("AssessmentId", assessment.getId()); // Add id to bundle
+
+        dialog.setArguments(args);
+        dialog.show(getSupportFragmentManager(),null);
+
+
+//        getContentResolver().delete(AssessmentContract.buildAssessmentUri(assessment.getId()), null, null);
+//        finish();
+    }
+
+
+    @Override
+    public void onDialogPositiveResponse(int dialogId, Bundle args) {
+        long assessmentId = args.getLong("AssessmentId"); // get the id from the bundle.
+
+        getContentResolver().delete(AssessmentContract.buildAssessmentUri(assessmentId), null, null);
+
+        finish(); // close term screen.
+    }
+
+    @Override
+    public void onDialogNegativeResponse(int dialogId, Bundle args) {
+        // Empty do nothing.
+    }
+
+    @Override
+    public void onDialogCancel(int dialogId) {
+        // Empty do nothing.
     }
 
     /**

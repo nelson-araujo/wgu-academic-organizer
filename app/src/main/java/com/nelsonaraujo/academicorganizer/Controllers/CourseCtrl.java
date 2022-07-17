@@ -1,5 +1,6 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
+import android.app.appsearch.AppSearchSession;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.nelsonaraujo.academicorganizer.Models.AppDialog;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.Course;
@@ -29,11 +31,15 @@ import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 
-public class CourseCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,CourseAssessmentsRvClickListener.OnCourseAssessmentsRvClickListener {
+public class CourseCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+                                                                CourseAssessmentsRvClickListener.OnCourseAssessmentsRvClickListener,
+                                                                AppDialog.DialogEvents{
     private static final String TAG = "CourseCtrl"; // For terminal logging
 
     public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
+    public static final int DELETE_DIALOG_ID = 1;
 
     private TextView mTitleTv;
     private TextView mStartTv;
@@ -170,12 +176,25 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
     }
 
     private void onDeleteFabClick(Course course){
-        Log.d(TAG, "onDeleteFabClick: " + CourseContract.buildCourseUri(course.getId()));
-        getContentResolver().delete(CourseContract.buildCourseUri(course.getId()), null, null);
-        finish();
+        AppDialog dialog = new AppDialog();
+        Bundle args = new Bundle();
+        args.putInt(AppDialog.DIALOG_ID, DELETE_DIALOG_ID);
+        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deleteCourseDialog_message, course.getId(), course.getTitle()));
+        args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deleteDialog_positive_caption);
+
+        // Add needed id to delete record to bundle.
+        args.putLong("courseId", course.getId());
+        args.putLong("instructorId", course.getInstructorId());
+
+        dialog.setArguments(args);
+        dialog.show(getSupportFragmentManager(),null);
+
+
+
+//        getContentResolver().delete(CourseContract.buildCourseUri(course.getId()), null, null);
+//        finish();
     }
 
-    // ********** Recycle View setup start *****************************************************
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
@@ -249,35 +268,39 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mAdapter.swapCursor(null);
     }
 
+    @Override
+    public void onDialogPositiveResponse(int dialogId, Bundle args) {
+        // set ids
+        long courseId = args.getLong("courseId");
+        long instructorId = args.getLong("instructorId");
 
-    /**
-     * Calculate the actual id of the row selected.
-     * @param position RV position tapped.
-     * @return id number of entry.
-     */
-    private long getRecordId(int position){
-        // Get the content resolver
-        ContentResolver contentResolver = getContentResolver();
 
-        String[] projection = {AssessmentContract.Columns._ID};
-        String sortOrder = AssessmentContract.Columns.TITLE;
-        String whereSelection = AssessmentContract.Columns.COURSE_ID + "=" + mCourse.getId();
+        // Delete assessments
+        ArrayList<Assessment> assessments = new ArrayList<Assessment>();
+        assessments = getAssessments(mCourse.getId());
 
-        Cursor cursor = contentResolver.query(AssessmentContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
-
-        if( (cursor == null) || (cursor.getCount()==0) ){ // If no records are returned
-            return -1; // Unable to determine position
-        } else {
-            if (!cursor.moveToPosition(position)) {
-                throw new IllegalStateException("Unable to move cursor to position " + position);
-            }
-
-            // move to position
-            cursor.moveToPosition(position);
-            return cursor.getLong(cursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID));
+        for(Assessment assessment : assessments){
+            getContentResolver().delete(AssessmentContract.buildAssessmentUri(assessment.getId()), null, null);
         }
+
+        // Delete instructor
+        getContentResolver().delete(InstructorContract.buildInstructorUri(instructorId), null, null);
+
+        // Delete course
+        getContentResolver().delete(CourseContract.buildCourseUri(courseId), null, null);
+
+        finish();
     }
-    // ********** Recycle View setup end   *****************************************************
+
+    @Override
+    public void onDialogNegativeResponse(int dialogId, Bundle args) {
+        // Empty, do nothing.
+    }
+
+    @Override
+    public void onDialogCancel(int dialogId) {
+        // Empty, do nothing.
+    }
 
     /**
      * On activity restart, when returning from edit screen, update text fields.
@@ -351,5 +374,75 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mInstructorEmailTv.setText(instructorEmail);
         mInstructorPhoneTv.setText(instructorPhone);
         mNoteTv.setText(mCourse.getNote());
+    }
+
+    /**
+     * Calculate the actual id of the row selected.
+     * @param position RV position tapped.
+     * @return id number of entry.
+     */
+    private long getRecordId(int position){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        String[] projection = {AssessmentContract.Columns._ID};
+        String sortOrder = AssessmentContract.Columns.TITLE;
+        String whereSelection = AssessmentContract.Columns.COURSE_ID + "=" + mCourse.getId();
+
+        Cursor cursor = contentResolver.query(AssessmentContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
+
+        if( (cursor == null) || (cursor.getCount()==0) ){ // If no records are returned
+            return -1; // Unable to determine position
+        } else {
+            if (!cursor.moveToPosition(position)) {
+                throw new IllegalStateException("Unable to move cursor to position " + position);
+            }
+
+            // move to position
+            cursor.moveToPosition(position);
+            return cursor.getLong(cursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID));
+        }
+    }
+
+    /**
+     * Get assessments attached to a specific course.
+     * @param courseId course id.
+     * @return array of assessments.
+     */
+    private ArrayList<Assessment> getAssessments(long courseId){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        // Setup projection
+        String[] assessmentProjection = {AssessmentContract.Columns._ID,
+                AssessmentContract.Columns.TITLE,
+                AssessmentContract.Columns.START,
+                AssessmentContract.Columns.END,
+                AssessmentContract.Columns.COURSE_ID,
+                AssessmentContract.Columns.CONTENT};
+
+        String sortOrder = AssessmentContract.Columns.TITLE;
+        String whereSelection = AssessmentContract.Columns.COURSE_ID + "=" + courseId;
+
+        Cursor cursor = contentResolver.query(AssessmentContract.CONTENT_URI, assessmentProjection, whereSelection, null, sortOrder);
+
+        // Populate array list
+        ArrayList<Assessment> assessments = new ArrayList<Assessment>();
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                Assessment assessment = new Assessment(cursor.getLong(cursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(AssessmentContract.Columns.TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(AssessmentContract.Columns.START)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(AssessmentContract.Columns.END)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(AssessmentContract.Columns.CONTENT)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(AssessmentContract.Columns.COURSE_ID)));
+
+                assessments.add(assessment);
+            }
+        }
+
+        cursor.close();
+
+        return assessments;
     }
 }
