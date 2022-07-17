@@ -167,9 +167,10 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
                         Log.d(TAG, "onClick: VALUES: " + values.toString()); // todo: update
                         if(values.size() != 0) {
                             contentResolver.update(AssessmentContract.buildAssessmentUri(assessment.getId()),values,null,null);
-                            finish();
-                            break;
                         }
+
+                        finish();
+                        break;
                     case ADD:
                         if(mTitleEt.length() > 0){
                             values.put(AssessmentContract.Columns.TITLE, mTitleEt.getText().toString());

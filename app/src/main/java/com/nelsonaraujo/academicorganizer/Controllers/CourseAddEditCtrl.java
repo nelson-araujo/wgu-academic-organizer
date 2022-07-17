@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,9 +22,11 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.DatePickerFragment;
+import com.nelsonaraujo.academicorganizer.Models.Instructor;
 import com.nelsonaraujo.academicorganizer.Models.InstructorContract;
 import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
@@ -200,22 +203,31 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
                         }
 
                         // Update term_id if changed.
-                        if(!mTermEt.getText().toString().equals(course.getTermId())){
-//                            values.put(CourseContract.Columns.TERM_ID, mTermEt.getText().toString()); // todo: update to identify id
-                            values.put(CourseContract.Columns.TERM_ID, 1); // todo: remove
+                        long termId = getTermId(mTermEt.getText().toString());
+                        if(termId != course.getTermId()){
+                            values.put(CourseContract.Columns.TERM_ID, termId);
                         }
 
-                        // Update instructor_id if changed.
-//                        if(!mTermEt.getText().toString().equals(course.getTermId())){
-//                            values.put(CourseContract.Columns.INSTRUCTOR_ID, mTermEt.getText().toString()); // todo: update to identify id
-                            values.put(CourseContract.Columns.INSTRUCTOR_ID, 1); // todo: remove
-//                        }
+                        // Update instructor if changed.
+                        Instructor instructor = getInstructor(course.getId());
+                        if(!(mInstructorNameEt.getText().toString().equals(instructor.getName()) ||
+                                mInstructorEmailEt.getText().toString().equals(instructor.getEmail()) ||
+                                mInstructorPhoneEt.getText().toString().equals(instructor.getPhone()))){
+
+                            ContentValues instructorValues = new ContentValues();
+                            instructorValues.put(InstructorContract.Columns.NAME,mInstructorNameEt.getText().toString());
+                            instructorValues.put(InstructorContract.Columns.EMAIL,mInstructorEmailEt.getText().toString());
+                            instructorValues.put(InstructorContract.Columns.PHONE,mInstructorPhoneEt.getText().toString());
+
+                            contentResolver.update(InstructorContract.buildInstructorUri(course.getId()),instructorValues,null,null);
+                        }
 
                         if(values.size() != 0) {
                             contentResolver.update(CourseContract.buildCourseUri(course.getId()),values,null,null);
-                            finish();
-                            break;
                         }
+
+                        finish();
+                        break;
                     case ADD:
                         if(mTitleEt.length() > 0){
                             values.put(CourseContract.Columns.TITLE, mTitleEt.getText().toString());
@@ -225,21 +237,30 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
                             // Add dates
                             try {
                                 Date start = dateFormat.parse(mStartEt.getText().toString());
-                                Log.d(TAG, "onClick: Add start date: " + dateFormat.format(start)); // todo: remove
                                 values.put(CourseContract.Columns.START, dateFormat.format(start));
 
                                 Date end = dateFormat.parse(mEndEt.getText().toString());
-                                Log.d(TAG, "onClick: Add end date: " + dateFormat.format(end)); // todo: remove
                                 values.put(CourseContract.Columns.END, dateFormat.format(end));
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
 
                             // Add term
-                            values.put(CourseContract.Columns.TERM_ID, 1); // todo: remove
+                            values.put(CourseContract.Columns.TERM_ID, getTermId(mTermEt.getText().toString()));
 
                             // Add Instructor
-                            values.put(CourseContract.Columns.INSTRUCTOR_ID, 1); // todo: remove
+                            // create instructor
+                            ContentValues instructorValues = new ContentValues();
+                            instructorValues.put(InstructorContract.Columns.NAME,mInstructorNameEt.getText().toString());
+                            instructorValues.put(InstructorContract.Columns.EMAIL,mInstructorEmailEt.getText().toString());
+                            instructorValues.put(InstructorContract.Columns.PHONE,mInstructorPhoneEt.getText().toString());
+
+                            Uri instructorUri = contentResolver.insert(InstructorContract.CONTENT_URI,instructorValues);
+                            long instructorId = Integer.parseInt(instructorUri.getLastPathSegment());
+
+                            // Update
+                            values.put(CourseContract.Columns.INSTRUCTOR_ID, instructorId); // instructor id and course id is the same.
+
 
                             // Insert entry to database
                             contentResolver.insert(CourseContract.CONTENT_URI,values);
@@ -311,6 +332,9 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
         // Empty
     }
 
+    /**
+     * Populate and display the status selections dialog.
+     */
     private void showStatusDialog(){
         String[] status = {"In progress", "Completed", "Dropped", "Plan to take"};
 
@@ -356,7 +380,7 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
      * Get a list of all terms on the system.
      * @return List of terms.
      */
-    public ArrayList<Term> getTerms(){
+    private ArrayList<Term> getTerms(){
         // Get the content resolver
         ContentResolver contentResolver = getContentResolver();
 
@@ -385,5 +409,59 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
         cursor.close();
 
         return terms;
+    }
+
+    /**
+     * Get the term id from a term title.
+     * @param termTitle Term title.
+     * @return Term id.
+     */
+    private long getTermId(String termTitle){
+        ArrayList<Term> terms = new ArrayList<Term>();
+        terms = getTerms();
+        long termId;
+
+        for(Term term : terms){
+            if(term.getTitle().equals(termTitle)){
+                return termId = term.getId();
+            }
+        }
+
+        return 0;
+    }
+
+
+    private Instructor getInstructor(long courseId){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        // Setup projection
+        String[] projection = {InstructorContract.Columns._ID,
+                InstructorContract.Columns.NAME,
+                InstructorContract.Columns.EMAIL,
+                InstructorContract.Columns.PHONE};
+
+        // Query database
+        Log.d(TAG, "getInstructor: courseId: " + courseId); // todo: remove
+//        Cursor cursor = contentResolver.query(InstructorContract.CONTENT_URI,projection,null,null);
+        Cursor cursor = contentResolver.query(InstructorContract.buildInstructorUri(courseId), projection,null,null);
+
+        // Populate array list
+        ArrayList<Instructor> instructors = new ArrayList<Instructor>();
+        Instructor instructor = null;
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                instructor = new Instructor(cursor.getLong(cursor.getColumnIndexOrThrow(InstructorContract.Columns._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(InstructorContract.Columns.NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(InstructorContract.Columns.EMAIL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(InstructorContract.Columns.PHONE)));
+            }
+        }
+
+        cursor.close();
+
+        Log.d(TAG, "getInstructor: Instructor: " + instructor.toString()); // todo: remove
+
+        return instructor;
     }
 }

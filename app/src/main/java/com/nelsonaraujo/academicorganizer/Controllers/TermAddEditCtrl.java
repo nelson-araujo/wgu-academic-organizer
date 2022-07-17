@@ -123,9 +123,10 @@ public class TermAddEditCtrl extends AppCompatActivity implements LoaderManager.
 
                         if(values.size() != 0) {
                             contentResolver.update(TermContract.buildTermUri(term.getId()),values,null,null);
-                            finish();
-                            break;
                         }
+
+                        finish();
+                        break;
                     case ADD:
                         if(mTermEt.length() > 0){
                             values.put(TermContract.Columns.TITLE, mTermEt.getText().toString());
