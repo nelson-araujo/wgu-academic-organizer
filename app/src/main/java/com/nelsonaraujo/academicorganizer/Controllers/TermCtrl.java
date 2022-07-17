@@ -1,9 +1,11 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.BoringLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -31,6 +34,7 @@ import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
@@ -307,16 +311,37 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
      * @param term Term selected.
      */
     private void onDeleteFabClick(Term term){
-        AppDialog dialog = new AppDialog();
-        Bundle args = new Bundle();
-        args.putInt(AppDialog.DIALOG_ID, DELETE_DIALOG_ID);
-        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deleteTermDialog_message, term.getId(), term.getTitle()));
-        args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deleteDialog_positive_caption);
+        ArrayList<Course> courses = new ArrayList<Course>();
 
-        args.putLong("TermId", term.getId()); // Add id to bundle
+        courses = getCourses(term.getId());
+        Log.d(TAG, "onDeleteFabClick: courses Size: " + courses.size());
+        Boolean courseAttached = false;
+        if(courses.size() > 0){ courseAttached = true; };
 
-        dialog.setArguments(args);
-        dialog.show(getSupportFragmentManager(),null);
+        if(!courseAttached) {
+            AppDialog dialog = new AppDialog();
+            Bundle args = new Bundle();
+            args.putInt(AppDialog.DIALOG_ID, DELETE_DIALOG_ID);
+            args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deleteTermDialog_message, term.getId(), term.getTitle()));
+            args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deleteDialog_positive_caption);
+
+            args.putLong("TermId", term.getId()); // Add id to bundle
+
+            dialog.setArguments(args);
+            dialog.show(getSupportFragmentManager(), null);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("A Term cannot be deleted while a course is assigned to it.")
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Empty, do nothing.
+                        }
+                    });
+
+            // Create and display
+            builder.create();
+            builder.show();
+        }
 
     }
 

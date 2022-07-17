@@ -4,6 +4,7 @@ import android.app.appsearch.AppSearchSession;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -79,7 +80,6 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         // Create object
         mCourse = (Course) arguments.getSerializable(Course.class.getSimpleName());
 
-
         // Get Term name
         ContentResolver contentResolver = getContentResolver(); // get content resolver.
         String[] projection;
@@ -115,6 +115,15 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mInstructorEmailTv.setText(instructorEmail);
         mInstructorPhoneTv.setText(instructorPhone);
         mNoteTv.setText(mCourse.getNote());
+
+        // Setup share button
+        ImageView shareButton = findViewById(R.id.courseShareIv);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onShareClick(mCourse.getNote());
+            }
+        });
 
         // Setup edit fab
         FloatingActionButton editFab = findViewById(R.id.courseEditFab);
@@ -154,45 +163,6 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         coursesRv.addOnItemTouchListener(new CourseAssessmentsRvClickListener(this, coursesRv, this));
         coursesRv.setAdapter(mAdapter);
         // ********** Recycle View setup end   *****************************************************
-    }
-
-    /**
-     * Action to be taken when the add assessment button is pressed.
-     */
-    private void onAddAssessmentClick(){
-        Intent intent = new Intent(this, AssessmentAddEditCtrl.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Action to be taken when the edit button is pressed.
-     * @param course Course to be edited.
-     */
-    private void onEditFabClick(Course course){
-        // Display
-        Intent intent = new Intent(this, CourseAddEditCtrl.class);
-        intent.putExtra(Course.class.getSimpleName(), course);
-        startActivity(intent);
-    }
-
-    private void onDeleteFabClick(Course course){
-        AppDialog dialog = new AppDialog();
-        Bundle args = new Bundle();
-        args.putInt(AppDialog.DIALOG_ID, DELETE_DIALOG_ID);
-        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deleteCourseDialog_message, course.getId(), course.getTitle()));
-        args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deleteDialog_positive_caption);
-
-        // Add needed id to delete record to bundle.
-        args.putLong("courseId", course.getId());
-        args.putLong("instructorId", course.getInstructorId());
-
-        dialog.setArguments(args);
-        dialog.show(getSupportFragmentManager(),null);
-
-
-
-//        getContentResolver().delete(CourseContract.buildCourseUri(course.getId()), null, null);
-//        finish();
     }
 
     @NonNull
@@ -374,6 +344,57 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mInstructorEmailTv.setText(instructorEmail);
         mInstructorPhoneTv.setText(instructorPhone);
         mNoteTv.setText(mCourse.getNote());
+    }
+
+    /**
+     * Action to be taken when the add assessment button is pressed.
+     */
+    private void onAddAssessmentClick(){
+        Intent intent = new Intent(this, AssessmentAddEditCtrl.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Action to be taken when the edit button is pressed.
+     * @param course Course to be edited.
+     */
+    private void onEditFabClick(Course course){
+        // Display
+        Intent intent = new Intent(this, CourseAddEditCtrl.class);
+        intent.putExtra(Course.class.getSimpleName(), course);
+        startActivity(intent);
+    }
+
+    /**
+     * Action to be taken when the delete button is pressed.
+     * @param course course to be deleted.
+     */
+    private void onDeleteFabClick(Course course){
+        AppDialog dialog = new AppDialog();
+        Bundle args = new Bundle();
+        args.putInt(AppDialog.DIALOG_ID, DELETE_DIALOG_ID);
+        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deleteCourseDialog_message, course.getId(), course.getTitle()));
+        args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deleteDialog_positive_caption);
+
+        // Add needed id to delete record to bundle.
+        args.putLong("courseId", course.getId());
+        args.putLong("instructorId", course.getInstructorId());
+
+        dialog.setArguments(args);
+        dialog.show(getSupportFragmentManager(),null);
+    }
+
+    /**
+     * Get the courses note and open the share dialog.
+     * @param noteToShare note to share
+     */
+    private void onShareClick(String noteToShare){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+
+        intent.putExtra(Intent.EXTRA_TEXT, noteToShare);
+
+        startActivity(Intent.createChooser(intent, "Share using"));
     }
 
     /**
