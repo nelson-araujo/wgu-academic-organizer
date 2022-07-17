@@ -1,8 +1,10 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
@@ -19,13 +21,17 @@ import androidx.fragment.app.DialogFragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
+import com.nelsonaraujo.academicorganizer.Models.Course;
+import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.DatePickerFragment;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -33,7 +39,6 @@ import java.util.Locale;
 public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, DatePickerDialog.OnDateSetListener{
     private static final String TAG = "AssessmentAddEditCtrl"; // For terminal logging
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
     // Date picker selection
     public static final int DIALOG_START_DATE = 1;
@@ -42,6 +47,11 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
     public enum EditMode { EDIT, ADD }
     private AssessmentAddEditCtrl.EditMode mMode;
     private Cursor mCursor;
+
+
+
+    private String courseSelection;
+
 
     private TextView mTitleEt;
     private TextView mStartEt;
@@ -119,6 +129,15 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
             }
         });
 
+
+        // Course listener
+        mCourseEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCoursesDialog();
+            }
+        });
+
         // Save FAB Action
         mSaveFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +164,7 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
                             values.put(AssessmentContract.Columns.END, mEndEt.getText().toString());
                         }
 
+                        Log.d(TAG, "onClick: VALUES: " + values.toString()); // todo: update
                         if(values.size() != 0) {
                             contentResolver.update(AssessmentContract.buildAssessmentUri(assessment.getId()),values,null,null);
                             finish();
@@ -201,7 +221,6 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
     }
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-        Log.d(TAG, "onDateSet: STARTED");
         Bundle args = new Bundle();
         GregorianCalendar cal = new GregorianCalendar();
         int dialogId = (int) datePicker.getTag();
@@ -237,5 +256,77 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         // Empty
+    }
+
+
+    /**
+     * Populate and display all the available course on the system as a selection dialog.
+     */
+    private void showCoursesDialog(){
+        Log.d(TAG, "showCoursesDialog: COURSES DIALOG STARTED");
+
+        // Get courses
+        ArrayList<Course> courses = getCourses();
+
+        // create courses string array
+        ArrayList<String> courseNamesList = new ArrayList<String>();
+        for(Course course : courses){
+            courseNamesList.add(course.getTitle());
+        }
+        String[] courseNamesArray = courseNamesList.toArray(new String[0]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Courses")
+                .setItems(courseNamesArray, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mCourseEt.setText(courseNamesArray[which]);
+                    }
+                });
+
+        builder.create();
+        builder.show();
+    }
+
+    /**
+     * Get a list of all courses.
+     * @return list of all course.
+     */
+    private ArrayList<Course> getCourses(){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        // Setup projection
+        String[] projection = {CourseContract.Columns._ID,
+                CourseContract.Columns.TITLE,
+                CourseContract.Columns.START,
+                CourseContract.Columns.END,
+                CourseContract.Columns.STATUS,
+                CourseContract.Columns.NOTE,
+                CourseContract.Columns.TERM_ID,
+                CourseContract.Columns.INSTRUCTOR_ID};
+
+        // Query database
+        Cursor cursor = contentResolver.query(CourseContract.CONTENT_URI,projection,null,null);
+
+        // Populate array list
+        ArrayList<Course> courses = new ArrayList<Course>();
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                Course course = new Course(cursor.getLong(cursor.getColumnIndexOrThrow(CourseContract.Columns._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(CourseContract.Columns.TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(CourseContract.Columns.START)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(CourseContract.Columns.END)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(CourseContract.Columns.STATUS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(CourseContract.Columns.NOTE)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(CourseContract.Columns.TERM_ID)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(CourseContract.Columns.INSTRUCTOR_ID)));
+
+                courses.add(course);
+            }
+        }
+
+        cursor.close();
+
+        return courses;
     }
 }

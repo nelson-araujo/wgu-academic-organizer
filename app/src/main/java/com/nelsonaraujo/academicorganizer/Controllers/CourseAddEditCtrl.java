@@ -1,8 +1,10 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
@@ -23,11 +25,13 @@ import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.DatePickerFragment;
 import com.nelsonaraujo.academicorganizer.Models.InstructorContract;
+import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -142,6 +146,22 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
                     endDate = course.getEnd();
                 }
                 showDatePickerDialog("Start Date", DIALOG_END_DATE, endDate);
+            }
+        });
+
+        // Term selection
+        mTermEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTermsDialog();
+            }
+        });
+
+        // Status selection
+        mStatusEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showStatusDialog();
             }
         });
 
@@ -289,5 +309,81 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         // Empty
+    }
+
+    private void showStatusDialog(){
+        String[] status = {"In progress", "Completed", "Dropped", "Plan to take"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Status")
+                .setItems(status, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mStatusEt.setText(status[which]);
+                    }
+                });
+
+        builder.create();
+        builder.show();
+    }
+
+    /**
+     * Populate and display all the available terms on the system as a selection dialog.
+     */
+    private void showTermsDialog(){
+        // Get terms
+        ArrayList<Term> terms = getTerms();
+
+        // create terms string array
+        ArrayList<String> termNamesList = new ArrayList<String>();
+        for(Term term : terms){
+            termNamesList.add(term.getTitle());
+        }
+        String[] termNamesArray = termNamesList.toArray(new String[0]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Terms")
+                .setItems(termNamesArray, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mTermEt.setText(termNamesArray[which]);
+                    }
+                });
+
+        builder.create();
+        builder.show();
+    }
+
+    /**
+     * Get a list of all terms on the system.
+     * @return List of terms.
+     */
+    public ArrayList<Term> getTerms(){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        // Setup projection
+        String[] projection = {TermContract.Columns._ID,
+                TermContract.Columns.TITLE,
+                TermContract.Columns.START,
+                TermContract.Columns.END};
+
+        // Query database
+        Cursor cursor = contentResolver.query(TermContract.CONTENT_URI,projection,null,null);
+
+        // Populate array list
+        ArrayList<Term> terms = new ArrayList<Term>();
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                Term term = new Term(cursor.getLong(cursor.getColumnIndexOrThrow(TermContract.Columns._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.START)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.END)));
+
+                terms.add(term);
+            }
+        }
+
+        cursor.close();
+
+        return terms;
     }
 }

@@ -363,7 +363,7 @@ public class AppProvider extends ContentProvider {
                     selectionCriteria += " AND (" + selection + ")";
                 }
 
-                totalRecordsUpdated = db.update(InstructorContract.TABLE_NAME,contentValues,selection,selectionArgs);
+                totalRecordsUpdated = db.update(InstructorContract.TABLE_NAME,contentValues,selectionCriteria,selectionArgs);
                 break;
 
             case COURSE:
@@ -381,7 +381,7 @@ public class AppProvider extends ContentProvider {
                     selectionCriteria += " AND (" + selection + ")";
                 }
 
-                totalRecordsUpdated = db.update(CourseContract.TABLE_NAME,contentValues,selection,selectionArgs);
+                totalRecordsUpdated = db.update(CourseContract.TABLE_NAME,contentValues,selectionCriteria,selectionArgs);
                 break;
 
             case ASSESSMENT:
@@ -399,7 +399,7 @@ public class AppProvider extends ContentProvider {
                     selectionCriteria += " AND (" + selection + ")";
                 }
 
-                totalRecordsUpdated = db.update(AssessmentContract.TABLE_NAME,contentValues,selection,selectionArgs);
+                totalRecordsUpdated = db.update(AssessmentContract.TABLE_NAME,contentValues,selectionCriteria,selectionArgs);
                 break;
 
             default:
