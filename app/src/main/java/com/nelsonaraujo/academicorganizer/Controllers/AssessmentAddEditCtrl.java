@@ -28,7 +28,9 @@ import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.DatePickerFragment;
+import com.nelsonaraujo.academicorganizer.Models.InstructorContract;
 import com.nelsonaraujo.academicorganizer.Models.Term;
+import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.text.ParseException;
@@ -47,7 +49,6 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
 
     public enum EditMode { EDIT, ADD }
     private AssessmentAddEditCtrl.EditMode mMode;
-    private Cursor mCursor;
 
     private TextView mTitleEt;
     private TextView mStartEt;
@@ -114,7 +115,6 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
             }
         });
 
-
         // Course listener
         mCourseEt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +145,10 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
                         // Update end if changed.
                         if(!mEndEt.getText().toString().equals(assessment.getEnd())){
                             values.put(AssessmentContract.Columns.END, mEndEt.getText().toString());
+                        }
+                        // Update content if changed.
+                        if(!mContentEt.getText().toString().equals(assessment.getContent())){
+                            values.put(AssessmentContract.Columns.CONTENT, mContentEt.getText().toString());
                         }
 
                         // Update course if changed.

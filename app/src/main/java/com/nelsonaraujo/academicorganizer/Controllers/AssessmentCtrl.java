@@ -57,19 +57,6 @@ public class AssessmentCtrl extends AppCompatActivity {
         // Create object
         mAssessment = (Assessment) arguments.getSerializable(Assessment.class.getSimpleName());
 
-
-        // Get Term name
-//        ContentResolver contentResolver = getContentResolver(); // get content resolver.
-//        String[] projection;
-//        projection = new String[]{TermContract.Columns.TITLE}; // setup projection
-//        mCursor = contentResolver.query(TermContract.buildTermUri(assessment.getTermId()), projection, null,null,null);
-//        String termName = "Unknown";
-//        if(mCursor != null){
-//            while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
-//                termName = mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TITLE));
-//            }
-//        }
-
         // Set layout text views
         mTitleTv.setText(mAssessment.getTitle());
         mContentTv.setText(mAssessment.getContent().toString());
@@ -148,6 +135,7 @@ public class AssessmentCtrl extends AppCompatActivity {
         mContentTv.setText(mAssessment.getContent());
         mStartTv.setText(mAssessment.getStart());
         mEndTv.setText(mAssessment.getEnd());
+        mCourseTv.setText(getCourseName(mAssessment.getCourseId()));
 
     }
 
