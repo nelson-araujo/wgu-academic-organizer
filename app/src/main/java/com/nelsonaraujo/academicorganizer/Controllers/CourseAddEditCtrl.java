@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
     // Date picker selection
     public static final int DIALOG_START_DATE = 1;
     public static final int DIALOG_END_DATE = 2;
+    private final Integer ERROR_BG_COLOR = Color.parseColor("#ffe8e7");
 
     public enum EditMode { EDIT, ADD }
     private CourseAddEditCtrl.EditMode mMode;
@@ -174,99 +176,102 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
             public void onClick(View view) {
                 ContentResolver contentResolver = getContentResolver();
                 ContentValues values = new ContentValues();
+                Boolean fieldsValid = isFieldsValid();
 
-                switch(mMode){
-                    case EDIT:
-                        // Update tittle if changed.
-                        if(!mTitleEt.getText().toString().equals(course.getTitle())){
-                            values.put(CourseContract.Columns.TITLE, mTitleEt.getText().toString());
-                        }
-
-                        // Update start if changed.
-                        if(!mStartEt.getText().toString().equals(course.getStart())){
-                            values.put(CourseContract.Columns.START, mStartEt.getText().toString());
-                        }
-
-                        // Update end if changed.
-                        if(!mEndEt.getText().toString().equals(course.getEnd())){
-                            values.put(CourseContract.Columns.END, mEndEt.getText().toString());
-                        }
-
-                        // Update status if changed.
-                        if(!mStatusEt.getText().toString().equals(course.getStatus())){
-                            values.put(CourseContract.Columns.STATUS, mStatusEt.getText().toString());
-                        }
-
-                        // Update note if changed.
-                        if(!mNoteEt.getText().toString().equals(course.getNote())){
-                            values.put(CourseContract.Columns.NOTE, mNoteEt.getText().toString());
-                        }
-
-                        // Update term_id if changed.
-                        long termId = getTermId(mTermEt.getText().toString());
-                        if(termId != course.getTermId()){
-                            values.put(CourseContract.Columns.TERM_ID, termId);
-                        }
-
-                        // Update instructor if changed.
-                        Instructor instructor = getInstructor(course.getId());
-                        if(!(mInstructorNameEt.getText().toString().equals(instructor.getName()) ||
-                                mInstructorEmailEt.getText().toString().equals(instructor.getEmail()) ||
-                                mInstructorPhoneEt.getText().toString().equals(instructor.getPhone()))){
-
-                            ContentValues instructorValues = new ContentValues();
-                            instructorValues.put(InstructorContract.Columns.NAME,mInstructorNameEt.getText().toString());
-                            instructorValues.put(InstructorContract.Columns.EMAIL,mInstructorEmailEt.getText().toString());
-                            instructorValues.put(InstructorContract.Columns.PHONE,mInstructorPhoneEt.getText().toString());
-
-                            contentResolver.update(InstructorContract.buildInstructorUri(course.getId()),instructorValues,null,null);
-                        }
-
-                        if(values.size() != 0) {
-                            contentResolver.update(CourseContract.buildCourseUri(course.getId()),values,null,null);
-                        }
-
-                        finish();
-                        break;
-                    case ADD:
-                        if(mTitleEt.length() > 0){
-                            values.put(CourseContract.Columns.TITLE, mTitleEt.getText().toString());
-                            values.put(CourseContract.Columns.STATUS, mStatusEt.getText().toString());
-                            values.put(CourseContract.Columns.NOTE, mNoteEt.getText().toString());
-
-                            // Add dates
-                            try {
-                                Date start = dateFormat.parse(mStartEt.getText().toString());
-                                values.put(CourseContract.Columns.START, dateFormat.format(start));
-
-                                Date end = dateFormat.parse(mEndEt.getText().toString());
-                                values.put(CourseContract.Columns.END, dateFormat.format(end));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                if (fieldsValid) {
+                    switch (mMode) {
+                        case EDIT:
+                            // Update tittle if changed.
+                            if (!mTitleEt.getText().toString().equals(course.getTitle())) {
+                                values.put(CourseContract.Columns.TITLE, mTitleEt.getText().toString());
                             }
 
-                            // Add term
-                            values.put(CourseContract.Columns.TERM_ID, getTermId(mTermEt.getText().toString()));
+                            // Update start if changed.
+                            if (!mStartEt.getText().toString().equals(course.getStart())) {
+                                values.put(CourseContract.Columns.START, mStartEt.getText().toString());
+                            }
 
-                            // Add Instructor
-                            // create instructor
-                            ContentValues instructorValues = new ContentValues();
-                            instructorValues.put(InstructorContract.Columns.NAME,mInstructorNameEt.getText().toString());
-                            instructorValues.put(InstructorContract.Columns.EMAIL,mInstructorEmailEt.getText().toString());
-                            instructorValues.put(InstructorContract.Columns.PHONE,mInstructorPhoneEt.getText().toString());
+                            // Update end if changed.
+                            if (!mEndEt.getText().toString().equals(course.getEnd())) {
+                                values.put(CourseContract.Columns.END, mEndEt.getText().toString());
+                            }
 
-                            Uri instructorUri = contentResolver.insert(InstructorContract.CONTENT_URI,instructorValues);
-                            long instructorId = Integer.parseInt(instructorUri.getLastPathSegment());
+                            // Update status if changed.
+                            if (!mStatusEt.getText().toString().equals(course.getStatus())) {
+                                values.put(CourseContract.Columns.STATUS, mStatusEt.getText().toString());
+                            }
 
-                            // Update
-                            values.put(CourseContract.Columns.INSTRUCTOR_ID, instructorId); // instructor id and course id is the same.
+                            // Update note if changed.
+                            if (!mNoteEt.getText().toString().equals(course.getNote())) {
+                                values.put(CourseContract.Columns.NOTE, mNoteEt.getText().toString());
+                            }
+
+                            // Update term_id if changed.
+                            long termId = getTermId(mTermEt.getText().toString());
+                            if (termId != course.getTermId()) {
+                                values.put(CourseContract.Columns.TERM_ID, termId);
+                            }
+
+                            // Update instructor if changed.
+                            Instructor instructor = getInstructor(course.getId());
+                            if (!(mInstructorNameEt.getText().toString().equals(instructor.getName()) ||
+                                    mInstructorEmailEt.getText().toString().equals(instructor.getEmail()) ||
+                                    mInstructorPhoneEt.getText().toString().equals(instructor.getPhone()))) {
+
+                                ContentValues instructorValues = new ContentValues();
+                                instructorValues.put(InstructorContract.Columns.NAME, mInstructorNameEt.getText().toString());
+                                instructorValues.put(InstructorContract.Columns.EMAIL, mInstructorEmailEt.getText().toString());
+                                instructorValues.put(InstructorContract.Columns.PHONE, mInstructorPhoneEt.getText().toString());
+
+                                contentResolver.update(InstructorContract.buildInstructorUri(course.getId()), instructorValues, null, null);
+                            }
+
+                            if (values.size() != 0) {
+                                contentResolver.update(CourseContract.buildCourseUri(course.getId()), values, null, null);
+                            }
+
+                            finish();
+                            break;
+                        case ADD:
+                            if (mTitleEt.length() > 0) {
+                                values.put(CourseContract.Columns.TITLE, mTitleEt.getText().toString());
+                                values.put(CourseContract.Columns.STATUS, mStatusEt.getText().toString());
+                                values.put(CourseContract.Columns.NOTE, mNoteEt.getText().toString());
+
+                                // Add dates
+                                try {
+                                    Date start = dateFormat.parse(mStartEt.getText().toString());
+                                    values.put(CourseContract.Columns.START, dateFormat.format(start));
+
+                                    Date end = dateFormat.parse(mEndEt.getText().toString());
+                                    values.put(CourseContract.Columns.END, dateFormat.format(end));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                // Add term
+                                values.put(CourseContract.Columns.TERM_ID, getTermId(mTermEt.getText().toString()));
+
+                                // Add Instructor
+                                // create instructor
+                                ContentValues instructorValues = new ContentValues();
+                                instructorValues.put(InstructorContract.Columns.NAME, mInstructorNameEt.getText().toString());
+                                instructorValues.put(InstructorContract.Columns.EMAIL, mInstructorEmailEt.getText().toString());
+                                instructorValues.put(InstructorContract.Columns.PHONE, mInstructorPhoneEt.getText().toString());
+
+                                Uri instructorUri = contentResolver.insert(InstructorContract.CONTENT_URI, instructorValues);
+                                long instructorId = Integer.parseInt(instructorUri.getLastPathSegment());
+
+                                // Update
+                                values.put(CourseContract.Columns.INSTRUCTOR_ID, instructorId); // instructor id and course id is the same.
 
 
-                            // Insert entry to database
-                            contentResolver.insert(CourseContract.CONTENT_URI,values);
-                        }
-                        finish();
-                        break;
+                                // Insert entry to database
+                                contentResolver.insert(CourseContract.CONTENT_URI, values);
+                            }
+                            finish();
+                            break;
+                    }
                 }
             }
         });
@@ -430,7 +435,6 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
         return 0;
     }
 
-
     private Instructor getInstructor(long courseId){
         // Get the content resolver
         ContentResolver contentResolver = getContentResolver();
@@ -463,5 +467,45 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
         Log.d(TAG, "getInstructor: Instructor: " + instructor.toString()); // todo: remove
 
         return instructor;
+    }
+
+    /**
+     * Check if required fields are valid.
+     * @return true if valid otherwise false.
+     */
+    private Boolean isFieldsValid(){
+        Boolean isValid = true;
+
+        if(mTitleEt.getText().length() == 0){
+            mTitleEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mTitleEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mStartEt.getText().length() == 0){
+            mStartEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mStartEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mEndEt.getText().length() == 0){
+            mEndEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mEndEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mTermEt.getText().length() == 0){
+            mTermEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mTermEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mStatusEt.getText().length() == 0){
+            mStatusEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mStatusEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mInstructorNameEt.getText().length() == 0){
+            mInstructorNameEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mInstructorNameEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        return isValid;
     }
 }

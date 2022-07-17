@@ -39,6 +39,7 @@ public class TermAddEditCtrl extends AppCompatActivity implements LoaderManager.
     // Date picker selection
     public static final int DIALOG_START_DATE = 1;
     public static final int DIALOG_END_DATE = 2;
+    private final Integer ERROR_BG_COLOR = Color.parseColor("#ffe8e7");
 
     // Edit mode type
     public enum EditMode { EDIT, ADD }
@@ -108,34 +109,37 @@ public class TermAddEditCtrl extends AppCompatActivity implements LoaderManager.
             public void onClick(View view) {
                 ContentResolver contentResolver = getContentResolver();
                 ContentValues values = new ContentValues();
+                Boolean fieldsValid = isFieldsValid();
 
-                switch(mMode){
-                    case EDIT:
-                        if(!mTermEt.getText().toString().equals(term.getTitle())){ // Check if there was a change
-                            values.put(TermContract.Columns.TITLE, mTermEt.getText().toString());
-                        }
-                        if(!mStartEt.getText().toString().equals(term.getStart())){
-                            values.put(TermContract.Columns.START, mStartEt.getText().toString());
-                        }
-                        if(!mEndEt.getText().toString().equals(term.getEnd())){
-                            values.put(TermContract.Columns.END, mEndEt.getText().toString());
-                        }
+                if(fieldsValid) {
+                    switch (mMode) {
+                        case EDIT:
+                            if (!mTermEt.getText().toString().equals(term.getTitle())) { // Check if there was a change
+                                values.put(TermContract.Columns.TITLE, mTermEt.getText().toString());
+                            }
+                            if (!mStartEt.getText().toString().equals(term.getStart())) {
+                                values.put(TermContract.Columns.START, mStartEt.getText().toString());
+                            }
+                            if (!mEndEt.getText().toString().equals(term.getEnd())) {
+                                values.put(TermContract.Columns.END, mEndEt.getText().toString());
+                            }
 
-                        if(values.size() != 0) {
-                            contentResolver.update(TermContract.buildTermUri(term.getId()),values,null,null);
-                        }
+                            if (values.size() != 0) {
+                                contentResolver.update(TermContract.buildTermUri(term.getId()), values, null, null);
+                            }
 
-                        finish();
-                        break;
-                    case ADD:
-                        if(mTermEt.length() > 0){
-                            values.put(TermContract.Columns.TITLE, mTermEt.getText().toString());
-                            values.put(TermContract.Columns.START, mStartEt.getText().toString());
-                            values.put(TermContract.Columns.END, mEndEt.getText().toString());
-                            contentResolver.insert(TermContract.CONTENT_URI,values);
-                        }
-                        finish();
-                        break;
+                            finish();
+                            break;
+                        case ADD:
+                            if (mTermEt.length() > 0) {
+                                values.put(TermContract.Columns.TITLE, mTermEt.getText().toString());
+                                values.put(TermContract.Columns.START, mStartEt.getText().toString());
+                                values.put(TermContract.Columns.END, mEndEt.getText().toString());
+                                contentResolver.insert(TermContract.CONTENT_URI, values);
+                            }
+                            finish();
+                            break;
+                    }
                 }
             }
         });
@@ -200,5 +204,30 @@ public class TermAddEditCtrl extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         // Empty
+    }
+
+    /**
+     * Check if required fields are valid.
+     * @return true if valid otherwise false.
+     */
+    private Boolean isFieldsValid(){
+        Boolean isValid = true;
+
+        if(mTermEt.getText().length() == 0){
+            mTermEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mTermEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mStartEt.getText().length() == 0){
+            mStartEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mStartEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mEndEt.getText().length() == 0){
+            mEndEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mEndEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        return isValid;
     }
 }

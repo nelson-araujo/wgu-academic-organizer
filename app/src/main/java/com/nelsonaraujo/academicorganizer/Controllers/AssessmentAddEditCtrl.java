@@ -6,7 +6,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.icu.text.DateFormat;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,16 +21,12 @@ import androidx.fragment.app.DialogFragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.DatePickerFragment;
-import com.nelsonaraujo.academicorganizer.Models.InstructorContract;
-import com.nelsonaraujo.academicorganizer.Models.Term;
-import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.text.ParseException;
@@ -46,6 +42,7 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
     // Date picker selection
     public static final int DIALOG_START_DATE = 1;
     public static final int DIALOG_END_DATE = 2;
+    private final Integer ERROR_BG_COLOR = Color.parseColor("#ffe8e7");
 
     public enum EditMode { EDIT, ADD }
     private AssessmentAddEditCtrl.EditMode mMode;
@@ -129,64 +126,67 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
             public void onClick(View view) {
                 ContentResolver contentResolver = getContentResolver();
                 ContentValues values = new ContentValues();
+                Boolean fieldsValid = isFieldsValid();
 
-                switch(mMode){
-                    case EDIT:
-                        // Update tittle if changed.
-                        if(!mTitleEt.getText().toString().equals(assessment.getTitle())){
-                            values.put(AssessmentContract.Columns.TITLE, mTitleEt.getText().toString());
-                        }
-
-                        // Update start if changed.
-                        if(!mStartEt.getText().toString().equals(assessment.getStart())){
-                            values.put(AssessmentContract.Columns.START, mStartEt.getText().toString());
-                        }
-
-                        // Update end if changed.
-                        if(!mEndEt.getText().toString().equals(assessment.getEnd())){
-                            values.put(AssessmentContract.Columns.END, mEndEt.getText().toString());
-                        }
-                        // Update content if changed.
-                        if(!mContentEt.getText().toString().equals(assessment.getContent())){
-                            values.put(AssessmentContract.Columns.CONTENT, mContentEt.getText().toString());
-                        }
-
-                        // Update course if changed.
-                        long courseId = getCourseId(mCourseEt.getText().toString());
-                        if(courseId != assessment.getCourseId()){
-                            values.put(AssessmentContract.Columns.COURSE_ID, courseId);
-                        }
-
-                        if(values.size() != 0) {
-                            contentResolver.update(AssessmentContract.buildAssessmentUri(assessment.getId()),values,null,null);
-                        }
-
-                        finish();
-                        break;
-                    case ADD:
-                        if(mTitleEt.length() > 0){
-                            values.put(AssessmentContract.Columns.TITLE, mTitleEt.getText().toString());
-                            values.put(AssessmentContract.Columns.CONTENT, mContentEt.getText().toString());
-
-                            // Add dates
-                            try {
-                                Date start = dateFormat.parse(mStartEt.getText().toString());
-                                values.put(AssessmentContract.Columns.START, dateFormat.format(start));
-
-                                Date end = dateFormat.parse(mEndEt.getText().toString());
-                                values.put(AssessmentContract.Columns.END, dateFormat.format(end));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                if(fieldsValid){
+                    switch(mMode) {
+                        case EDIT:
+                            // Update tittle if changed.
+                            if (!mTitleEt.getText().toString().equals(assessment.getTitle())) {
+                                values.put(AssessmentContract.Columns.TITLE, mTitleEt.getText().toString());
                             }
 
-                            // Add course
-                            values.put(AssessmentContract.Columns.COURSE_ID, getCourseId(mCourseEt.getText().toString()));
+                            // Update start if changed.
+                            if (!mStartEt.getText().toString().equals(assessment.getStart())) {
+                                values.put(AssessmentContract.Columns.START, mStartEt.getText().toString());
+                            }
 
-                            // Insert entry to database
-                            contentResolver.insert(AssessmentContract.CONTENT_URI,values);
-                        }
-                        finish();
-                        break;
+                            // Update end if changed.
+                            if (!mEndEt.getText().toString().equals(assessment.getEnd())) {
+                                values.put(AssessmentContract.Columns.END, mEndEt.getText().toString());
+                            }
+                            // Update content if changed.
+                            if (!mContentEt.getText().toString().equals(assessment.getContent())) {
+                                values.put(AssessmentContract.Columns.CONTENT, mContentEt.getText().toString());
+                            }
+
+                            // Update course if changed.
+                            long courseId = getCourseId(mCourseEt.getText().toString());
+                            if (courseId != assessment.getCourseId()) {
+                                values.put(AssessmentContract.Columns.COURSE_ID, courseId);
+                            }
+
+                            if (values.size() != 0) {
+                                contentResolver.update(AssessmentContract.buildAssessmentUri(assessment.getId()), values, null, null);
+                            }
+
+                            finish();
+                            break;
+                        case ADD:
+                            if (mTitleEt.length() > 0) {
+                                values.put(AssessmentContract.Columns.TITLE, mTitleEt.getText().toString());
+                                values.put(AssessmentContract.Columns.CONTENT, mContentEt.getText().toString());
+
+                                // Add dates
+                                try {
+                                    Date start = dateFormat.parse(mStartEt.getText().toString());
+                                    values.put(AssessmentContract.Columns.START, dateFormat.format(start));
+
+                                    Date end = dateFormat.parse(mEndEt.getText().toString());
+                                    values.put(AssessmentContract.Columns.END, dateFormat.format(end));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                // Add course
+                                values.put(AssessmentContract.Columns.COURSE_ID, getCourseId(mCourseEt.getText().toString()));
+
+                                // Insert entry to database
+                                contentResolver.insert(AssessmentContract.CONTENT_URI, values);
+                            }
+                            finish();
+                            break;
+                    }
                 }
             }
         });
@@ -366,5 +366,35 @@ public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderMa
         cursor.close();
 
         return null;
+    }
+
+    /**
+     * Check if required fields are valid.
+     * @return true if valid otherwise false.
+     */
+    private Boolean isFieldsValid(){
+        Boolean isValid = true;
+
+        if(mTitleEt.getText().length() == 0){
+            mTitleEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mTitleEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mStartEt.getText().length() == 0){
+            mStartEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mStartEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mEndEt.getText().length() == 0){
+            mEndEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mEndEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        if(mCourseEt.getText().length() == 0){
+            mCourseEt.setBackgroundColor(ERROR_BG_COLOR);
+            isValid = false;
+        } else { mCourseEt.setBackgroundColor(Color.TRANSPARENT); }
+
+        return isValid;
     }
 }

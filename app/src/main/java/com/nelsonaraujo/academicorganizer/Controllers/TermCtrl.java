@@ -252,7 +252,6 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
 
     @Override
     public void onRestart() {
-        Log.d(TAG, "onRestart: RESTART --------"); // todo: remove
         super.onRestart();
 
         // Get the content resolver
