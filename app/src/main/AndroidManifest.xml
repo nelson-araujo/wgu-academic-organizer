@@ -4,6 +4,7 @@
     package="com.nelsonaraujo.academicorganizer">
 
     <application
+        android:name=".Models.AppSetup"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -60,7 +61,7 @@
             android:authorities = "com.nelsonaraujo.academicorganizer.provider"
             android:exported = "false" />
 
-        <receiver android:name=".Models.AssessmentBroadcast"/>
+        <receiver android:name=".Models.AppNotification"/>
 
     </application>
 

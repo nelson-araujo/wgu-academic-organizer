@@ -1,12 +1,8 @@
 package com.nelsonaraujo.academicorganizer;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -17,20 +13,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.nelsonaraujo.academicorganizer.Controllers.AssessmentCtrl;
 import com.nelsonaraujo.academicorganizer.Controllers.AssessmentsCtrl;
 import com.nelsonaraujo.academicorganizer.Controllers.CoursesCtrl;
 import com.nelsonaraujo.academicorganizer.Controllers.TermsCtrl;
+import com.nelsonaraujo.academicorganizer.Models.AppNotification;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
-import com.nelsonaraujo.academicorganizer.Models.AssessmentBroadcast;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 
-import java.lang.reflect.Array;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class AcademicOrganizer extends AppCompatActivity {
     private static final String TAG = "AcademicOrganizer"; // For terminal logging
@@ -47,7 +38,7 @@ public class AcademicOrganizer extends AppCompatActivity {
         setContentView(R.layout.academic_organizer);
 
         // Setup startup notifications
-        startUpNotification();
+        startupAssessmentNotification();
 
         // Terms
         termsBtn = findViewById(R.id.aoTermsBtn);
@@ -83,7 +74,8 @@ public class AcademicOrganizer extends AppCompatActivity {
     /**
      * Notify user if there are upcoming assessments starting in the next five days.
      */
-    private void startUpNotification(){
+    private void startupAssessmentNotification(){
+        Log.d(TAG, "startUpNotification2: START");
         // Setup startup notifications
         ArrayList<Assessment> assessments = getAssessments();
         ArrayList<Assessment> upcomingAssessments = new ArrayList<Assessment>();
@@ -102,42 +94,26 @@ public class AcademicOrganizer extends AppCompatActivity {
             if(start.isAfter(currentDate.minusDays(1)) && start.isBefore(maxDate)){
                 upcomingAssessments.add(assessment);
                 if(upcomingAssessmentsString == null){
-                    upcomingAssessmentsString = assessment.getTitle() + "(" + assessment.getId() + "), ";
+                    upcomingAssessmentsString = assessment.getTitle() + " ";
                 } else {
                     upcomingAssessmentsString = upcomingAssessmentsString + assessment.getTitle()
-                            + "(" + assessment.getId() + "), ";
+                            + " ";
                 }
             }
         }
 
-        // Broadcast if there are upcoming assessments
+        // Notify if there are upcoming assessments
         if(upcomingAssessments.size() != 0) {
-            createAssessmentNotificationChannel();
+            Intent intent = new Intent(this, AppNotification.class);
 
-            Intent intent = new Intent(this, AssessmentBroadcast.class);
-
-            intent.putExtra("assessment", upcomingAssessmentsString);
-
+            intent.putExtra(AppNotification.TYPE, AppNotification.TYPE_UPCOMING_ASSESSMENT);
+            intent.putExtra(AppNotification.MESSAGE, upcomingAssessmentsString);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(AcademicOrganizer.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, 0, pendingIntent);
         }
-    }
-
-    /**
-     * Create the assessment notification channel.
-     */
-    private void createAssessmentNotificationChannel(){
-        CharSequence name = "upcomingAssessmentNotifier";
-        String description = "Channel for upcoming assessments";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel("upcomingAssessmentNotifier", name, importance);
-        channel.setDescription(description);
-
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
     }
 
     /**
