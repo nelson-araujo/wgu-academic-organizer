@@ -2,11 +2,19 @@ package com.nelsonaraujo.academicorganizer.Models;
 
 import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 import android.util.Log;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * Configuration to be applied when the application starts up.
@@ -22,8 +30,14 @@ public class AppSetup extends Application {
         super.onCreate();
 
         createNotificationChannels();
-    }
 
+        // Check if AppService is running, if not start it.
+        if(!isMyServiceRunning(AppService.class)){
+            Log.d(TAG, "AppSetup onCreate :::: AppService is not running, starting.");
+            startService(new Intent(this, AppService.class));
+        }
+
+    }
 
     /**
      * Create application's notification channels.
@@ -45,7 +59,7 @@ public class AppSetup extends Application {
             assessmentChannel.setDescription(assessmentChannelDescription);
 
             // Setup the due today channel
-            String dueTodayChannelName = "Tasks due today";
+            String dueTodayChannelName = "Due today";
             String dueTodayChannelDescription = "Displays tasks that are due today.";
 
             NotificationChannel dueTodayChannel = new NotificationChannel(
@@ -62,4 +76,15 @@ public class AppSetup extends Application {
 
         }
     }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

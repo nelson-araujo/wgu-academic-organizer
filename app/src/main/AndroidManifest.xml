@@ -14,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AcademicOrganizer"
         tools:targetApi="31">
+        <service
+            android:name=".Models.AppService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name=".Controllers.AssessmentsCtrl"
             android:exported="false" />
@@ -37,10 +42,9 @@
             android:exported="false" />
         <activity
             android:name=".Controllers.TermAddEditCtrl"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".Controllers.TermListCourses"-->
-<!--            android:exported="false" />-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".Controllers.TermListCourses" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".Controllers.TermsCtrl"
             android:exported="false"
@@ -57,16 +61,11 @@
         </activity>
 
         <provider
-            android:name = "com.nelsonaraujo.academicorganizer.Models.AppProvider"
-            android:authorities = "com.nelsonaraujo.academicorganizer.provider"
-            android:exported = "false" />
+            android:name=".Models.AppProvider"
+            android:authorities="com.nelsonaraujo.academicorganizer.provider"
+            android:exported="false" />
 
-        <receiver android:name=".Models.AppNotification"/>
-
+        <receiver android:name=".Models.AppNotification" />
     </application>
 
-
-
 </manifest>
-
-

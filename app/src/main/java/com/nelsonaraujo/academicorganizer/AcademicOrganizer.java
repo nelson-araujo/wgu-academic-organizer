@@ -17,13 +17,14 @@ import com.nelsonaraujo.academicorganizer.Controllers.AssessmentsCtrl;
 import com.nelsonaraujo.academicorganizer.Controllers.CoursesCtrl;
 import com.nelsonaraujo.academicorganizer.Controllers.TermsCtrl;
 import com.nelsonaraujo.academicorganizer.Models.AppNotification;
+import com.nelsonaraujo.academicorganizer.Models.AppService;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class AcademicOrganizer extends AppCompatActivity {
+public class AcademicOrganizer extends AppCompatActivity{
     private static final String TAG = "AcademicOrganizer"; // For terminal logging
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -37,7 +38,7 @@ public class AcademicOrganizer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.academic_organizer);
 
-        // Setup startup notifications
+        // Setup notifications
         startupAssessmentNotification();
 
         // Terms
@@ -71,11 +72,25 @@ public class AcademicOrganizer extends AppCompatActivity {
         });
     }
 
+//    @Override
+//    protected void onStop () {
+//        Log.d(TAG, "AcademicOrganizer onStop:::::::::: START");
+////            Intent intent = new Intent(this, AppService.class);
+////
+////            intent.putExtra(AppService.TYPE, AppService.TYPE_UPCOMING_ASSESSMENT);
+////            intent.putExtra(AppService.MESSAGE, upcomingAssessmentsString);
+////
+////            startService(intent) ;
+//
+//        super .onStop() ;
+//    }
+
     /**
      * Notify user if there are upcoming assessments starting in the next five days.
      */
     private void startupAssessmentNotification(){
-        Log.d(TAG, "startUpNotification2: START");
+        Log.d(TAG, "AcademicOrganizer startUpNotification:::::::::: START"); // todo: remove
+
         // Setup startup notifications
         ArrayList<Assessment> assessments = getAssessments();
         ArrayList<Assessment> upcomingAssessments = new ArrayList<Assessment>();

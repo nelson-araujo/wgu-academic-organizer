@@ -10,7 +10,8 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.nelsonaraujo.academicorganizer.R;
 
-public class AppNotification extends BroadcastReceiver {
+public class AppNotification extends BroadcastReceiver{
+//public class AppNotification extends BroadcastReceiver{
     private static final String TAG = "AppNotification";
 
     public static final String CHN_UPCOMING_ASSESSMENT = "notificationChannelAssessment";
@@ -25,19 +26,18 @@ public class AppNotification extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive: START"); // todo: remove
+        Log.d(TAG, "AppNotification onReceive:::::::::: START"); // todo: remove
 
         String notificationType = intent.getStringExtra(TYPE);
         String notificationMessage = intent.getStringExtra(MESSAGE);
 
         switch(notificationType){
             case TYPE_UPCOMING_ASSESSMENT:
-                Log.d(TAG, "onReceive: TYPE_UPCOMING_ASSESSMENT"); // todo: remove
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHN_UPCOMING_ASSESSMENT)
                         .setSmallIcon(R.drawable.ic_logo)
                         .setContentTitle(TYPE_UPCOMING_ASSESSMENT)
                         .setContentText(notificationMessage)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.notify(201,builder.build());
