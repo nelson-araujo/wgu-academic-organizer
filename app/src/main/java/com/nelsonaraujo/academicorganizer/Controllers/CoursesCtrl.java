@@ -18,15 +18,16 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.nelsonaraujo.academicorganizer.AcademicOrganizer;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
-import java.sql.Date;
 
+/**
+ * Controller for the courses layout.
+ */
 public class CoursesCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,CoursesRvClickListener.OnCoursesRvClickListener {
     private static final String TAG = "CoursesCtrl"; // For terminal logging
 
@@ -67,16 +68,6 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
         });
     }
 
-    public void addCourse(Course course){
-        Intent intent = new Intent(CoursesCtrl.this, CourseAddEditCtrl.class);
-        if(course != null) { // Edit
-            intent.putExtra(Course.class.getSimpleName(), course);
-            startActivity(intent);
-        } else { // New
-            startActivity(intent);
-        }
-    }
-
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
@@ -91,7 +82,6 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
 
         switch (id) {
             case LOADER_ID:
-//                ContentResolver contentResolver = getContentResolver(); // todo: remove
                 return new CursorLoader(this, CourseContract.CONTENT_URI,projection,whereSelection,null, sortOrder);
 
             default:
@@ -132,7 +122,7 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
         // Get course
         Course selection = new Course(0,null,null,null,null,null,null,null);
         if(mCursor != null){
-            while(mCursor.moveToNext()){ // todo: Why does assigning to selection return a -1 when outside loop? -1 mean column not found.
+            while(mCursor.moveToNext()){
                 // Populate selection
                 selection = new Course(mCursor.getLong(mCursor.getColumnIndexOrThrow(CourseContract.Columns._ID)),
                         mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.TITLE)),
@@ -176,7 +166,6 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
         }
     }
 
-
     /**
      * Application bar menu.
      * @param menu Menu.
@@ -213,6 +202,20 @@ public class CoursesCtrl extends AppCompatActivity implements LoaderManager.Load
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Add a course. If a course is passed in it goes into edit mode otherwise it adds.
+     * @param course to be added.
+     */
+    public void addCourse(Course course){
+        Intent intent = new Intent(CoursesCtrl.this, CourseAddEditCtrl.class);
+        if(course != null) { // Edit
+            intent.putExtra(Course.class.getSimpleName(), course);
+            startActivity(intent);
+        } else { // New
+            startActivity(intent);
+        }
     }
 
 }

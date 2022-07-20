@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +30,9 @@ import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+/**
+ * Controller for the term add and edit layout.
+ */
 public class TermAddEditCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, DatePickerDialog.OnDateSetListener {
     private static final String TAG = "TermAddEditCtrl"; // For terminal logging
 
@@ -49,7 +51,6 @@ public class TermAddEditCtrl extends AppCompatActivity implements LoaderManager.
     private EditText mStartEt;
     private EditText mEndEt;
     private FloatingActionButton mSaveFab;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,26 +147,6 @@ public class TermAddEditCtrl extends AppCompatActivity implements LoaderManager.
 
     }
 
-    private void showDatePickerDialog(String title, int dialogId, String date){
-        GregorianCalendar cal = new GregorianCalendar();
-        if(date != null){
-            try {
-                cal.setTime(dateFormat.parse(date));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        DialogFragment dialogFragment = new DatePickerFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(DatePickerFragment.DATE_PICKER_ID, dialogId);
-        args.putString(DatePickerFragment.DATE_PICKER_TITLE, title);
-        args.putSerializable(DatePickerFragment.DATE_PICKER_DATE, cal.getTime());
-
-        dialogFragment.setArguments(args);
-        dialogFragment.show(getSupportFragmentManager(),"datePicker");
-    }
-
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
         Log.d(TAG, "onDateSet: STARTED");
@@ -204,6 +185,32 @@ public class TermAddEditCtrl extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         // Empty
+    }
+
+    /**
+     * Date selection dialog box.
+     * @param title of dialog box.
+     * @param dialogId of the dialog box.
+     * @param date selected.
+     */
+    private void showDatePickerDialog(String title, int dialogId, String date){
+        GregorianCalendar cal = new GregorianCalendar();
+        if(date != null){
+            try {
+                cal.setTime(dateFormat.parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        DialogFragment dialogFragment = new DatePickerFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(DatePickerFragment.DATE_PICKER_ID, dialogId);
+        args.putString(DatePickerFragment.DATE_PICKER_TITLE, title);
+        args.putSerializable(DatePickerFragment.DATE_PICKER_DATE, cal.getTime());
+
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getSupportFragmentManager(),"datePicker");
     }
 
     /**

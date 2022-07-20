@@ -2,6 +2,9 @@ package com.nelsonaraujo.academicorganizer.Models;
 
 import java.io.Serializable;
 
+/**
+ * Term data structure.
+ */
 public class Term implements Serializable {
     public static final long serialVersionUID = 20220605L; // Used date for base serialization
 

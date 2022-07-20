@@ -8,6 +8,9 @@ import android.view.View;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Click listener for the assessments recycler view.
+ */
 public class AssessmentsRvClickListener extends RecyclerView.SimpleOnItemTouchListener{
     private static final String TAG = "AssessmentsRvClickListener";
 

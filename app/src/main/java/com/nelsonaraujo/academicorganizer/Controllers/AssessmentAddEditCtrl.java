@@ -35,6 +35,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+/**
+ * Controller for the assessment add and edit layout.
+ */
 public class AssessmentAddEditCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, DatePickerDialog.OnDateSetListener{
     private static final String TAG = "AssessmentAddEditCtrl"; // For terminal logging
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

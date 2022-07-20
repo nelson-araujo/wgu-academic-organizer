@@ -3,7 +3,6 @@ package com.nelsonaraujo.academicorganizer.Models;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Database query and functionality. Only the {@link AppProvider} class is able to access it.
@@ -13,30 +12,6 @@ public class AppDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "AcademicOrganizer.db";
     private static final int DATABASE_VERSION = 1;
-
-    // AppDatabase instance
-    private static AppDatabase instance = null;
-
-    /**
-     * Constructor for the AppDatabase class.
-     * @param context Context
-     */
-    private AppDatabase(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    /**
-     * Get instance of the database helper object.
-     * @param context Content provider context.
-     * @return SQLite database helper object.
-     */
-    public static AppDatabase getInstance(Context context){
-        if(instance == null){
-            instance = new AppDatabase(context);
-        }
-
-        return instance;
-    }
 
     /**
      * Create the application database and tables if it doesn't exist.
@@ -87,11 +62,6 @@ public class AppDatabase extends SQLiteOpenHelper {
                 + AssessmentContract.Columns.COURSE_ID + " INTEGER NOT NULL"
                 +");";
 
-//        Log.d(TAG, "onCreate: " + sqlTermQuery); // todo: remove
-//        Log.d(TAG, "onCreate: " + sqlInstructorQuery); // todo: remove
-//        Log.d(TAG, "onCreate: " + sqlCourseQuery); // todo: remove
-//        Log.d(TAG, "onCreate: " + sqlAssessmentQuery); // todo: remove
-
         db.execSQL(sqlTermQuery);
         db.execSQL(sqlInstructorQuery);
         db.execSQL(sqlCourseQuery);
@@ -115,5 +85,29 @@ public class AppDatabase extends SQLiteOpenHelper {
                 throw new IllegalStateException("onUpgrade() unknown newVersion: " + newVersion);
         }
 
+    }
+
+    // AppDatabase instance
+    private static AppDatabase instance = null;
+
+    /**
+     * Constructor for the AppDatabase class.
+     * @param context Context
+     */
+    private AppDatabase(Context context){
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    /**
+     * Get instance of the database helper object.
+     * @param context Content provider context.
+     * @return SQLite database helper object.
+     */
+    public static AppDatabase getInstance(Context context){
+        if(instance == null){
+            instance = new AppDatabase(context);
+        }
+
+        return instance;
     }
 }

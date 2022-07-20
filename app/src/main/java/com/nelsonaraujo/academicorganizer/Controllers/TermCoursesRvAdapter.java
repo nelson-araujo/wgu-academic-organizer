@@ -1,7 +1,6 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,9 @@ import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.R;
 
+/**
+ * Adapter for the term courses recycler view.
+ */
 public class TermCoursesRvAdapter extends RecyclerView.Adapter<TermCoursesRvAdapter.CourseViewHolder>{
     private static final String TAG = "TermCoursesRvAdapter";
     private Cursor mCursor;
@@ -36,10 +38,7 @@ public class TermCoursesRvAdapter extends RecyclerView.Adapter<TermCoursesRvAdap
     @Override
     public void onBindViewHolder(@NonNull TermCoursesRvAdapter.CourseViewHolder holder, int position) {
 
-//        Log.d(TAG, "onBindViewHolder: ========= mCursor" + mCursor.getCount()); // todo: remove
-
         if( (mCursor == null) || (mCursor.getCount()==0) ){ // If no records are returned
-//            holder.title.setText("No courses found"); // todo: remove
         } else { // If records are returned
             if(!mCursor.moveToPosition(position)){
                 throw new IllegalStateException("Unable to move cursor to position " + position);

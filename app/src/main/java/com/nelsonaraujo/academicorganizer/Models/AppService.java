@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -15,48 +14,48 @@ import com.nelsonaraujo.academicorganizer.R;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Application service for application-out-of-focus notifications.
+ */
 public class AppService extends Service {
     private static final String TAG = "AppService";
 
-    public static final String CHN_UPCOMING_ASSESSMENT = "notificationChannelAssessment";
     public static final String CHN_DUE_TODAY = "notificationChannelDueToday";
     private int messageId = 100;
-
-    public static final String TYPE = "Notification type";
-    public static final String MESSAGE = "Notification message";
-    public static final String TYPE_UPCOMING_ASSESSMENT = "Upcoming assessment";
-    public static final String TYPE_COURSE = "Course due today";
-    public static final String TYPE_ASSESSMENT = "Assessment due today";
-
-
 
     public AppService() {
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "AppService onStartCommand:::::::::: START"); // todo: remove
+
+//        // START - TEST APP NOT IN FOCUS NOTIFICATIONS
+//        new CountDownTimer(30000, 1000) {
+//            public void onFinish() {
+//                notifyStartEndToday();
+//            }
+//
+//            public void onTick(long millisUntilFinished) {
+//                // millisUntilFinished    The amount of time until finished.
+//            }
+//        }.start();
+//        // END - TEST APP NOT IN FOCUS NOTIFICATIONS
+
 
         notifyStartEndToday();
 
         return super.onStartCommand(intent, flags, startId);
     }
 
-
     @Override
     public void onDestroy() {
-        Log.d(TAG, "AppService onDestroy:::::::::: START"); // todo: remove
-        // todo: stop tasks
         super.onDestroy();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "AppService onBind:::::::::: START"); // todo: remove
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
 
     /**
      * Notify user of start or ending assessments or courses.
@@ -75,15 +74,11 @@ public class AppService extends Service {
 
             // Check start
             if(start.isEqual(currentDate)){
-                Log.d(TAG, "getStartEndToday:::: " + assessment.getTitle() + " starts today."); // todo: remove
-
                 notifyUser(assessment.getTitle() + " starts today.");
             }
 
             // Check for end
             if(end.isEqual(currentDate)){
-                Log.d(TAG, "getStartEndToday:::: " + assessment.getTitle() + " ends today."); // todo: remove
-
                 notifyUser(assessment.getTitle() + " ends today.");
             }
         }
@@ -98,15 +93,11 @@ public class AppService extends Service {
 
             // Check start
             if(start.isEqual(currentDate)){
-                Log.d(TAG, "getStartEndToday:::: " + course.getTitle() + " starts today."); // todo: remove
-
                 notifyUser(course.getTitle() + " starts today.");
             }
 
             // Check for end
             if(end.isEqual(currentDate)){
-                Log.d(TAG, "getStartEndToday:::: " + course.getTitle() + " ends today."); // todo: remove
-
                 notifyUser(course.getTitle() + " ends today.");
             }
         }
@@ -194,10 +185,13 @@ public class AppService extends Service {
         return courses;
     }
 
+    /**
+     * Notify the user of activity.
+     * @param message message to display to the user.
+     */
     private void notifyUser(String message){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHN_DUE_TODAY)
                 .setSmallIcon(R.drawable.ic_logo)
-//                .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 

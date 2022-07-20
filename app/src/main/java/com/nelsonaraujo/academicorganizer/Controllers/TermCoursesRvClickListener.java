@@ -8,6 +8,9 @@ import android.view.View;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Click listener for the term courses recycler view.
+ */
 public class TermCoursesRvClickListener extends RecyclerView.SimpleOnItemTouchListener {
     private static final String TAG = "TermTermCoursesRvClickListener";
     
@@ -18,6 +21,22 @@ public class TermCoursesRvClickListener extends RecyclerView.SimpleOnItemTouchLi
     private final TermCoursesRvClickListener.OnTermCoursesRvClickListener mListener;
     private final GestureDetectorCompat mGestureDetector;
 
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        if(mGestureDetector != null) {
+            boolean result = mGestureDetector.onTouchEvent(e);
+            return result;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Term courses recycle view click listener.
+     * @param context
+     * @param recyclerView
+     * @param listener
+     */
     public TermCoursesRvClickListener(Context context, final RecyclerView recyclerView, TermCoursesRvClickListener.OnTermCoursesRvClickListener listener) {
         mListener = listener;
         mGestureDetector = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
@@ -30,22 +49,7 @@ public class TermCoursesRvClickListener extends RecyclerView.SimpleOnItemTouchLi
 
                 return true;
             }
-//
-//            @Override
-//            public void onLongPress(MotionEvent e) {
-//                Log.d(TAG, "onLongPress: start");
-//            }
         });
 
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        if(mGestureDetector != null) {
-            boolean result = mGestureDetector.onTouchEvent(e);
-            return result;
-        } else {
-            return false;
-        }
     }
 }

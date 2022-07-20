@@ -1,7 +1,6 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,9 @@ import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
+/**
+ * Adapter for the terms recycler view.
+ */
 class TermsRvAdapter extends RecyclerView.Adapter<TermsRvAdapter.TermViewHolder> {
     private static final String TAG = "TermsRvAdapter";
     private Cursor mCursor;

@@ -24,6 +24,9 @@ import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
 
+/**
+ * Controller for the terms layout.
+ */
 public class TermsCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, TermsRvClickListener.OnTermsRvClickListener {
     private static final String TAG = "Terms"; // For terminal logging
     public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
@@ -31,11 +34,6 @@ public class TermsCtrl extends AppCompatActivity implements LoaderManager.Loader
     private TermsRvAdapter mAdapter; // adapter reference
     private String sortOrder = TermContract.Columns.TITLE; // DB sort order
     private String whereSelection = null; // DB Where selection
-
-//    // Constructor
-//    public TermsCtrl(){
-//
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +60,6 @@ public class TermsCtrl extends AppCompatActivity implements LoaderManager.Loader
         });
     }
 
-    public void addTerm(Term term){
-        Intent addTermIntent = new Intent(TermsCtrl.this, TermAddEditCtrl.class);
-        if(term != null) { // editing a term
-            addTermIntent.putExtra(Term.class.getSimpleName(), term);
-            startActivity(addTermIntent);
-        } else { // Adding a new term
-            startActivity(addTermIntent);
-        }
-    }
-
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
@@ -80,7 +68,6 @@ public class TermsCtrl extends AppCompatActivity implements LoaderManager.Loader
 
         switch (id) {
             case LOADER_ID:
-//                ContentResolver contentResolver = getContentResolver(); // todo: remove
                 return new CursorLoader(this, TermContract.CONTENT_URI,projection,whereSelection,null, sortOrder);
 
             default:
@@ -110,12 +97,11 @@ public class TermsCtrl extends AppCompatActivity implements LoaderManager.Loader
         // Get a specific record
         long recordId = getRecordId(position);
         Cursor cursor = contentResolver.query(TermContract.buildTermUri(recordId), projection, null, null, TermContract.Columns.TITLE);
-//        Cursor cursor = contentResolver.query(TermContract.buildTermUri(position+1), projection, null, null, TermContract.Columns.TITLE); // todo: remove
 
         // Get term
         Term selectedTerm = new Term(0,null,null,null);
         if(cursor != null){
-            while(cursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+            while(cursor.moveToNext()){
                 // Populate term
                 selectedTerm = new Term(cursor.getLong(cursor.getColumnIndexOrThrow(TermContract.Columns._ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.TITLE)),
@@ -130,32 +116,6 @@ public class TermsCtrl extends AppCompatActivity implements LoaderManager.Loader
         termIntent.putExtra(Term.class.getSimpleName(), selectedTerm);
         startActivity(termIntent);
     }
-
-    /**
-     * Calculate the actual id of the row selected.
-     * @param position RV position tapped.
-     * @return id number of entry.
-     */
-    private long getRecordId(int position){
-        // Get the content resolver
-        ContentResolver contentResolver = getContentResolver();
-
-        String[] projection = {TermContract.Columns._ID};
-        Cursor cursor = contentResolver.query(TermContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
-
-        if( (cursor == null) || (cursor.getCount()==0) ){ // If no records are returned
-            return -1; // Unable to determine position
-        } else {
-            if (!cursor.moveToPosition(position)) {
-                throw new IllegalStateException("Unable to move cursor to position " + position);
-            }
-
-            // move to position
-            cursor.moveToPosition(position);
-            return cursor.getLong(cursor.getColumnIndexOrThrow(TermContract.Columns._ID));
-        }
-    }
-
 
     /**
      * Application bar menu.
@@ -193,5 +153,44 @@ public class TermsCtrl extends AppCompatActivity implements LoaderManager.Loader
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Add a term. Function accepts a term for editing, if one is provided it edit the term otherwise it adds.
+     * @param term to edit.
+     */
+    public void addTerm(Term term){
+        Intent addTermIntent = new Intent(TermsCtrl.this, TermAddEditCtrl.class);
+        if(term != null) { // editing a term
+            addTermIntent.putExtra(Term.class.getSimpleName(), term);
+            startActivity(addTermIntent);
+        } else { // Adding a new term
+            startActivity(addTermIntent);
+        }
+    }
+
+    /**
+     * Calculate the actual id of the row selected.
+     * @param position RV position tapped.
+     * @return id number of entry.
+     */
+    private long getRecordId(int position){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        String[] projection = {TermContract.Columns._ID};
+        Cursor cursor = contentResolver.query(TermContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
+
+        if( (cursor == null) || (cursor.getCount()==0) ){ // If no records are returned
+            return -1; // Unable to determine position
+        } else {
+            if (!cursor.moveToPosition(position)) {
+                throw new IllegalStateException("Unable to move cursor to position " + position);
+            }
+
+            // move to position
+            cursor.moveToPosition(position);
+            return cursor.getLong(cursor.getColumnIndexOrThrow(TermContract.Columns._ID));
+        }
     }
 }

@@ -23,7 +23,6 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.DatePickerFragment;
@@ -40,6 +39,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+/**
+ * Controller for the course add and edit layout.
+ */
 public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, DatePickerDialog.OnDateSetListener {
     private static final String TAG = "CourseAddEditCtrl"; // For terminal logging
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -93,7 +95,7 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
                 mCursor = contentResolver.query(TermContract.buildTermUri(course.getTermId()), projection, null,null,null);
                 String termName = "Unknown";
                 if(mCursor != null){
-                    while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+                    while(mCursor.moveToNext()){
                         termName = mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TITLE));
                     }
                 }
@@ -104,7 +106,7 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
                 mCursor = contentResolver.query(InstructorContract.buildInstructorUri(course.getInstructorId()), projection, null,null,null);
                 String instructorName="Unknown", instructorEmail="Unknown", instructorPhone="Unknown";
                 if(mCursor != null){
-                    while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+                    while(mCursor.moveToNext()){
                         instructorName = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.NAME));
                         instructorEmail = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.EMAIL));
                         instructorPhone = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.PHONE));
@@ -277,24 +279,11 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
         });
     }
 
-    private void showDatePickerDialog(String title, int dialogId, String date){
-        GregorianCalendar cal = new GregorianCalendar();
-        if(date != null){
-            try {
-                cal.setTime(dateFormat.parse(date));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        DialogFragment dialogFragment = new DatePickerFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(DatePickerFragment.DATE_PICKER_ID, dialogId);
-        args.putString(DatePickerFragment.DATE_PICKER_TITLE, title);
-        args.putSerializable(DatePickerFragment.DATE_PICKER_DATE, cal.getTime());
-
-        dialogFragment.setArguments(args);
-        dialogFragment.show(getSupportFragmentManager(),"datePicker");
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        // Empty
+        return null;
     }
 
     @Override
@@ -320,13 +309,6 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
         }
     }
 
-    @NonNull
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        // Empty
-        return null;
-    }
-
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         // Empty
@@ -335,6 +317,32 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         // Empty
+    }
+
+    /**
+     * Display the date selection dialog.
+     * @param title Tile of the dialog
+     * @param dialogId dialog id.
+     * @param date date selected.
+     */
+    private void showDatePickerDialog(String title, int dialogId, String date){
+        GregorianCalendar cal = new GregorianCalendar();
+        if(date != null){
+            try {
+                cal.setTime(dateFormat.parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        DialogFragment dialogFragment = new DatePickerFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(DatePickerFragment.DATE_PICKER_ID, dialogId);
+        args.putString(DatePickerFragment.DATE_PICKER_TITLE, title);
+        args.putSerializable(DatePickerFragment.DATE_PICKER_DATE, cal.getTime());
+
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getSupportFragmentManager(),"datePicker");
     }
 
     /**
@@ -446,7 +454,6 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
                 InstructorContract.Columns.PHONE};
 
         // Query database
-        Log.d(TAG, "getInstructor: courseId: " + courseId); // todo: remove
 //        Cursor cursor = contentResolver.query(InstructorContract.CONTENT_URI,projection,null,null);
         Cursor cursor = contentResolver.query(InstructorContract.buildInstructorUri(courseId), projection,null,null);
 
@@ -463,8 +470,6 @@ public class CourseAddEditCtrl extends AppCompatActivity implements LoaderManage
         }
 
         cursor.close();
-
-        Log.d(TAG, "getInstructor: Instructor: " + instructor.toString()); // todo: remove
 
         return instructor;
     }

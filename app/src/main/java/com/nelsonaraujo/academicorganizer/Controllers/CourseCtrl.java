@@ -1,12 +1,9 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
-import android.app.appsearch.AppSearchSession;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,20 +20,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.nelsonaraujo.academicorganizer.AcademicOrganizer;
 import com.nelsonaraujo.academicorganizer.Models.AppDialog;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.InstructorContract;
-import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
+/**
+ * Controller for the course layout.
+ */
 public class CourseCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
                                                                 CourseAssessmentsRvClickListener.OnCourseAssessmentsRvClickListener,
                                                                 AppDialog.DialogEvents{
@@ -56,10 +54,8 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
     private TextView mNoteTv;
 
     private Cursor mCursor;
-    // ********** Recycle View setup start *****************************************************
     private CourseAssessmentsRvAdapter mAdapter;
     private Course mCourse = null;
-    // ********** Recycle View setup end   *****************************************************
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +86,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mCursor = contentResolver.query(TermContract.buildTermUri(mCourse.getTermId()), projection, null,null,null);
         String termName = "Unknown";
         if(mCursor != null){
-            while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+            while(mCursor.moveToNext()){
                 termName = mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TITLE));
             }
         }
@@ -101,7 +97,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mCursor = contentResolver.query(InstructorContract.buildInstructorUri(mCourse.getInstructorId()), projection, null,null,null);
         String instructorName="Unknown", instructorEmail="Unknown", instructorPhone="Unknown";
         if(mCursor != null){
-            while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+            while(mCursor.moveToNext()){
                 instructorName = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.NAME));
                 instructorEmail = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.EMAIL));
                 instructorPhone = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.PHONE));
@@ -155,7 +151,6 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
             }
         });
 
-        // ********** Recycle View setup start *****************************************************
         LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
 
         // Create adapter and pass data
@@ -165,7 +160,6 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         coursesRv.setLayoutManager(new LinearLayoutManager(this));
         coursesRv.addOnItemTouchListener(new CourseAssessmentsRvClickListener(this, coursesRv, this));
         coursesRv.setAdapter(mAdapter);
-        // ********** Recycle View setup end   *****************************************************
     }
 
     @NonNull
@@ -213,7 +207,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         // Get assessment
         Assessment selection = new Assessment(0,null,null,null,null,null);
         if(mCursor != null){
-            while(mCursor.moveToNext()){ // todo: Why does assigning to selection return a -1 when outside loop? -1 mean column not found.
+            while(mCursor.moveToNext()){
                 // Populate selection
                 selection = new Assessment(mCursor.getLong(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID)),
                         mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.TITLE)),
@@ -300,7 +294,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
 
         // Set course
         if (mCursor != null) {
-            while (mCursor.moveToNext()) { // todo: Why does assigning to selected return a -1 when outside loop? -1 mean column not found.
+            while (mCursor.moveToNext()) {
                 // Populate course
                 mCourse = new Course(mCursor.getLong(mCursor.getColumnIndexOrThrow(CourseContract.Columns._ID)),
                         mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.TITLE)),
@@ -319,7 +313,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mCursor = termContentResolver.query(TermContract.buildTermUri(mCourse.getTermId()), termProjection, null,null,null);
         String termName = "Unknown";
         if(mCursor != null){
-            while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+            while(mCursor.moveToNext()){
                 termName = mCursor.getString(mCursor.getColumnIndexOrThrow(TermContract.Columns.TITLE));
             }
         }
@@ -330,7 +324,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mCursor = instructorContentResolver.query(InstructorContract.buildInstructorUri(mCourse.getInstructorId()), instructorProjection, null,null,null);
         String instructorName="Unknown", instructorEmail="Unknown", instructorPhone="Unknown";
         if(mCursor != null){
-            while(mCursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+            while(mCursor.moveToNext()){
                 instructorName = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.NAME));
                 instructorEmail = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.EMAIL));
                 instructorPhone = mCursor.getString(mCursor.getColumnIndexOrThrow(InstructorContract.Columns.PHONE));
@@ -347,6 +341,44 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mInstructorEmailTv.setText(instructorEmail);
         mInstructorPhoneTv.setText(instructorPhone);
         mNoteTv.setText(mCourse.getNote());
+    }
+
+    /**
+     * Application bar menu.
+     * @param menu Menu.
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * Application bar menu item selection.
+     * @param item Item selected.
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.appbar_terms:
+                Intent termsIntent = new Intent(this, TermsCtrl.class);
+                startActivity(termsIntent);
+                break;
+
+            case R.id.appbar_courses:
+                Intent coursesIntent = new Intent(this, CoursesCtrl.class);
+                startActivity(coursesIntent);
+                break;
+
+            case R.id.appbar_assessments:
+                Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
+                startActivity(assessmentsIntent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -470,42 +502,4 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         return assessments;
     }
 
-
-    /**
-     * Application bar menu.
-     * @param menu Menu.
-     * @return
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    /**
-     * Application bar menu item selection.
-     * @param item Item selected.
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.appbar_terms:
-                Intent termsIntent = new Intent(this, TermsCtrl.class);
-                startActivity(termsIntent);
-                break;
-
-            case R.id.appbar_courses:
-                Intent coursesIntent = new Intent(this, CoursesCtrl.class);
-                startActivity(coursesIntent);
-                break;
-
-            case R.id.appbar_assessments:
-                Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
-                startActivity(assessmentsIntent);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

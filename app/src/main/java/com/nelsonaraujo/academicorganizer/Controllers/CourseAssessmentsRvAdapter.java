@@ -13,6 +13,9 @@ import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.R;
 
+/**
+ * Adapter for the course assessments recycler view adapter.
+ */
 public class CourseAssessmentsRvAdapter extends RecyclerView.Adapter<CourseAssessmentsRvAdapter.AssessmentViewHolder>{
     private static final String TAG = "CourseAssessmentRvAdapter";
     private Cursor mCursor;
@@ -34,11 +37,8 @@ public class CourseAssessmentsRvAdapter extends RecyclerView.Adapter<CourseAsses
 
     @Override
     public void onBindViewHolder(@NonNull CourseAssessmentsRvAdapter.AssessmentViewHolder holder, int position) {
-
-//        Log.d(TAG, "onBindViewHolder: ========= mCursor" + mCursor.getCount()); // todo: remove
-
         if( (mCursor == null) || (mCursor.getCount()==0) ){ // If no records are returned
-//            // Display nothing
+            // Display nothing
         } else { // If records are returned
             if(!mCursor.moveToPosition(position)){
                 throw new IllegalStateException("Unable to move cursor to position " + position);

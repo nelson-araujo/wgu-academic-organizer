@@ -14,22 +14,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.nelsonaraujo.academicorganizer.AcademicOrganizer;
 import com.nelsonaraujo.academicorganizer.Models.AppDialog;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
-import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
-import com.nelsonaraujo.academicorganizer.Models.Instructor;
-import com.nelsonaraujo.academicorganizer.Models.InstructorContract;
-import com.nelsonaraujo.academicorganizer.Models.Term;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
-import java.util.ArrayList;
-import java.util.Date;
-
-
+/**
+ * Controller for the assessment layout.
+ */
 public class AssessmentCtrl extends AppCompatActivity implements AppDialog.DialogEvents{
     private static final String TAG = "AssessmentCtrl"; // For terminal logging
 
@@ -89,33 +83,6 @@ public class AssessmentCtrl extends AppCompatActivity implements AppDialog.Dialo
         });
     }
 
-    private void onEditFabClick(Assessment assessment){
-        // Display
-        Intent intent = new Intent(this, AssessmentAddEditCtrl.class);
-        intent.putExtra(Assessment.class.getSimpleName(), assessment);
-        startActivity(intent);
-    }
-
-    private void onDeleteFabClick(Assessment assessment){
-        Log.d(TAG, "onDeleteFabClick: " + AssessmentContract.buildAssessmentUri(assessment.getId())); // todo: remove
-
-        AppDialog dialog = new AppDialog();
-        Bundle args = new Bundle();
-        args.putInt(AppDialog.DIALOG_ID, DELETE_DIALOG_ID);
-        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deleteAssessmentDialog_message, assessment.getId(), assessment.getTitle()));
-        args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deleteDialog_positive_caption);
-
-        args.putLong("AssessmentId", assessment.getId()); // Add id to bundle
-
-        dialog.setArguments(args);
-        dialog.show(getSupportFragmentManager(),null);
-
-
-//        getContentResolver().delete(AssessmentContract.buildAssessmentUri(assessment.getId()), null, null);
-//        finish();
-    }
-
-
     @Override
     public void onDialogPositiveResponse(int dialogId, Bundle args) {
         long assessmentId = args.getLong("AssessmentId"); // get the id from the bundle.
@@ -158,7 +125,7 @@ public class AssessmentCtrl extends AppCompatActivity implements AppDialog.Dialo
 
         // Set assessment
         if(mCursor != null){
-            while(mCursor.moveToNext()) { // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+            while(mCursor.moveToNext()) {
                 // Populate assessment
                 mAssessment = new Assessment(mCursor.getLong(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID)),
                         mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.TITLE)),
@@ -176,6 +143,38 @@ public class AssessmentCtrl extends AppCompatActivity implements AppDialog.Dialo
         mEndTv.setText(mAssessment.getEnd());
         mCourseTv.setText(getCourseName(mAssessment.getCourseId()));
 
+    }
+
+    /**
+     * Action to be taken when the edit button is pressed.
+     * @param assessment assessment selected.
+     */
+    private void onEditFabClick(Assessment assessment){
+        // Display
+        Intent intent = new Intent(this, AssessmentAddEditCtrl.class);
+        intent.putExtra(Assessment.class.getSimpleName(), assessment);
+        startActivity(intent);
+    }
+
+    /**
+     * Action to be taken when the delete button is pressed.
+     * @param assessment assessment to be deleted.
+     */
+    private void onDeleteFabClick(Assessment assessment){
+        AppDialog dialog = new AppDialog();
+        Bundle args = new Bundle();
+        args.putInt(AppDialog.DIALOG_ID, DELETE_DIALOG_ID);
+        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deleteAssessmentDialog_message, assessment.getId(), assessment.getTitle()));
+        args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deleteDialog_positive_caption);
+
+        args.putLong("AssessmentId", assessment.getId()); // Add id to bundle
+
+        dialog.setArguments(args);
+        dialog.show(getSupportFragmentManager(),null);
+
+
+//        getContentResolver().delete(AssessmentContract.buildAssessmentUri(assessment.getId()), null, null);
+//        finish();
     }
 
     /**
@@ -204,7 +203,6 @@ public class AssessmentCtrl extends AppCompatActivity implements AppDialog.Dialo
 
         return null;
     }
-
 
     /**
      * Application bar menu.

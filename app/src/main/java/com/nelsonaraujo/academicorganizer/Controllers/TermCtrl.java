@@ -37,6 +37,9 @@ import com.nelsonaraujo.academicorganizer.R;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
+/**
+ * Controller for the term layout.
+ */
 public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
                                                             TermCoursesRvClickListener.OnTermCoursesRvClickListener,
                                                             AppDialog.DialogEvents{
@@ -68,7 +71,6 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         Bundle arguments = getIntent().getExtras();
 
         // Create a Term and populate with the actual task to confirm it exists
-//        final Term term; // todo update
         mTerm = (Term) arguments.getSerializable(Term.class.getSimpleName());
 
         // Set TextViews
@@ -81,10 +83,6 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
-
                 onEditFabClick(mTerm); // call addTerm and pass term.
 
             }
@@ -108,7 +106,6 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
             }
         });
 
-        // ********** Recycle View setup start *****************************************************
         LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
 
         // Create adapter and pass data
@@ -118,7 +115,6 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         coursesRv.setLayoutManager(new LinearLayoutManager(this));
         coursesRv.addOnItemTouchListener(new TermCoursesRvClickListener(this, coursesRv, this));
         coursesRv.setAdapter(mAdapter);
-        // ********** Recycle View setup end   *****************************************************
     }
 
     @NonNull
@@ -170,7 +166,7 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         // Get course
         Course selection = new Course(0,null,null,null,null,null,null,null);
         if(mCursor != null){
-            while(mCursor.moveToNext()){ // todo: Why does assigning to selection return a -1 when outside loop? -1 mean column not found.
+            while(mCursor.moveToNext()){
                 // Populate selection
                 selection = new Course(mCursor.getLong(mCursor.getColumnIndexOrThrow(CourseContract.Columns._ID)),
                         mCursor.getString(mCursor.getColumnIndexOrThrow(CourseContract.Columns.TITLE)),
@@ -270,7 +266,7 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         // Set term
 //        mTerm = new Term(0,null,null,null);
         if(cursor != null){
-            while(cursor.moveToNext()){ // todo: Why does assigning to selectedTerm return a -1 when outside loop? -1 mean column not found.
+            while(cursor.moveToNext()){
                 // Populate term
                 mTerm = new Term(cursor.getLong(cursor.getColumnIndexOrThrow(TermContract.Columns._ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(TermContract.Columns.TITLE)),
@@ -285,6 +281,44 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         mStartTv.setText(mTerm.getStart());
         mEndTv.setText(mTerm.getEnd());
 
+    }
+
+    /**
+     * Application bar menu.
+     * @param menu Menu.
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * Application bar menu item selection.
+     * @param item Item selected.
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.appbar_terms:
+                Intent termsIntent = new Intent(this, TermsCtrl.class);
+                startActivity(termsIntent);
+                break;
+
+            case R.id.appbar_courses:
+                Intent coursesIntent = new Intent(this, CoursesCtrl.class);
+                startActivity(coursesIntent);
+                break;
+
+            case R.id.appbar_assessments:
+                Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
+                startActivity(assessmentsIntent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -459,44 +493,5 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         cursor.close();
 
         return courses;
-    }
-
-
-    /**
-     * Application bar menu.
-     * @param menu Menu.
-     * @return
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    /**
-     * Application bar menu item selection.
-     * @param item Item selected.
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.appbar_terms:
-                Intent termsIntent = new Intent(this, TermsCtrl.class);
-                startActivity(termsIntent);
-                break;
-
-            case R.id.appbar_courses:
-                Intent coursesIntent = new Intent(this, CoursesCtrl.class);
-                startActivity(coursesIntent);
-                break;
-
-            case R.id.appbar_assessments:
-                Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
-                startActivity(assessmentsIntent);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

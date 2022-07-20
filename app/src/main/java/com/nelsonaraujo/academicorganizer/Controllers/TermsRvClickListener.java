@@ -8,7 +8,9 @@ import android.view.View;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-// TermsRvClickListener
+/**
+ * Terms recycle view click listener.
+ */
 class TermsRvClickListener extends RecyclerView.SimpleOnItemTouchListener {
     private static final String TAG = "RecyclerItemClickListen";
 
@@ -19,6 +21,22 @@ class TermsRvClickListener extends RecyclerView.SimpleOnItemTouchListener {
     private final OnTermsRvClickListener mListener;
     private final GestureDetectorCompat mGestureDetector;
 
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        if(mGestureDetector != null) {
+            boolean result = mGestureDetector.onTouchEvent(e);
+            return result;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Terms recycle view listener.
+     * @param context
+     * @param recyclerView
+     * @param listener
+     */
     public TermsRvClickListener(Context context, final RecyclerView recyclerView, OnTermsRvClickListener listener) {
         mListener = listener;
         mGestureDetector = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
@@ -31,22 +49,7 @@ class TermsRvClickListener extends RecyclerView.SimpleOnItemTouchListener {
 
                 return true;
             }
-//
-//            @Override
-//            public void onLongPress(MotionEvent e) {
-//                Log.d(TAG, "onLongPress: start");
-//            }
         });
 
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        if(mGestureDetector != null) {
-            boolean result = mGestureDetector.onTouchEvent(e);
-            return result;
-        } else {
-            return false;
-        }
     }
 }

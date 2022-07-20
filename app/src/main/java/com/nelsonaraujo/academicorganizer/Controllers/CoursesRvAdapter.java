@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nelsonaraujo.academicorganizer.Models.Course;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
-import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
-import java.sql.Date;
-
+/**
+ * Adapter for the courses recycler view.
+ */
 public class CoursesRvAdapter extends RecyclerView.Adapter<CoursesRvAdapter.CourseViewHolder>{
     private static final String TAG = "CoursesRvAdapter";
     private Cursor mCursor;

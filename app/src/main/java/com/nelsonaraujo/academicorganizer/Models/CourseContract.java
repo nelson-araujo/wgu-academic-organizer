@@ -7,6 +7,9 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+/**
+ * Course database structure details and content provider URI manipulation.
+ */
 public class CourseContract {
     static final String TABLE_NAME = "course";
 

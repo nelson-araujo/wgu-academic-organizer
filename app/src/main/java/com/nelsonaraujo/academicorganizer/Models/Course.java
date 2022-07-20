@@ -1,7 +1,6 @@
 package com.nelsonaraujo.academicorganizer.Models;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 /**
  * Course data structure.

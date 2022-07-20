@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,13 +19,15 @@ import com.nelsonaraujo.academicorganizer.Controllers.AssessmentsCtrl;
 import com.nelsonaraujo.academicorganizer.Controllers.CoursesCtrl;
 import com.nelsonaraujo.academicorganizer.Controllers.TermsCtrl;
 import com.nelsonaraujo.academicorganizer.Models.AppNotification;
-import com.nelsonaraujo.academicorganizer.Models.AppService;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Main Academic Organizer activity.
+ */
 public class AcademicOrganizer extends AppCompatActivity{
     private static final String TAG = "AcademicOrganizer"; // For terminal logging
 
@@ -117,8 +118,6 @@ public class AcademicOrganizer extends AppCompatActivity{
      * Notify user if there are upcoming assessments starting in the next five days.
      */
     private void startupAssessmentNotification(){
-        Log.d(TAG, "AcademicOrganizer startUpNotification:::::::::: START"); // todo: remove
-
         // Setup startup notifications
         ArrayList<Assessment> assessments = getAssessments();
         ArrayList<Assessment> upcomingAssessments = new ArrayList<Assessment>();
@@ -194,9 +193,6 @@ public class AcademicOrganizer extends AppCompatActivity{
                 assessments.add(assessment);
             }
         }
-
-//        Intent intent = new Intent(AssessmentsCtrl.this, AssessmentCtrl.class);
-//        intent.putExtra(Assessment.class.getSimpleName(), selection);
 
         return assessments;
     }

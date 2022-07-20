@@ -8,6 +8,9 @@ import android.view.View;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Click listener for the courses recycler view.
+ */
 public class CoursesRvClickListener extends RecyclerView.SimpleOnItemTouchListener {
     private static final String TAG = "CoursesRvClickListener";
 
@@ -18,27 +21,6 @@ public class CoursesRvClickListener extends RecyclerView.SimpleOnItemTouchListen
     private final CoursesRvClickListener.OnCoursesRvClickListener mListener;
     private final GestureDetectorCompat mGestureDetector;
 
-    public CoursesRvClickListener(Context context, final RecyclerView recyclerView, CoursesRvClickListener.OnCoursesRvClickListener listener) {
-        mListener = listener;
-        mGestureDetector = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-            View childView = recyclerView.findChildViewUnder(e.getX(),e.getY());
-            if(childView != null && mListener != null){
-                mListener.onCourseClick(childView,recyclerView.getChildAdapterPosition(childView));
-            }
-
-            return true;
-            }
-//
-//            @Override
-//            public void onLongPress(MotionEvent e) {
-//                Log.d(TAG, "onLongPress: start");
-//            }
-        });
-
-    }
-
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
         if(mGestureDetector != null) {
@@ -47,5 +29,27 @@ public class CoursesRvClickListener extends RecyclerView.SimpleOnItemTouchListen
         } else {
             return false;
         }
+    }
+
+    /**
+     * Courses recycler view click listener.
+     * @param context
+     * @param recyclerView
+     * @param listener
+     */
+    public CoursesRvClickListener(Context context, final RecyclerView recyclerView, CoursesRvClickListener.OnCoursesRvClickListener listener) {
+        mListener = listener;
+        mGestureDetector = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                View childView = recyclerView.findChildViewUnder(e.getX(),e.getY());
+                if(childView != null && mListener != null){
+                    mListener.onCourseClick(childView,recyclerView.getChildAdapterPosition(childView));
+                }
+
+                return true;
+            }
+        });
+
     }
 }

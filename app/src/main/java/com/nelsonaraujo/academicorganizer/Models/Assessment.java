@@ -1,8 +1,10 @@
 package com.nelsonaraujo.academicorganizer.Models;
 
 import java.io.Serializable;
-import java.util.Date;
 
+/**
+ * Assessment data structure.
+ */
 public class Assessment implements Serializable {
     public static final long serialVersionUID = 20220712L; // Use integer date for base serialization
 

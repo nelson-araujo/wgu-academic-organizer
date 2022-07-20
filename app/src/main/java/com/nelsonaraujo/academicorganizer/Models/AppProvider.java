@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +31,6 @@ public class AppProvider extends ContentProvider {
     private static final int COURSE_ID = 301;
     private static final int ASSESSMENT = 400;
     private static final int ASSESSMENT_ID = 401;
-
 
     private static UriMatcher buildUriMatcher(){
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);

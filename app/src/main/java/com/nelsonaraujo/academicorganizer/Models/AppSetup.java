@@ -1,20 +1,13 @@
 package com.nelsonaraujo.academicorganizer.Models;
 
-import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
-
 import android.app.ActivityManager;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Build;
 import android.util.Log;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 /**
  * Configuration to be applied when the application starts up.
@@ -43,8 +36,6 @@ public class AppSetup extends Application {
      * Create application's notification channels.
      */
     private void createNotificationChannels(){
-        Log.d(TAG, "createNotificationChannels: STARTED"); // todo: remove
-
         // Confirm Android version is Oreo (25) or higher.
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             // Setup the assessments channel
@@ -77,6 +68,11 @@ public class AppSetup extends Application {
         }
     }
 
+    /**
+     * Check if the a service is running.
+     * @param serviceClass Service to check.
+     * @return True if it's running otherwise false.
+     */
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {

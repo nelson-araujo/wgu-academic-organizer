@@ -15,9 +15,9 @@ import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.R;
 
-import java.text.ParseException;
-import java.util.Date;
-
+/**
+ * Adapter for the assessments recycler view.
+ */
 public class AssessmentsRvAdapter extends RecyclerView.Adapter<AssessmentsRvAdapter.AssessmentViewHolder> {
     private static final String TAG = "AssessmentsRvAdapter";
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

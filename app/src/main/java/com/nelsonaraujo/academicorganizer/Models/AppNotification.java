@@ -3,19 +3,19 @@ package com.nelsonaraujo.academicorganizer.Models;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.nelsonaraujo.academicorganizer.R;
 
+/**
+ * In application notifications.
+ */
 public class AppNotification extends BroadcastReceiver{
-//public class AppNotification extends BroadcastReceiver{
     private static final String TAG = "AppNotification";
 
     public static final String CHN_UPCOMING_ASSESSMENT = "notificationChannelAssessment";
-    public static final String CHN_DUE_TODAY = "notificationChannelDueToday";
 
     public static final String TYPE = "Notification type";
     public static final String MESSAGE = "Notification message";
@@ -23,11 +23,8 @@ public class AppNotification extends BroadcastReceiver{
     public static final String TYPE_COURSE = "Course due today";
     public static final String TYPE_ASSESSMENT = "Assessment due today";
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "AppNotification onReceive:::::::::: START"); // todo: remove
-
         String notificationType = intent.getStringExtra(TYPE);
         String notificationMessage = intent.getStringExtra(MESSAGE);
 

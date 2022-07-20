@@ -13,6 +13,9 @@ import androidx.fragment.app.DialogFragment;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * Dialog fragment for the date selection dialog.
+ */
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     public static final String DATE_PICKER_ID = "ID";
     public static final String DATE_PICKER_TITLE = "TITLE";

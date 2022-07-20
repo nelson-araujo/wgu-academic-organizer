@@ -7,6 +7,9 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+/**
+ * Term database structure details and content provider URI manipulation.
+ */
 public class TermContract {
     static final String TABLE_NAME = "term";
 
@@ -27,10 +30,20 @@ public class TermContract {
     static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + CONTENT_AUTHORITY + "." + TABLE_NAME;
     static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + CONTENT_AUTHORITY + "." + TABLE_NAME;
 
+    /**
+     * Build the term uri with the id appended.
+     * @param termId term id to append.
+     * @return uri with id appended.
+     */
     public static Uri buildTermUri(long termId){
         return ContentUris.withAppendedId(CONTENT_URI, termId);
     }
 
+    /**
+     * Get the term id from the uri.
+     * @param uri uri with the id.
+     * @return id
+     */
     static long getTermId(Uri uri){
         return ContentUris.parseId(uri);
     }

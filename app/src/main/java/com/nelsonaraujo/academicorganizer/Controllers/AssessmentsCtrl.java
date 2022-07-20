@@ -18,15 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.nelsonaraujo.academicorganizer.AcademicOrganizer;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
-import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
-import java.sql.Date;
 
+/**
+ * Controller for the assessments layout.
+ */
 public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, AssessmentsRvClickListener.OnAssessmentsRvClickListener{
     private static final String TAG = "AssessmentsCtrl"; // For terminal logging
 
@@ -65,16 +65,6 @@ public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.
                 addAssessment(null); // Pass null to create a new entry.
             }
         });
-    }
-
-    public void addAssessment(Assessment assessment){
-        Intent intent = new Intent(AssessmentsCtrl.this, AssessmentAddEditCtrl.class);
-        if(assessment != null) { // Edit
-            intent.putExtra(Assessment.class.getSimpleName(), assessment);
-            startActivity(intent);
-        } else { // New
-            startActivity(intent);
-        }
     }
 
     @NonNull
@@ -128,7 +118,7 @@ public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.
         // Get Assessment
         Assessment selection = new Assessment(0,null,null,null,null,null);
         if(mCursor != null){
-            while(mCursor.moveToNext()){ // todo: Why does assigning to selection return a -1 when outside loop? -1 mean column not found.
+            while(mCursor.moveToNext()){
                 // Populate selection
                 selection = new Assessment(mCursor.getLong(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID)),
                         mCursor.getString(mCursor.getColumnIndexOrThrow(AssessmentContract.Columns.TITLE)),
@@ -144,32 +134,6 @@ public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.
         intent.putExtra(Assessment.class.getSimpleName(), selection);
         startActivity(intent);
     }
-
-    /**
-     * Calculate the actual id of the row selected.
-     * @param position RV position tapped.
-     * @return id number of entry.
-     */
-    private long getRecordId(int position){
-        // Get the content resolver
-        ContentResolver contentResolver = getContentResolver();
-
-        String[] projection = {AssessmentContract.Columns._ID};
-        Cursor cursor = contentResolver.query(AssessmentContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
-
-        if( (cursor == null) || (cursor.getCount()==0) ){ // If no records are returned
-            return -1; // Unable to determine position
-        } else {
-            if (!cursor.moveToPosition(position)) {
-                throw new IllegalStateException("Unable to move cursor to position " + position);
-            }
-
-            // move to position
-            cursor.moveToPosition(position);
-            return cursor.getLong(cursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID));
-        }
-    }
-
 
     /**
      * Application bar menu.
@@ -207,5 +171,45 @@ public class AssessmentsCtrl extends AppCompatActivity implements LoaderManager.
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Action to be taken when the add assessment button is pressed. Provided a check
+     * to see if an assessment was passed in, if so it edit otherwise it adds.
+     * @param assessment assessment that is selected.
+     */
+    public void addAssessment(Assessment assessment){
+        Intent intent = new Intent(AssessmentsCtrl.this, AssessmentAddEditCtrl.class);
+        if(assessment != null) { // Edit
+            intent.putExtra(Assessment.class.getSimpleName(), assessment);
+            startActivity(intent);
+        } else { // New
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * Calculate the actual id of the row selected.
+     * @param position RV position tapped.
+     * @return id number of entry.
+     */
+    private long getRecordId(int position){
+        // Get the content resolver
+        ContentResolver contentResolver = getContentResolver();
+
+        String[] projection = {AssessmentContract.Columns._ID};
+        Cursor cursor = contentResolver.query(AssessmentContract.CONTENT_URI, projection, whereSelection, null, sortOrder);
+
+        if( (cursor == null) || (cursor.getCount()==0) ){ // If no records are returned
+            return -1; // Unable to determine position
+        } else {
+            if (!cursor.moveToPosition(position)) {
+                throw new IllegalStateException("Unable to move cursor to position " + position);
+            }
+
+            // move to position
+            cursor.moveToPosition(position);
+            return cursor.getLong(cursor.getColumnIndexOrThrow(AssessmentContract.Columns._ID));
+        }
     }
 }
