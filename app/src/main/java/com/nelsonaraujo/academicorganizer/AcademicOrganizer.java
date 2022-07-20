@@ -1,5 +1,6 @@
 package com.nelsonaraujo.academicorganizer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
@@ -10,6 +11,8 @@ import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -72,18 +75,43 @@ public class AcademicOrganizer extends AppCompatActivity{
         });
     }
 
-//    @Override
-//    protected void onStop () {
-//        Log.d(TAG, "AcademicOrganizer onStop:::::::::: START");
-////            Intent intent = new Intent(this, AppService.class);
-////
-////            intent.putExtra(AppService.TYPE, AppService.TYPE_UPCOMING_ASSESSMENT);
-////            intent.putExtra(AppService.MESSAGE, upcomingAssessmentsString);
-////
-////            startService(intent) ;
-//
-//        super .onStop() ;
-//    }
+    /**
+     * Application bar menu.
+     * @param menu Menu.
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * Application bar menu item selection.
+     * @param item Item selected.
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.appbar_terms:
+                Intent termsIntent = new Intent(AcademicOrganizer.this, TermsCtrl.class);
+                startActivity(termsIntent);
+                break;
+
+            case R.id.appbar_courses:
+                Intent coursesIntent = new Intent(AcademicOrganizer.this, CoursesCtrl.class);
+                startActivity(coursesIntent);
+                break;
+
+            case R.id.appbar_assessments:
+                Intent assessmentsIntent = new Intent(AcademicOrganizer.this, AssessmentsCtrl.class);
+                startActivity(assessmentsIntent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * Notify user if there are upcoming assessments starting in the next five days.

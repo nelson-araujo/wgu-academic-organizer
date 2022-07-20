@@ -5,8 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.text.BoringLayout;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,7 +35,6 @@ import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
@@ -459,5 +459,44 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
         cursor.close();
 
         return courses;
+    }
+
+
+    /**
+     * Application bar menu.
+     * @param menu Menu.
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * Application bar menu item selection.
+     * @param item Item selected.
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.appbar_terms:
+                Intent termsIntent = new Intent(this, TermsCtrl.class);
+                startActivity(termsIntent);
+                break;
+
+            case R.id.appbar_courses:
+                Intent coursesIntent = new Intent(this, CoursesCtrl.class);
+                startActivity(coursesIntent);
+                break;
+
+            case R.id.appbar_assessments:
+                Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
+                startActivity(assessmentsIntent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

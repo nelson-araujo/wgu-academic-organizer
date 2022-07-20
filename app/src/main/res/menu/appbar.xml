@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/appbar_terms"
+        android:icon="@drawable/ic_term"
+        android:title="@string/terms"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/appbar_courses"
+        android:icon="@drawable/ic_course"
+        android:title="@string/courses"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/appbar_assessments"
+        android:icon="@drawable/ic_assessment"
+        android:title="@string/assessments"
+        app:showAsAction="ifRoom" />
+</menu>

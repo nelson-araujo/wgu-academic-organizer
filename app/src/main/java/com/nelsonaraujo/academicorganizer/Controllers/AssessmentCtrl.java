@@ -5,12 +5,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.nelsonaraujo.academicorganizer.AcademicOrganizer;
 import com.nelsonaraujo.academicorganizer.Models.AppDialog;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
@@ -199,5 +203,44 @@ public class AssessmentCtrl extends AppCompatActivity implements AppDialog.Dialo
         cursor.close();
 
         return null;
+    }
+
+
+    /**
+     * Application bar menu.
+     * @param menu Menu.
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * Application bar menu item selection.
+     * @param item Item selected.
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.appbar_terms:
+                Intent termsIntent = new Intent(this, TermsCtrl.class);
+                startActivity(termsIntent);
+                break;
+
+            case R.id.appbar_courses:
+                Intent coursesIntent = new Intent(this, CoursesCtrl.class);
+                startActivity(coursesIntent);
+                break;
+
+            case R.id.appbar_assessments:
+                Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
+                startActivity(assessmentsIntent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
