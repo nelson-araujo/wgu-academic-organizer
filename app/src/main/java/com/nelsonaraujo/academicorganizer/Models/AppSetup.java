@@ -19,12 +19,6 @@ public class AppSetup extends Application {
 
         createNotificationChannels();
 
-        // DECOM - Check if AppService is running, if not start it.
-//        if(!isMyServiceRunning(AppService.class)){
-//            Log.d(TAG, "AppSetup onCreate :::: AppService is not running, starting.");
-//            startService(new Intent(this, AppService.class));
-//        }
-
     }
 
     /**
@@ -62,20 +56,4 @@ public class AppSetup extends Application {
 
         }
     }
-
-    /**
-     * Check if the a service is running.
-     * @param serviceClass Service to check.
-     * @return True if it's running otherwise false.
-     */
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
