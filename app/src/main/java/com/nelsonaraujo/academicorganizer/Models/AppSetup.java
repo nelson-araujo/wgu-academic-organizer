@@ -32,7 +32,7 @@ public class AppSetup extends Application {
             String assessmentChannelDescription = "Display assessments starting in the next five(5) days.";
 
             NotificationChannel assessmentChannel = new NotificationChannel(
-                    AppNotification.TYPE_UPCOMING_ASSESSMENT,
+                    AppNotification.CHN_UPCOMING_ASSESSMENT,
                     assessmentChannelName,
                     NotificationManager.IMPORTANCE_DEFAULT);
 
