@@ -148,8 +148,8 @@ public class AcademicOrganizer extends AppCompatActivity{
         if(upcomingAssessments.size() != 0) {
             Intent intent = new Intent(this, AppNotification.class);
 
-            intent.putExtra(AppNotification.TYPE, AppNotification.TYPE_UPCOMING_ASSESSMENT);
-            intent.putExtra(AppNotification.MESSAGE, upcomingAssessmentsString);
+            intent.putExtra(AppNotification.NOTIFICATION_TYPE, AppNotification.TYPE_UPCOMING_ASSESSMENT);
+            intent.putExtra(AppNotification.NOTIFICATION_MESSAGE, upcomingAssessmentsString);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(AcademicOrganizer.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 

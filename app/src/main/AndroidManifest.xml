@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nelsonaraujo.academicorganizer">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:name=".Models.AppSetup"
         android:allowBackup="true"
@@ -14,10 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AcademicOrganizer"
         tools:targetApi="31">
-        <service
-            android:name=".Models.AppService"
-            android:enabled="true"
-            android:exported="true"></service>
+<!--    DECOM service is not longer used-->
+<!--        <service-->
+<!--            android:name=".Models.AppService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true"></service>-->
 
         <activity
             android:name=".Controllers.AssessmentsCtrl"

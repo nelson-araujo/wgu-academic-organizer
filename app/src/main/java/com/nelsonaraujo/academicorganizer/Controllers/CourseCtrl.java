@@ -1,14 +1,19 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.AppDialog;
+import com.nelsonaraujo.academicorganizer.Models.AppNotification;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.Course;
@@ -30,6 +36,11 @@ import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
 import java.security.InvalidParameterException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 /**
@@ -39,6 +50,8 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
                                                                 CourseAssessmentsRvClickListener.OnCourseAssessmentsRvClickListener,
                                                                 AppDialog.DialogEvents{
     private static final String TAG = "CourseCtrl"; // For terminal logging
+
+    private Integer notificationRequestCode = 100;
 
     public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
     public static final int DELETE_DIALOG_ID = 1;
@@ -114,6 +127,24 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         mInstructorEmailTv.setText(instructorEmail);
         mInstructorPhoneTv.setText(instructorPhone);
         mNoteTv.setText(mCourse.getNote());
+
+        // Setup start set reminder
+        ImageView startSetReminder = findViewById(R.id.courseStartSetReminder);
+        startSetReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSetReminderClick(mCourse.getTitle(), mCourse.getStart(), AppNotification.START_OR_END.start);
+            }
+        });
+
+        // Setup end set reminder
+        ImageView endSetReminder = findViewById(R.id.courseEndSetReminder);
+        endSetReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSetReminderClick(mCourse.getTitle(), mCourse.getEnd(), AppNotification.START_OR_END.end);
+            }
+        });
 
         // Setup share button
         ImageView shareButton = findViewById(R.id.courseShareIv);
@@ -500,6 +531,34 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
         cursor.close();
 
         return assessments;
+    }
+
+    /**
+     * Action to be taken when the set reminder button is pressed.
+     * @param date to set the reminder to.
+     */
+    private void onSetReminderClick(String title, String date, AppNotification.START_OR_END startOrEnd){
+        // Convert date to milliseconds
+        LocalDate dateLd = LocalDate.parse(date); // Parse string to LocalDate
+        LocalDateTime dateLdt = dateLd.atStartOfDay(); // Convert LocalDate to LocalDateTime using start of day time.
+        ZonedDateTime dateZdt = ZonedDateTime.of(dateLdt, ZoneId.systemDefault()); // Convert LocalDateTime to ZonedDateTime.
+        long dateMillis =  dateZdt.toEpochSecond() * 1000;
+
+        // Create message to display
+        String message = title + " " + startOrEnd + "s today.";
+
+        // Build the intent
+        Intent intent = new Intent(this, AppNotification.class);
+        intent.putExtra(AppNotification.NOTIFICATION_TYPE, AppNotification.TYPE_START_END);
+        intent.putExtra(AppNotification.NOTIFICATION_MESSAGE, message);
+
+        // Setup alarm
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,notificationRequestCode++,intent,PendingIntent.FLAG_IMMUTABLE);
+        AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, dateMillis, pendingIntent);
+
+        // Notify user the alert was set.
+        Toast.makeText(this,"Alert set for " + dateLd ,Toast.LENGTH_LONG).show();
     }
 
 }

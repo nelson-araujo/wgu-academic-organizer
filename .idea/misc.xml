@@ -22,6 +22,7 @@
         <entry key="app/src/main/res/drawable/ic_logo_new.xml" value="0.348" />
         <entry key="app/src/main/res/drawable/ic_menu_hamburger.xml" value="0.348" />
         <entry key="app/src/main/res/drawable/ic_menu_hamburger_new.xml" value="0.348" />
+        <entry key="app/src/main/res/drawable/ic_notification.xml" value="0.307" />
         <entry key="app/src/main/res/drawable/ic_term.xml" value="0.348" />
         <entry key="app/src/main/res/drawable/ic_term_new.xml" value="0.348" />
         <entry key="app/src/main/res/drawable/rounded_corner_view.xml" value="0.361" />
@@ -37,11 +38,11 @@
         <entry key="app/src/main/res/layout-land/terms_manual.xml" value="0.41470713980333473" />
         <entry key="app/src/main/res/layout/academic_organizer.xml" value="0.26036767849508335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5046875" />
-        <entry key="app/src/main/res/layout/assessment.xml" value="0.4142796066695169" />
+        <entry key="app/src/main/res/layout/assessment.xml" value="0.35766092475067995" />
         <entry key="app/src/main/res/layout/assessment_add_edit.xml" value="0.32834544677212485" />
         <entry key="app/src/main/res/layout/assessments.xml" value="0.4142796066695169" />
         <entry key="app/src/main/res/layout/assessments_rv.xml" value="0.41342454040188115" />
-        <entry key="app/src/main/res/layout/course.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/course.xml" value="0.792964824120603" />
         <entry key="app/src/main/res/layout/course_add_edit.xml" value="0.32834544677212485" />
         <entry key="app/src/main/res/layout/course_assessment_rv.xml" value="0.41342454040188115" />
         <entry key="app/src/main/res/layout/courses.xml" value="0.41160471441523117" />

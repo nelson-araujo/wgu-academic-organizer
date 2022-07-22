@@ -50,4 +50,6 @@
     <string name="deleteTermDialog_message">Deleting this term will also delete courses, instructors, and assessments associated with %2$s (id:%1$d)?</string>
     <string name="deleteCourseDialog_message">Deleting this course will also delete assessments and instructors associated with %2$s (id:%1$d)?</string>
     <string name="deleteAssessmentDialog_message">Are you sure you want to delete %2$s (id:%1$d)?</string>
+
+    <string name="setReminderNotification">Set reminder notification</string>
 </resources>

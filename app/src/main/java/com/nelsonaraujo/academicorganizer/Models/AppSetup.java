@@ -5,9 +5,7 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 /**
  * Configuration to be applied when the application starts up.
@@ -15,20 +13,17 @@ import android.util.Log;
 public class AppSetup extends Application {
     private static final String TAG = "AppSetup";
 
-    public static final String CHN_ASSESSMENT = "notificationChannelAssessment";
-    public static final String CHN_DUE_TODAY = "notificationChannelDueToday";
-
     @Override
     public void onCreate() {
         super.onCreate();
 
         createNotificationChannels();
 
-        // Check if AppService is running, if not start it.
-        if(!isMyServiceRunning(AppService.class)){
-            Log.d(TAG, "AppSetup onCreate :::: AppService is not running, starting.");
-            startService(new Intent(this, AppService.class));
-        }
+        // DECOM - Check if AppService is running, if not start it.
+//        if(!isMyServiceRunning(AppService.class)){
+//            Log.d(TAG, "AppSetup onCreate :::: AppService is not running, starting.");
+//            startService(new Intent(this, AppService.class));
+//        }
 
     }
 
@@ -39,22 +34,22 @@ public class AppSetup extends Application {
         // Confirm Android version is Oreo (25) or higher.
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             // Setup the assessments channel
-            String assessmentChannelName = "Upcoming Assessments";
-            String assessmentChannelDescription = "Displays assessments in the next five(5) days.";
+            String assessmentChannelName = "Upcoming assessments";
+            String assessmentChannelDescription = "Display assessments starting in the next five(5) days.";
 
             NotificationChannel assessmentChannel = new NotificationChannel(
-                    CHN_ASSESSMENT,
+                    AppNotification.TYPE_UPCOMING_ASSESSMENT,
                     assessmentChannelName,
                     NotificationManager.IMPORTANCE_DEFAULT);
 
             assessmentChannel.setDescription(assessmentChannelDescription);
 
             // Setup the due today channel
-            String dueTodayChannelName = "Due today";
-            String dueTodayChannelDescription = "Displays tasks that are due today.";
+            String dueTodayChannelName = "Start or end reminders";
+            String dueTodayChannelDescription = "Display the start or end reminders set by the user.";
 
             NotificationChannel dueTodayChannel = new NotificationChannel(
-                    CHN_DUE_TODAY,
+                    AppNotification.CHN_START_END,
                     dueTodayChannelName,
                     NotificationManager.IMPORTANCE_DEFAULT);
 

@@ -1,5 +1,7 @@
 package com.nelsonaraujo.academicorganizer.Models;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,36 +18,41 @@ public class AppNotification extends BroadcastReceiver{
     private static final String TAG = "AppNotification";
 
     public static final String CHN_UPCOMING_ASSESSMENT = "notificationChannelAssessment";
+    public static final String CHN_START_END = "notificationChannelStartEnd";
 
-    public static final String TYPE = "Notification type";
-    public static final String MESSAGE = "Notification message";
+    public enum START_OR_END {start,end};
+
+    public static final String NOTIFICATION_TYPE = "Notification type";
+    public static final String NOTIFICATION_MESSAGE = "Notification message";
     public static final String TYPE_UPCOMING_ASSESSMENT = "Upcoming assessment";
-    public static final String TYPE_COURSE = "Course due today";
-    public static final String TYPE_ASSESSMENT = "Assessment due today";
+    public static final String TYPE_START_END = "Start or end alert";
+
+    private static int notificationId = 200;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String notificationType = intent.getStringExtra(TYPE);
-        String notificationMessage = intent.getStringExtra(MESSAGE);
+        String notificationType = intent.getStringExtra(NOTIFICATION_TYPE);
+        String notificationMessage = intent.getStringExtra(NOTIFICATION_MESSAGE);
 
         switch(notificationType){
             case TYPE_UPCOMING_ASSESSMENT:
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHN_UPCOMING_ASSESSMENT)
+                NotificationCompat.Builder upcomingAssessmentBuilder = new NotificationCompat.Builder(context, CHN_UPCOMING_ASSESSMENT)
                         .setSmallIcon(R.drawable.ic_logo)
                         .setContentTitle(TYPE_UPCOMING_ASSESSMENT)
                         .setContentText(notificationMessage)
                         .setPriority(NotificationCompat.PRIORITY_HIGH);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                notificationManager.notify(201,builder.build());
+                notificationManager.notify(notificationId++,upcomingAssessmentBuilder.build());
                 break;
 
-            case TYPE_COURSE:
-                // todo: update
-                break;
+            case TYPE_START_END:
+                Notification notification = new NotificationCompat.Builder(context,CHN_START_END)
+                        .setSmallIcon(R.drawable.ic_logo)
+                        .setContentText(notificationMessage).build();
 
-            case TYPE_ASSESSMENT:
-                // todo: update
+                NotificationManager alarmNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                alarmNotificationManager.notify(notificationId++, notification);
                 break;
 
             default:

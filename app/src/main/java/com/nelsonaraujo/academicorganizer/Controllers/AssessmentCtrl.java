@@ -1,34 +1,52 @@
 package com.nelsonaraujo.academicorganizer.Controllers;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nelsonaraujo.academicorganizer.Models.AppDialog;
+import com.nelsonaraujo.academicorganizer.Models.AppNotification;
 import com.nelsonaraujo.academicorganizer.Models.Assessment;
 import com.nelsonaraujo.academicorganizer.Models.AssessmentContract;
 import com.nelsonaraujo.academicorganizer.Models.CourseContract;
 import com.nelsonaraujo.academicorganizer.Models.TermContract;
 import com.nelsonaraujo.academicorganizer.R;
 
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  * Controller for the assessment layout.
  */
 public class AssessmentCtrl extends AppCompatActivity implements AppDialog.DialogEvents{
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static final String TAG = "AssessmentCtrl"; // For terminal logging
 
     public static final int LOADER_ID = 0; // Loader id to identify the loader if multiple are used.
     public static final int DELETE_DIALOG_ID = 1;
+    private static Integer notificationRequestCode = 100;
 
     Cursor mCursor;
     private Assessment mAssessment = null;
@@ -63,6 +81,24 @@ public class AssessmentCtrl extends AppCompatActivity implements AppDialog.Dialo
         mStartTv.setText(mAssessment.getStart().toString());
         mEndTv.setText(mAssessment.getEnd().toString());
         mCourseTv.setText(getCourseName(mAssessment.getCourseId()));
+
+        // Setup start set reminder
+        ImageView startSetReminder = findViewById(R.id.assessmentStartSetReminder);
+        startSetReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSetReminderClick(mAssessment.getTitle(), mAssessment.getStart(), "start");
+            }
+        });
+
+        // Setup end set reminder
+        ImageView endSetReminder = findViewById(R.id.assessmentEndSetReminder);
+        endSetReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSetReminderClick(mAssessment.getTitle(), mAssessment.getEnd(), "end");
+            }
+        });
 
         // Setup edit fab
         FloatingActionButton editFab = findViewById(R.id.assessmentEditFab);
@@ -146,6 +182,44 @@ public class AssessmentCtrl extends AppCompatActivity implements AppDialog.Dialo
     }
 
     /**
+     * Application bar menu.
+     * @param menu Menu.
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * Application bar menu item selection.
+     * @param item Item selected.
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.appbar_terms:
+                Intent termsIntent = new Intent(this, TermsCtrl.class);
+                startActivity(termsIntent);
+                break;
+
+            case R.id.appbar_courses:
+                Intent coursesIntent = new Intent(this, CoursesCtrl.class);
+                startActivity(coursesIntent);
+                break;
+
+            case R.id.appbar_assessments:
+                Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
+                startActivity(assessmentsIntent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
      * Action to be taken when the edit button is pressed.
      * @param assessment assessment selected.
      */
@@ -205,40 +279,32 @@ public class AssessmentCtrl extends AppCompatActivity implements AppDialog.Dialo
     }
 
     /**
-     * Application bar menu.
-     * @param menu Menu.
-     * @return
+     * Action to be taken when the set reminder button is pressed.
+     * @param date to set the reminder to.
      */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar, menu);
-        return super.onCreateOptionsMenu(menu);
+    private void onSetReminderClick(String title, String date, String startOrEnd){
+        // Convert date to milliseconds
+        LocalDate dateLd = LocalDate.parse(date); // Parse string to LocalDate
+        LocalDateTime dateLdt = dateLd.atStartOfDay(); // Convert LocalDate to LocalDateTime using start of day time.
+        ZonedDateTime dateZdt = ZonedDateTime.of(dateLdt, ZoneId.systemDefault()); // Convert LocalDateTime to ZonedDateTime.
+        long dateMillis =  dateZdt.toEpochSecond() * 1000;
+
+        // Create message to display
+        String message = title + " " + startOrEnd + "s today.";
+
+        // Build the intent
+        Intent intent = new Intent(this, AppNotification.class);
+        intent.putExtra(AppNotification.NOTIFICATION_TYPE, AppNotification.TYPE_START_END);
+        intent.putExtra(AppNotification.NOTIFICATION_MESSAGE, message);
+
+        // Setup alarm
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,notificationRequestCode++,intent,PendingIntent.FLAG_IMMUTABLE);
+        AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, dateMillis, pendingIntent);
+
+        // Notify user the alert was set.
+        Toast.makeText(this,"Alert set for " + dateLd ,Toast.LENGTH_LONG).show();
+
     }
 
-    /**
-     * Application bar menu item selection.
-     * @param item Item selected.
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.appbar_terms:
-                Intent termsIntent = new Intent(this, TermsCtrl.class);
-                startActivity(termsIntent);
-                break;
-
-            case R.id.appbar_courses:
-                Intent coursesIntent = new Intent(this, CoursesCtrl.class);
-                startActivity(coursesIntent);
-                break;
-
-            case R.id.appbar_assessments:
-                Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
-                startActivity(assessmentsIntent);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

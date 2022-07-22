@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
+ * DECOM Service is no longer used.
  * Application service for application-out-of-focus notifications.
  */
 public class AppService extends Service {
@@ -28,19 +29,6 @@ public class AppService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-//        // START - TEST APP NOT IN FOCUS NOTIFICATIONS
-//        new CountDownTimer(30000, 1000) {
-//            public void onFinish() {
-//                notifyStartEndToday();
-//            }
-//
-//            public void onTick(long millisUntilFinished) {
-//                // millisUntilFinished    The amount of time until finished.
-//            }
-//        }.start();
-//        // END - TEST APP NOT IN FOCUS NOTIFICATIONS
-
 
         notifyStartEndToday();
 
