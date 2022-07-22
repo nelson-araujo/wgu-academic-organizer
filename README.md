@@ -5,12 +5,13 @@ The Academic Organizer was developed for Western Governors University Mobile App
 This application was developed for Android SDK/API level 32, Android 12L.
 
 ## Versions
-The current published version of Academic Organizer is **1.0.0**, it was release on 2022-Jul-21.
+The current published version of Academic Organizer is **1.1.0**, it was release on 2022-Jul-22.
 
 ### Version history
-| Version   | Release Date  | Description        |
-|-----------|---------------|--------------------|
-| 1.0.0     | 2022-Jul-21   | Initial release    |
+| Version   | Release Date  | Description                                                                       |
+|-----------|---------------|-----------------------------------------------------------------------------------|
+| 1.0.0     | 2022-Jul-21   | Initial release                                                                   |
+| 1.1.0     | 2022-Jul-22   | Added option to create an alarm for courses and assessments start and end dates.  |
 
 ## Tools
 Academic Organizer was developed using the following tools:
