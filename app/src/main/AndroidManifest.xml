@@ -26,6 +26,9 @@
             android:name=".Controllers.AssessmentsCtrl"
             android:exported="false" />
         <activity
+            android:name=".Controllers.SearchCtrl"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.AssessmentCtrl"
             android:exported="false" />
         <activity

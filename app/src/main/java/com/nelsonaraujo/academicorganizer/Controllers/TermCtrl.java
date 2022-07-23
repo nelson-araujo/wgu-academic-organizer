@@ -291,6 +291,7 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar, menu);
+        getSupportActionBar().setTitle("Term");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -315,6 +316,11 @@ public class TermCtrl extends AppCompatActivity implements LoaderManager.LoaderC
             case R.id.appbar_assessments:
                 Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
                 startActivity(assessmentsIntent);
+                break;
+
+            case R.id.appbar_search:
+                Intent searchIntent = new Intent(this, SearchCtrl.class);
+                startActivity(searchIntent);
                 break;
         }
 

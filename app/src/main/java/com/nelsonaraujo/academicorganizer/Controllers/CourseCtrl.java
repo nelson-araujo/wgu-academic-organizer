@@ -382,6 +382,7 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar, menu);
+        getSupportActionBar().setTitle("Course");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -406,6 +407,11 @@ public class CourseCtrl extends AppCompatActivity implements LoaderManager.Loade
             case R.id.appbar_assessments:
                 Intent assessmentsIntent = new Intent(this, AssessmentsCtrl.class);
                 startActivity(assessmentsIntent);
+                break;
+
+            case R.id.appbar_search:
+                Intent searchIntent = new Intent(this, SearchCtrl.class);
+                startActivity(searchIntent);
                 break;
         }
 
