@@ -6,20 +6,26 @@
         android:id="@+id/appbar_terms"
         android:icon="@drawable/ic_term"
         android:title="@string/terms"
-        app:showAsAction="always" />
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/appbar_courses"
         android:icon="@drawable/ic_course"
         android:title="@string/courses"
-        app:showAsAction="always" />
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/appbar_assessments"
         android:icon="@drawable/ic_assessment"
         android:title="@string/assessments"
-        app:showAsAction="always" />
+        android:orderInCategory="3"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/appbar_search"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/search"
-        app:showAsAction="always" />
+        android:orderInCategory="0"
+        app:showAsAction="ifRoom" />
+
 </menu>
